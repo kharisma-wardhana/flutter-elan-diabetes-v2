@@ -1,0 +1,12 @@
+<xml>
+    <color name="white_background">#E5E5E5</color>
+    <color name="white">#FFFFFF</color>
+    <color name="dark_orange">#E17E05</color>
+    <color name="light_orange">#FBA337</color>
+    <color name="dark_blue">#1B264B</color>
+    <color name="light_blue">#4A65BF</color>
+    <color name="dark_grey">#57636C</color>
+    <color name="light_grey">#D8D8D8</color>
+    <color name="primary">#16AF97</color>
+    <color name="secondary">#399E5A</color>
+</xml>
