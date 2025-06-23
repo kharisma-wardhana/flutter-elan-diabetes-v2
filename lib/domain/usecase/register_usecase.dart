@@ -1,0 +1,23 @@
+import 'package:dartz/dartz.dart';
+
+import 'package:elan_diabetes/core/error.dart';
+
+import '../../core/usecase.dart';
+import '../entity/user_entity.dart';
+import '../repository/user_repo.dart';
+
+class RegisterUsecase implements UseCase<UserEntity, Map<String, String>> {
+  final UserRepository userRepository;
+
+  RegisterUsecase(this.userRepository);
+
+  @override
+  Future<Either<Failure, UserEntity>> call(params) async {
+    return await userRepository.register(
+      params['name']!,
+      params['email']!,
+      params['mobile']!,
+      params['dob']!,
+    );
+  }
+}

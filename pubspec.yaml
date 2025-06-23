@@ -50,6 +50,9 @@ dependencies:
   flutter_local_notifications: ^19.2.1
   flutter_native_splash: ^2.4.6
   introduction_screen: ^3.1.17
+  json_annotation: ^4.9.0
+  flutter_secure_storage: ^4.2.1
+  fluttertoast: ^8.2.12
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +74,18 @@ flutter_gen:
   colors:
     inputs:
       - assets/colors/main_color.xml
+
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: assets/images/splash.png
+  android:enableFullscreen: true
+  android:icon: assets/icons/splash_icon.png
+  ios: true
+  web: true
+  android_gravity: center
+  ios_content_mode: scaleAspectFill
+  android_12:
+    color: "#FFFFFF"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
