@@ -51,13 +51,28 @@ class _LoginPageState extends State<LoginPage> {
 
   void _handleLogin() {
     if (_formKey.currentState!.validate()) {
-      print("CALL LOGIN");
+      setState(() {
+        isLoading = true;
+      });
       sl<AuthBloc>().add(
         LoginEvent(
           username: mobileController.text,
           password: passwordController.text,
         ),
       );
+      setState(() {
+        isLoading = false;
+      });
+      sl<AuthBloc>().stream.listen((state) {
+        if (state is AuthError) {
+          // Show error message
+          Fluttertoast.showToast(
+            msg: state.message,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+          );
+        }
+      });
     }
   }
 
@@ -70,6 +85,7 @@ class _LoginPageState extends State<LoginPage> {
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 80.verticalSpace,
                 SizedBox(
@@ -135,40 +151,9 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
         24.verticalSpace,
-        // CustomButton(
-        //   textButton: 'Masuk',
-        //   onTap: isLoading ? null : _handleLogin,
-        // ),
-        ElevatedButton(
-          onPressed: () {
-            setState(() {
-              isLoading = true;
-            });
-            final username = mobileController.text.trim();
-            final password = passwordController.text.trim();
-            sl<AuthBloc>().add(
-              AuthEvent.login(username: username, password: password),
-            );
-            sl<AuthBloc>().stream.listen((state) {
-              if (state is AuthSuccess) {
-                setState(() {
-                  isLoading = false;
-                });
-                // Navigate to the next page or show success message
-              } else if (state is AuthError) {
-                setState(() {
-                  isLoading = false;
-                });
-                // Show error message
-                Fluttertoast.showToast(
-                  msg: state.message,
-                  backgroundColor: Colors.red,
-                  textColor: Colors.white,
-                );
-              }
-            });
-          },
-          child: Text('Masuk'),
+        CustomButton(
+          textButton: 'Masuk',
+          onTap: isLoading ? null : _handleLogin,
         ),
         10.verticalSpace,
         // Register
@@ -216,7 +201,7 @@ class _LoginPageState extends State<LoginPage> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: SizedBox(
-                  width: 60,
+                  width: 60.w,
                   child: Image.asset(
                     Assets.images.side.path,
                     fit: BoxFit.cover,

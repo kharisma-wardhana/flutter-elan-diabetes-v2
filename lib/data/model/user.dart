@@ -10,12 +10,12 @@ abstract class User with _$User {
   const User._();
   const factory User({
     required int id,
-    required String name,
+    required String nama,
     required String mobile,
     required String email,
     required String gender,
     required String dob,
-    required String token,
+    String? token,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -23,10 +23,11 @@ abstract class User with _$User {
   // Mapping to domain entity
   UserEntity toEntity() => UserEntity(
     id: id,
-    name: name,
+    name: nama,
     email: email,
     mobile: mobile,
     dob: dob,
+    gender: gender,
     token: token,
   );
 }

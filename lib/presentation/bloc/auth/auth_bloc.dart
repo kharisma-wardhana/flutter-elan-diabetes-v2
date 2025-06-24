@@ -34,7 +34,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             ),
           ),
           (user) {
-            _secureStorage.write(key: _tokenKey, value: jsonEncode(user));
+            _secureStorage.write(key: _tokenKey, value: jsonEncode(user.toJson()));
             emit(AuthState.success(userEntity: user));
           },
         );
