@@ -60,10 +60,6 @@ class $AssetsImagesGen {
   AssetGenImage get edukasiBencanaUntukLansia6 =>
       const AssetGenImage('assets/images/EDUKASI BENCANA UNTUK LANSIA-6.png');
 
-  /// File path: assets/images/ELAN POTRAIT.png
-  AssetGenImage get elanPotrait =>
-      const AssetGenImage('assets/images/ELAN POTRAIT.png');
-
   /// File path: assets/images/Lima Pilar Manajemen Diabetes Melitus 1.png
   AssetGenImage get limaPilarManajemenDiabetesMelitus1 => const AssetGenImage(
     'assets/images/Lima Pilar Manajemen Diabetes Melitus 1.png',
@@ -115,6 +111,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/edukasi_bencana.png
   AssetGenImage get edukasiBencana =>
       const AssetGenImage('assets/images/edukasi_bencana.png');
+
+  /// File path: assets/images/elan_icon.png
+  AssetGenImage get elanIcon =>
+      const AssetGenImage('assets/images/elan_icon.png');
 
   /// File path: assets/images/icon.png
   AssetGenImage get icon => const AssetGenImage('assets/images/icon.png');
@@ -174,7 +174,6 @@ class $AssetsImagesGen {
     edukasiBencanaUntukLansia4,
     edukasiBencanaUntukLansia5,
     edukasiBencanaUntukLansia6,
-    elanPotrait,
     limaPilarManajemenDiabetesMelitus1,
     logo,
     apaSajaYangHarusDibawaDalamTasSiagaBencana,
@@ -187,6 +186,7 @@ class $AssetsImagesGen {
     cekKesehatan,
     dietNutrisi,
     edukasiBencana,
+    elanIcon,
     icon,
     informasiDiabetes,
     jeruk,

@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 
-import '../../core/error.dart';
+import '../../../core/error.dart';
 import '../entity/user_entity.dart';
 
 abstract class UserRepository {

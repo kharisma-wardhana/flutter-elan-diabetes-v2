@@ -1,4 +1,12 @@
-const String baseURL = 'https://api-elan.cmutiah.com/api';
+import 'package:flutter/material.dart';
+
+import '../presentation/auth/page/login_page.dart';
+import '../presentation/auth/page/register_page.dart';
+import '../presentation/home/page/home_page.dart';
+import '../presentation/onboarding/page/onboarding_page.dart';
+import '../presentation/splash/page/splash_page.dart';
+
+const String baseURL = 'https://elan.cmutiah.com/api';
 
 // RouteName Config
 const String splashPage = '/';
@@ -37,3 +45,25 @@ const String addNutrisiPage = '/nutrisi/add';
 const String obatPage = '/obat';
 const String addObatPage = '/obat/add';
 const String videoPage = '/video';
+
+class AppRoutes {
+  static MaterialPageRoute onGenerateRoutes(argument, name) {
+    switch (name) {
+      case splashPage:
+        return MaterialPageRoute(builder: (_) => const SplashPage());
+      case onboardingPage:
+        return MaterialPageRoute(builder: (_) => const OnboardingPage());
+      case loginPage:
+        return MaterialPageRoute(builder: (_) => const LoginPage());
+      case registerPage:
+        return MaterialPageRoute(builder: (_) => const RegisterPage());
+      case homePage:
+        return MaterialPageRoute(builder: (_) => const HomePage());
+      default:
+        return MaterialPageRoute(
+          builder: (_) =>
+              const Scaffold(body: Center(child: Text('Page not found'))),
+        );
+    }
+  }
+}

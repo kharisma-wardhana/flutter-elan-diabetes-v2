@@ -92,7 +92,7 @@ class CustomTextField extends StatelessWidget {
               ),
             ),
             if (satuanText != null && satuanText!.isNotEmpty)
-              const SizedBox(width: 8),
+              SizedBox(width: 8.w),
             if (satuanText != null && satuanText!.isNotEmpty) Text(satuanText!),
           ],
         ),

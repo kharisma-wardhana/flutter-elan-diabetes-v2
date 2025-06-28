@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../domain/entity/user_entity.dart';
+import '../../../domain/auth/entity/user_entity.dart';
 
 part 'user.freezed.dart';
 part 'user.g.dart';
@@ -10,7 +10,7 @@ abstract class User with _$User {
   const User._();
   const factory User({
     required int id,
-    required String nama,
+    required String name,
     required String mobile,
     required String email,
     required String gender,
@@ -23,7 +23,7 @@ abstract class User with _$User {
   // Mapping to domain entity
   UserEntity toEntity() => UserEntity(
     id: id,
-    name: nama,
+    name: name,
     email: email,
     mobile: mobile,
     dob: dob,

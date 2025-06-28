@@ -77,9 +77,9 @@ flutter_gen:
 
 flutter_native_splash:
   color: "#FFFFFF"
-  image: assets/images/splash.png
+  image: assets/images/Logo.png
   android:enableFullscreen: true
-  android:icon: assets/icons/splash_icon.png
+  android:icon: assets/images/elan_icon.png
   ios: true
   web: true
   android_gravity: center

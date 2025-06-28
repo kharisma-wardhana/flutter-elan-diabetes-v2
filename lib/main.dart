@@ -1,11 +1,14 @@
-import 'package:elan_diabetes/presentation/page/auth/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'core/app_navigator.dart';
+import 'core/constant.dart';
 import 'core/service_locator.dart';
-import 'presentation/bloc/auth/auth_bloc.dart';
-import 'presentation/bloc/auth/auth_event.dart';
+import 'gen/colors.gen.dart';
+import 'presentation/auth/bloc/auth_bloc.dart';
+import 'presentation/auth/bloc/auth_event.dart';
+import 'presentation/splash/page/splash_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,28 +35,97 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           title: 'ELAN',
+          debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            // This is the theme of your application.
-            //
-            // TRY THIS: Try running your application with "flutter run". You'll see
-            // the application has a purple toolbar. Then, without quitting the app,
-            // try changing the seedColor in the colorScheme below to Colors.green
-            // and then invoke "hot reload" (save your changes or press the "hot
-            // reload" button in a Flutter-supported IDE, or press "r" if you used
-            // the command line to start the app).
-            //
-            // Notice that the counter didn't reset back to zero; the application
-            // state is not lost during the reload. To reset the state, use hot
-            // restart instead.
-            //
-            // This works for code too, not just values: Most code changes can be
-            // tested with just a hot reload.
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            appBarTheme: AppBarTheme(
+              color: ColorName.primary,
+              titleTextStyle: TextStyle(
+                color: ColorName.white,
+                fontSize: 20.sp,
+                fontWeight: FontWeight.w600,
+              ),
+              iconTheme: const IconThemeData(color: ColorName.white),
+              toolbarHeight: 60.h,
+            ),
+            inputDecorationTheme: InputDecorationTheme(
+              border: OutlineInputBorder(
+                borderSide: const BorderSide(
+                  color: ColorName.primary,
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                  color: ColorName.primary,
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(16.r),
+              ),
+              floatingLabelStyle: TextStyle(
+                color: ColorName.primary,
+                fontWeight: FontWeight.w600,
+                fontSize: 18.sp,
+              ),
+              hintStyle: TextStyle(color: Colors.black, fontSize: 16.sp),
+              errorMaxLines: 2,
+              isDense: false,
+            ),
+            textTheme: TextTheme(
+              bodyMedium: TextStyle(
+                color: Colors.black,
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w400,
+              ),
+              bodyLarge: TextStyle(
+                color: Colors.black,
+                fontSize: 20.sp,
+                fontWeight: FontWeight.w600,
+              ),
+              bodySmall: TextStyle(
+                color: Colors.black,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w400,
+              ),
+              titleLarge: TextStyle(
+                color: Colors.black,
+                fontSize: 24.sp,
+                fontWeight: FontWeight.w600,
+              ),
+              titleMedium: TextStyle(
+                color: Colors.black,
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w600,
+              ),
+              titleSmall: TextStyle(
+                color: Colors.black,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: ColorName.primary,
+                foregroundColor: ColorName.white,
+                textStyle: TextStyle(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16.r),
+                ),
+              ),
+            ),
           ),
           home: child,
+          navigatorKey: AppNavigatorImpl.navigatorKey,
+          onGenerateRoute: (RouteSettings settings) {
+            final argument = settings.arguments;
+            return AppRoutes.onGenerateRoutes(argument, settings.name);
+          },
         ),
       ),
-      child: const LoginPage(),
+      child: const SplashPage(),
     );
   }
 }

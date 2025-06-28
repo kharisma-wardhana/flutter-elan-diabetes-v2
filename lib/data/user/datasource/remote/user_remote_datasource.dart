@@ -1,5 +1,5 @@
-import '../../../core/api_service.dart';
-import '../../../core/error.dart';
+import '../../../../core/api_service.dart';
+import '../../../../core/error.dart';
 import '../../model/user.dart';
 
 abstract class UserRemoteDatasource {

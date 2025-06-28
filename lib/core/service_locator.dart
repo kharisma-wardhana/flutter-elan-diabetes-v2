@@ -1,13 +1,15 @@
-import 'package:elan_diabetes/presentation/bloc/auth/auth_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../data/datasource/remote/user_remote_datasource.dart';
-import '../data/repository/user_repo_impl.dart';
-import '../domain/repository/user_repo.dart';
-import '../domain/usecase/login_usecase.dart';
-import '../domain/usecase/register_usecase.dart';
+import '../data/user/datasource/remote/user_remote_datasource.dart';
+import '../data/user/repository/user_repo_impl.dart';
+import '../domain/auth/repository/user_repo.dart';
+import '../domain/auth/usecase/login_usecase.dart';
+import '../domain/auth/usecase/register_usecase.dart';
+import '../presentation/auth/bloc/auth_bloc.dart';
 import 'api_service.dart';
+import 'app_navigator.dart';
+import 'bloc/button_cubit.dart';
 import 'constant.dart';
 import 'dio_client.dart';
 
@@ -37,13 +39,14 @@ class SharedLibDependencies {
     final sharedPreferences = await SharedPreferences.getInstance();
     sl.registerLazySingleton(() => sharedPreferences);
     // sl.registerLazySingleton<DatabaseHelper>(() => DatabaseHelper());
-    // sl.registerLazySingleton<NavigationHelper>(() => NavigationHelperImpl());
+    sl.registerLazySingleton<AppNavigator>(() => AppNavigatorImpl());
     sl.registerLazySingleton<DioClient>(
       () => DioClient(baseUrl: baseURL, sharedPreferences: sl()),
     );
     sl.registerLazySingleton<ApiService>(
       () => ApiService(dio: sl<DioClient>().dio),
     );
+    sl.registerLazySingleton<ButtonCubit>(() => ButtonCubit());
   }
 }
 

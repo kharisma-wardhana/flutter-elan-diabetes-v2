@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import '../data/model/api_response.dart';
+import 'api_response.dart';
 import 'error.dart';
 
 class ApiService {

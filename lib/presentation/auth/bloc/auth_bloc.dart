@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:elan_diabetes/data/model/user.dart';
+import 'package:elan_diabetes/data/user/model/user.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../../../domain/usecase/login_usecase.dart';
-import '../../../domain/usecase/register_usecase.dart';
+import '../../../domain/auth/usecase/login_usecase.dart';
+import '../../../domain/auth/usecase/register_usecase.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 
@@ -34,7 +34,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             ),
           ),
           (user) {
-            _secureStorage.write(key: _tokenKey, value: jsonEncode(user.toJson()));
+            _secureStorage.write(
+              key: _tokenKey,
+              value: jsonEncode(user.toJson()),
+            );
             emit(AuthState.success(userEntity: user));
           },
         );

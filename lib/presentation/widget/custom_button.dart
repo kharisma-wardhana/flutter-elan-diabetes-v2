@@ -11,6 +11,7 @@ class CustomButton extends StatelessWidget {
   final GestureTapCallback? onTap;
   final Icon? icon;
   final bool isOutlineButton;
+  final bool isLoading;
 
   const CustomButton({
     super.key,
@@ -21,6 +22,7 @@ class CustomButton extends StatelessWidget {
     this.onTap,
     this.icon,
     this.isOutlineButton = false,
+    this.isLoading = false,
   });
 
   @override
@@ -28,14 +30,14 @@ class CustomButton extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.all(12.r),
+        padding: EdgeInsets.all(16.r),
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: buttonColor,
           borderRadius: buttonBorderRadius,
           boxShadow: const [
             BoxShadow(
-              blurRadius: 4,
+              blurRadius: 8,
               color: Color.fromARGB(38, 75, 57, 239),
               offset: Offset(0, 2),
             ),
@@ -44,28 +46,30 @@ class CustomButton extends StatelessWidget {
             color: isOutlineButton ? ColorName.primary : Colors.transparent,
           ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            icon != null
-                ? Padding(
-                    padding: EdgeInsets.only(right: 8.w),
-                    child: icon,
-                  )
-                : const SizedBox(),
-            Expanded(
-              child: Text(
-                textButton.toUpperCase(),
-                style: TextStyle(
-                  color: textColor,
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-                textAlign: TextAlign.center,
+        child: isLoading
+            ? const CircularProgressIndicator(color: ColorName.white)
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  icon != null
+                      ? Padding(
+                          padding: EdgeInsets.only(right: 8.w),
+                          child: icon,
+                        )
+                      : const SizedBox(),
+                  Expanded(
+                    child: Text(
+                      textButton.toUpperCase(),
+                      style: TextStyle(
+                        color: textColor,
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }
