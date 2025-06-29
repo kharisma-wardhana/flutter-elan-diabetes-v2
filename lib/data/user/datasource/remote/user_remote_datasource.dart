@@ -4,7 +4,13 @@ import '../../model/user.dart';
 
 abstract class UserRemoteDatasource {
   Future<User> login(String email, String password);
-  Future<User> register(String name, String email, String mobile, String dob);
+  Future<User> register(
+    String name,
+    String email,
+    String mobile,
+    String dob,
+    String gender,
+  );
   Future<String> logout();
 }
 
@@ -19,13 +25,15 @@ class UserRemoteDatasourceImpl implements UserRemoteDatasource {
     String email,
     String mobile,
     String dob,
+    String gender,
   ) async {
     try {
       final response = await apiService.postData('/auth/register', {
         'name': name,
         'email': email,
-        'mobile': mobile,
+        'no_hp': mobile,
         'dob': dob,
+        'gender': gender,
       });
       final responseData = response.data as Map<String, dynamic>;
       final accessToken = 'Bearer ${responseData['access_token']}';

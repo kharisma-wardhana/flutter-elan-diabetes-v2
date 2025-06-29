@@ -62,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
       setState(() => isLoading = false);
       context.read<AuthBloc>().stream.listen((state) {
         if (state is AuthSuccess) {
-          sl<AppNavigator>().pushNamedAndRemoveUntil(homePage);
+          sl<AppNavigator>().pushNamedAndRemoveUntil(onboardingPage);
         } else if (state is AuthError) {
           Fluttertoast.showToast(
             msg: state.message,

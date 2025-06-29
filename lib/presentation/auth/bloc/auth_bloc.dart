@@ -58,6 +58,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           'email': event.email,
           'mobile': event.mobile,
           'dob': event.dob,
+          'gender': event.gender,
         });
         result.fold(
           (failure) => emit(AuthState.error(message: failure.message)),

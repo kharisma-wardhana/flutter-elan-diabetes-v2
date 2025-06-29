@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/app_navigator.dart';
+import '../../../core/constant.dart';
+import '../../../core/service_locator.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../gen/colors.gen.dart';
+import '../../widget/custom_button.dart';
 import '../../widget/custom_dropdown.dart';
 import '../../widget/custom_text_field.dart';
+import '../bloc/auth_bloc.dart';
+import '../bloc/auth_event.dart';
+import '../bloc/auth_state.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -71,6 +80,52 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
+  void _handleRegister() {
+    if (_formKey.currentState?.validate() ?? false) {
+      // Simulate a registration process
+      setState(() {
+        isLoading = true;
+      });
+      final email = '${mobileController.text}@email.com';
+      context.read<AuthBloc>().add(
+        RegisterEvent(
+          name: nameController.text,
+          email: email,
+          mobile: mobileController.text,
+          dob: dobController.text,
+          gender: genderController.text,
+        ),
+      );
+      context.read<AuthBloc>().stream.listen((state) {
+        if (state is AuthSuccess) {
+          // Show success message and navigate to home
+          Fluttertoast.showToast(
+            msg: 'Pendaftaran Berhasil',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.sp,
+          );
+          sl<AppNavigator>().pushReplacementNamed(onboardingPage);
+        } else if (state is AuthError) {
+          // Show error message
+          Fluttertoast.showToast(
+            msg: state.message,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.sp,
+          );
+        }
+      });
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   Widget _buildFormRegister() {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -79,6 +134,24 @@ class _RegisterPageState extends State<RegisterPage> {
         SizedBox(
           width: 200.w,
           child: Image.asset(Assets.images.logoElan.path, fit: BoxFit.cover),
+        ),
+        32.verticalSpace,
+        Text(
+          "Pendaftaran Pengguna",
+          style: TextStyle(
+            fontSize: 24.sp,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        16.verticalSpace,
+        Text(
+          "Silahkan Lakukan Pengisian Data!",
+          style: TextStyle(
+            fontSize: 20.sp,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
         ),
         32.verticalSpace,
         CustomTextField(
@@ -123,6 +196,21 @@ class _RegisterPageState extends State<RegisterPage> {
           },
         ),
         16.verticalSpace,
+        BlocSelector<AuthBloc, AuthState, bool>(
+          selector: (state) {
+            if (state is AuthLoading) {
+              return true;
+            }
+            return false;
+          },
+          builder: (context, state) {
+            return CustomButton(
+              textButton: 'Daftar',
+              isLoading: isLoading,
+              onTap: isLoading ? null : _handleRegister,
+            );
+          },
+        ),
       ],
     );
   }
@@ -158,7 +246,7 @@ class _RegisterPageState extends State<RegisterPage> {
               Positioned(
                 right: 0,
                 child: IconButton(
-                  icon: const Icon(Icons.close, size: 60),
+                  icon: Icon(Icons.close, size: 60.w),
                   onPressed: () {
                     Navigator.pop(context);
                   },

@@ -18,6 +18,7 @@ class RegisterUsecase implements UseCase<UserEntity, Map<String, String>> {
       params['email']!,
       params['mobile']!,
       params['dob']!,
+      params['gender']!,
     );
   }
 }

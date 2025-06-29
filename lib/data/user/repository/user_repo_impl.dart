@@ -16,9 +16,16 @@ class UserRepoImpl implements UserRepository {
     String email,
     String mobile,
     String dob,
+    String gender,
   ) async {
     try {
-      final user = await remoteDataSource.register(name, email, mobile, dob);
+      final user = await remoteDataSource.register(
+        name,
+        email,
+        mobile,
+        dob,
+        gender,
+      );
       return Right(user.toEntity());
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message));

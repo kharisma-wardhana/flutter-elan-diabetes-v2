@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'core/app_navigator.dart';
 import 'core/constant.dart';
@@ -72,35 +73,35 @@ class MyApp extends StatelessWidget {
               isDense: false,
             ),
             textTheme: TextTheme(
-              bodyMedium: TextStyle(
+              bodyMedium: GoogleFonts.nunito().copyWith(
                 color: Colors.black,
                 fontSize: 18.sp,
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.w600,
               ),
-              bodyLarge: TextStyle(
+              bodyLarge: GoogleFonts.nunito().copyWith(
                 color: Colors.black,
                 fontSize: 20.sp,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w700,
               ),
-              bodySmall: TextStyle(
+              bodySmall: GoogleFonts.nunito().copyWith(
                 color: Colors.black,
                 fontSize: 16.sp,
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.w700,
               ),
-              titleLarge: TextStyle(
+              titleLarge: GoogleFonts.nunito().copyWith(
                 color: Colors.black,
                 fontSize: 24.sp,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w700,
               ),
-              titleMedium: TextStyle(
+              titleMedium: GoogleFonts.nunito().copyWith(
                 color: Colors.black,
                 fontSize: 18.sp,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w700,
               ),
-              titleSmall: TextStyle(
+              titleSmall: GoogleFonts.nunito().copyWith(
                 color: Colors.black,
                 fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w700,
               ),
             ),
             elevatedButtonTheme: ElevatedButtonThemeData(

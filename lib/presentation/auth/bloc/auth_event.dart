@@ -9,6 +9,7 @@ abstract class AuthEvent with _$AuthEvent {
     required String email,
     required String mobile,
     required String dob,
+    required String gender,
   }) = RegisterEvent;
 
   const factory AuthEvent.login({

@@ -9,6 +9,7 @@ abstract class UserRepository {
     String email,
     String mobile,
     String dob,
+    String gender,
   );
   Future<Either<Failure, UserEntity>> login(String email, String password);
   Future<Either<Failure, String>> logout();
