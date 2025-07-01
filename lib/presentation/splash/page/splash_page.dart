@@ -1,14 +1,14 @@
-import 'package:elan_diabetes/core/app_navigator.dart';
-import 'package:elan_diabetes/core/service_locator.dart';
-import 'package:elan_diabetes/presentation/auth/bloc/auth_bloc.dart';
-import 'package:elan_diabetes/presentation/auth/bloc/auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../../../core/app_navigator.dart';
 import '../../../core/constant.dart';
+import '../../../core/service_locator.dart';
 import '../../../gen/assets.gen.dart';
+import '../../auth/bloc/auth_bloc.dart';
+import '../../auth/bloc/auth_state.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});

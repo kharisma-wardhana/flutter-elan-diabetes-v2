@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:elan_diabetes/data/user/model/user.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../../../data/user/model/user.dart';
 import '../../../domain/auth/usecase/login_usecase.dart';
 import '../../../domain/auth/usecase/register_usecase.dart';
 import 'auth_event.dart';

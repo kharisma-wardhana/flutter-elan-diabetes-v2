@@ -1,14 +1,14 @@
-import 'package:elan_diabetes/core/app_navigator.dart';
-import 'package:elan_diabetes/core/constant.dart';
-import 'package:elan_diabetes/presentation/auth/bloc/auth_bloc.dart';
-import 'package:elan_diabetes/presentation/auth/bloc/auth_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../../../core/app_navigator.dart';
+import '../../../core/constant.dart';
 import '../../../core/service_locator.dart';
 import '../../../gen/assets.gen.dart';
+import '../bloc/auth_bloc.dart';
+import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
 import '../../widget/custom_button.dart';
 import '../../widget/custom_text_field.dart';

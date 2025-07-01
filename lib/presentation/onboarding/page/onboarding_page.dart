@@ -1,11 +1,11 @@
-import 'package:elan_diabetes/core/app_navigator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constant.dart';
-import '../../../core/service_locator.dart';
 import '../../../gen/assets.gen.dart';
 import '../widget/onboarding_card.dart';
-import '../widget/onboarding_diabetes_card.dart';
+import '../widget/onboarding_yesno_card.dart';
+import '../widget/question_card.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
@@ -25,44 +25,31 @@ class _OnboardingPageState extends State<OnboardingPage> {
       onTap: () {
         _pageController.animateToPage(
           _pageController.initialPage + 1,
-          duration: const Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 200),
           curve: Curves.bounceInOut,
         );
       },
     ),
-    OnboardDiabetesCard(
-      title: 'Apakah Anda Seorang?',
-      optionA: 'Diabetisi',
-      optionB: 'Non Diabetisi',
-      infoA:
-          'adalah orang yang telah didiagnosa medis mengalami penyakit Diabetes Melitus yang ditandai dengan kadar gula darah yang tidak terkontrol dengan baik (cenderung tinggi).',
-      infoB:
-          'adalah orang yang tidak sedang mengidap penyakit Diabetes Melitus.',
-      image: Assets.images.logoElan.path,
+    OnboardingYesnoCard(
+      title: 'Apakah Anda memiliki riwayat DM?',
+      optionA: 'Ya',
+      optionB: 'Tidak',
       onTapA: () {
         _pageController.animateToPage(
-          3 - 1,
-          duration: const Duration(milliseconds: 300),
+          _pageController.initialPage + 2,
+          duration: const Duration(milliseconds: 200),
           curve: Curves.bounceInOut,
         );
       },
       onTapB: () {
-        sl<AppNavigator>().pushReplacementNamed(antropometriPage);
+        _pageController.animateToPage(
+          _pageController.initialPage + 2,
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.bounceInOut,
+        );
       },
     ),
-    OnboardDiabetesCard(
-      title: 'Anda Diabetes Tipe Apa?',
-      optionA: 'Diabetes Tipe 1',
-      optionB: 'Diabetes Tipe 2',
-      infoA:
-          'adalah keadaan dimana tubuh tidak mampu memproduksi insulin karena ada kerusakan sel pankreas hingga mengakibatkan kadar gula dalam darah terlalu tinggi.',
-      infoB:
-          'adalah keadaan dimana pankreas tidak mampu menghasilkan insulin dengan jumlah yang memadai atau tubuh tidak mampu menggunakan insulin yang tersedia dengan benar sehingga mengakibatkan kadar gula dalam darah terlalu tinggi .',
-      image: Assets.images.logoElan.path,
-      onTapA: () {
-        sl<AppNavigator>().pushReplacementNamed(antropometriPage);
-      },
-    ),
+    QuestionCard(questions: questions),
   ];
 
   @override
@@ -70,7 +57,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(8.r),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,

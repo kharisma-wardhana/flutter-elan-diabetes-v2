@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 
-import 'package:elan_diabetes/core/error.dart';
-
+import '../../../core/error.dart';
 import '../../../core/usecase.dart';
 import '../entity/user_entity.dart';
 import '../repository/user_repo.dart';
