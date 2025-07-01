@@ -58,8 +58,6 @@ List<String> questions = [
   'Apakah Anda memiliki tekanan darah tinggi atau kolesterol tinggi?',
   'Apakah Anda berusia diatas 40 tahun dan jarang bergerak?',
 ];
-List<String> answers = [];
-List<bool> isAnswered = [];
 
 Map<String, List<String>> recommendations = {
   'normal': [

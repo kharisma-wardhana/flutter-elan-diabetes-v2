@@ -20,7 +20,6 @@ class OnboardingYesnoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Padding(
           padding: EdgeInsets.all(16.r),
@@ -30,35 +29,32 @@ class OnboardingYesnoCard extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
         ),
-        16.verticalSpace,
         Expanded(
-          child: ElevatedButton(
-            onPressed: onTapA,
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(vertical: 16.r, horizontal: 8.r),
-              textStyle: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            child: Text(optionA),
-          ),
-        ),
-        16.verticalSpace,
-        Expanded(
-          child: ElevatedButton(
-            onPressed: onTapB,
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(vertical: 16.r, horizontal: 8.r),
-              textStyle: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            child: Text(optionB),
+          child: Column(
+            children: [
+              _buildOptionButton(text: optionA, onTap: onTapA),
+              16.verticalSpace,
+              _buildOptionButton(text: optionB, onTap: onTapB),
+            ],
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildOptionButton({required String text, VoidCallback? onTap}) {
+    return Expanded(
+      child: SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: onTap,
+          style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.symmetric(vertical: 16.r),
+            textStyle: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+          ),
+          child: Text(text),
+        ),
+      ),
     );
   }
 }
