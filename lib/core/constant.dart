@@ -1,3 +1,4 @@
+import 'package:elan/presentation/onboarding/page/activity_page.dart';
 import 'package:flutter/material.dart';
 
 import '../presentation/auth/page/login_page.dart';
@@ -18,6 +19,7 @@ const String registerPage = '/register';
 const String homePage = '/home';
 const String gulaDarahPage = '/check-gula-darah';
 const String recommendationPage = '/recommendation';
+const String activityPage = '/activity';
 
 class AppRoutes {
   static MaterialPageRoute onGenerateRoutes(argument, name) {
@@ -35,11 +37,12 @@ class AppRoutes {
       case recommendationPage:
         return MaterialPageRoute(
           builder: (context) {
-            final args = ModalRoute.of(context)?.settings.arguments;
-            final data = args is List<String> ? args : <String>[];
-            return RecommendationPage(data: data);
+            final args = argument ?? <String>[];
+            return RecommendationPage(data: args);
           },
         );
+      case activityPage:
+        return MaterialPageRoute(builder: (_) => const ActivityPage());
       case homePage:
         return MaterialPageRoute(builder: (_) => const HomePage());
       default:
@@ -61,24 +64,18 @@ List<String> questions = [
 
 Map<String, List<String>> recommendations = {
   'normal': [
-    'Periksa kadar gula darah secara rutin.',
-    'Jaga pola makan sehat dengan mengurangi konsumsi gula dan karbohidrat sederhana.',
-    'Lakukan olahraga teratur minimal 30 menit setiap hari.',
-    'Kendalikan berat badan dengan diet seimbang.',
-    'Hindari stres dan tidur yang cukup.',
+    'Pertahankan pola makan sehat (sayur, buah, dan hindari konsumsi gula hingga minyak berlebih).',
+    'Lakukan aktivitas fisik teratur minimal 30 menit setiap hari.',
+    'Pemeriksaan Gula Darah ulang tiap 3 bulan.',
+    'Pantau Tekanan Darah dan Berat Badan.',
   ],
   'diabetes': [
-    'Periksa kadar gula darah secara rutin.',
-    'Jaga pola makan sehat dengan mengurangi konsumsi gula dan karbohidrat sederhana.',
-    'Lakukan olahraga teratur minimal 30 menit setiap hari.',
-    'Kendalikan berat badan dengan diet seimbang.',
-    'Hindari stres dan tidur yang cukup.',
-  ],
-  'pre-diabetes': [
-    'Periksa kadar gula darah secara rutin.',
-    'Jaga pola makan sehat dengan mengurangi konsumsi gula dan karbohidrat sederhana.',
-    'Lakukan olahraga teratur minimal 30 menit setiap hari.',
-    'Kendalikan berat badan dengan diet seimbang.',
-    'Hindari stres dan tidur yang cukup.',
+    'Konsultasikan segera dengan dokter untuk rencana pengobatan.',
+    'Mulai diet DM (rendah gula dan karbohidrat, makanan tinggi serat seperti sayur dan buah yang tidak terlalu manis, makanan rendah garam/natrium, hindari makanan yang digoreng/dibakar, dan makanan siap saji/diawetkan).',
+    'Lakukan aktivitas fisik ringan (jalan kaki dan senam ringan).',
+    'Monitor gula darah setiap hari atau minimal 3 kali seminggu.',
+    'Istirahat yang cukup yaitu 6 s.d 8 jam per hari.',
+    'Lakukan pemeriksaan kaki dan mata secara berkala.',
+    'Ikuti edukasi DM secara berkala bersama sudah perawat/dokter/tenaga kesehatan.',
   ],
 };

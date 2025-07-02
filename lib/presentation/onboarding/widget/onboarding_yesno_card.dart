@@ -19,41 +19,36 @@ class OnboardingYesnoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.all(16.r),
-          child: Text(
+    return Padding(
+      padding: EdgeInsets.all(16.r),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
             title,
-            style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 28.sp, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),
-        ),
-        Expanded(
-          child: Column(
-            children: [
-              _buildOptionButton(text: optionA, onTap: onTapA),
-              16.verticalSpace,
-              _buildOptionButton(text: optionB, onTap: onTapB),
-            ],
-          ),
-        ),
-      ],
+          64.verticalSpace,
+          _buildOptionButton(text: optionA, onTap: onTapA),
+          32.verticalSpace,
+          _buildOptionButton(text: optionB, onTap: onTapB),
+        ],
+      ),
     );
   }
 
   Widget _buildOptionButton({required String text, VoidCallback? onTap}) {
-    return Expanded(
-      child: SizedBox(
-        width: double.infinity,
-        child: ElevatedButton(
-          onPressed: onTap,
-          style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.symmetric(vertical: 16.r),
-            textStyle: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
-          ),
-          child: Text(text),
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: onTap,
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.symmetric(vertical: 16.r),
+          textStyle: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
         ),
+        child: Text(text),
       ),
     );
   }

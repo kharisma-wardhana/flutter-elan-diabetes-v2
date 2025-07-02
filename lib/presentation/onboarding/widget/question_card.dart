@@ -83,31 +83,26 @@ class _QuestionCardState extends State<QuestionCard> {
           ),
         ),
         if (allAnswered)
-          Padding(
-            padding: EdgeInsets.all(16.r),
-            child: Expanded(
-              child: CustomButton(
-                isLoading: isLoading,
-                textButton: "Lanjutkan",
-                onTap: () {
-                  setState(() {
-                    isLoading = true;
-                  });
-                  // Aksi ketika next ditekan
-                  if (hasAtLeastTwoYes) {
-                    sl<AppNavigator>().pushNamed(gulaDarahPage);
-                  } else {
-                    sl<AppNavigator>().pushNamed(
-                      recommendationPage,
-                      arguments: recommendations['normal'],
-                    );
-                  }
-                  setState(() {
-                    isLoading = false;
-                  });
-                },
-              ),
-            ),
+          CustomButton(
+            isLoading: isLoading,
+            textButton: "Lanjutkan",
+            onTap: () {
+              setState(() {
+                isLoading = true;
+              });
+              // Aksi ketika next ditekan
+              if (hasAtLeastTwoYes) {
+                sl<AppNavigator>().pushNamed(gulaDarahPage);
+              } else {
+                sl<AppNavigator>().pushNamed(
+                  recommendationPage,
+                  arguments: recommendations['normal'],
+                );
+              }
+              setState(() {
+                isLoading = false;
+              });
+            },
           ),
       ],
     );

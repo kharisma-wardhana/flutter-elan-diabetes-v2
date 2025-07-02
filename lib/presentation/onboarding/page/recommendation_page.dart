@@ -1,5 +1,10 @@
+import 'package:elan/core/constant.dart';
+import 'package:elan/presentation/widget/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../core/app_navigator.dart';
+import '../../../core/service_locator.dart';
 
 class RecommendationPage extends StatelessWidget {
   final List<String> data;
@@ -10,22 +15,38 @@ class RecommendationPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
+        appBar: AppBar(title: const Text('ELAN')),
         body: Padding(
           padding: EdgeInsets.all(16.r),
-          child: ListView.builder(
-            itemCount: data.length,
-            itemBuilder: (context, index) {
-              return Card(
-                margin: EdgeInsets.symmetric(vertical: 8.r),
-                child: Padding(
-                  padding: EdgeInsets.all(16.r),
-                  child: Text(
-                    data[index],
-                    style: TextStyle(fontSize: 16.sp, color: Colors.black87),
-                  ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Rekomendasi:',
+                style: TextStyle(fontSize: 28.sp, fontWeight: FontWeight.bold),
+              ),
+              32.verticalSpace,
+              Expanded(
+                child: ListView.builder(
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(vertical: 16.r),
+                      child: Text(
+                        '- ${data[index]}',
+                        style: TextStyle(fontSize: 18.sp),
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
+              ),
+              CustomButton(
+                textButton: "Lanjutkan",
+                onTap: () {
+                  sl<AppNavigator>().pushNamed(activityPage);
+                },
+              ),
+            ],
           ),
         ),
       ),
