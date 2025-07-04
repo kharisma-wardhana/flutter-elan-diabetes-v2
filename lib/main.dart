@@ -9,6 +9,8 @@ import 'core/service_locator.dart';
 import 'gen/colors.gen.dart';
 import 'presentation/auth/bloc/auth_bloc.dart';
 import 'presentation/auth/bloc/auth_event.dart';
+import 'presentation/home/bloc/health_bloc.dart';
+import 'presentation/home/bloc/health_event.dart';
 import 'presentation/splash/page/splash_page.dart';
 
 void main() async {
@@ -30,8 +32,11 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) => MultiBlocProvider(
         providers: [
+          BlocProvider(
+            create: (_) => sl<HealthBloc>()..add(RequestPermissions()),
+          ),
           BlocProvider<AuthBloc>(
-            create: (_) => sl<AuthBloc>()..add(const AuthEvent.appStarted()),
+            create: (_) => sl<AuthBloc>()..add(AppStarted()),
           ),
         ],
         child: MaterialApp(

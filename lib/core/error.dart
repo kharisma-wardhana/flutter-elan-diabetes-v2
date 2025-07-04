@@ -41,3 +41,11 @@ class UnknownFailure extends Failure {
 class InvalidInputFailure extends Failure {
   const InvalidInputFailure(super.message);
 }
+
+class UnauthorizedFailure extends Failure {
+  const UnauthorizedFailure(super.message);
+}
+
+class NotFoundFailure extends Failure {
+  const NotFoundFailure(super.message);
+}

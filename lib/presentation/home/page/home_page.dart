@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../gen/assets.gen.dart';
+import '../bloc/health_bloc.dart';
+import '../bloc/health_state.dart';
 import '../widget/glucose_circle_chart.dart';
 import '../widget/health_info_row.dart';
 
@@ -80,25 +83,32 @@ class _HomePageState extends State<HomePage>
                   },
                 ),
                 24.verticalSpace,
-                HealthInfoRow(
-                  icon: Icons.directions_walk,
-                  label: "Jumlah Langkah Hari ini",
-                  value: "$stepsTaken langkah",
+                BlocSelector<HealthBloc, HealthState, int>(
+                  selector: (state) =>
+                      state is HealthSuccess ? state.health.steps : 0,
+                  builder: (context, steps) {
+                    return HealthInfoRow(
+                      icon: Icons.directions_walk,
+                      label: "Jumlah Langkah Hari ini",
+                      value: "$steps langkah",
+                    );
+                  },
+                ),
+                BlocSelector<HealthBloc, HealthState, String>(
+                  selector: (state) =>
+                      state is HealthSuccess ? state.health.bloodPressure : "-",
+                  builder: (context, bloodPressure) {
+                    return HealthInfoRow(
+                      icon: Icons.monitor_heart,
+                      label: "Tekanan Darah",
+                      value: "$bloodPressure mmHg",
+                    );
+                  },
                 ),
                 HealthInfoRow(
                   icon: Icons.local_fire_department,
                   label: "Jumlah Kalori yang Terbakar",
                   value: "200 kalori",
-                ),
-                HealthInfoRow(
-                  icon: Icons.favorite,
-                  label: "Frekuensi Nadi",
-                  value: "87 kali/menit",
-                ),
-                HealthInfoRow(
-                  icon: Icons.monitor_heart,
-                  label: "Tekanan Darah",
-                  value: "140/80 mmHg",
                 ),
               ],
             ),

@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:health/health.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/user/datasource/remote/user_remote_datasource.dart';
@@ -6,7 +7,11 @@ import '../data/user/repository/user_repo_impl.dart';
 import '../domain/auth/repository/user_repo.dart';
 import '../domain/auth/usecase/login_usecase.dart';
 import '../domain/auth/usecase/register_usecase.dart';
+import '../domain/health/usecase/authorization_usecase.dart';
+import '../domain/health/usecase/health_usecase.dart';
 import '../presentation/auth/bloc/auth_bloc.dart';
+
+import '../presentation/home/bloc/health_bloc.dart';
 import 'api_service.dart';
 import 'app_navigator.dart';
 import 'bloc/button_cubit.dart';
@@ -18,7 +23,12 @@ final sl = GetIt.instance;
 class Injector {
   Future<void> initialize() async {
     await _registerSharedDependencies();
+    _registerHealth();
     _registerDomains();
+  }
+
+  void _registerHealth() {
+    sl.registerLazySingleton<Health>(() => Health());
   }
 
   Future<void> _registerSharedDependencies() async {
@@ -27,8 +37,8 @@ class Injector {
 
   void _registerDomains() {
     UserDependency();
-    // HomeDependency();
-    // AssesmentDependency();
+    OnboardingDependency();
+    HomeDependency();
   }
 }
 
@@ -82,6 +92,33 @@ class UserDependency {
   void _registerCubit() {
     sl.registerLazySingleton(
       () => AuthBloc(sl<LoginUsecase>(), sl<RegisterUsecase>()),
+    );
+  }
+}
+
+class OnboardingDependency {}
+
+class HomeDependency {
+  HomeDependency() {
+    _registerUseCases();
+    _registerBloc();
+  }
+
+  void _registerUseCases() {
+    // Register use cases related to home functionality here
+    sl.registerLazySingleton<AuthorizationUsecase>(
+      () => AuthorizationUsecase(sl<Health>()),
+    );
+    sl.registerLazySingleton<HealthUsecase>(() => HealthUsecase(sl<Health>()));
+  }
+
+  void _registerBloc() {
+    // Register BLoC related to home functionality here
+    sl.registerLazySingleton<HealthBloc>(
+      () => HealthBloc(
+        healthUsecase: sl<HealthUsecase>(),
+        authorizationUsecase: sl<AuthorizationUsecase>(),
+      ),
     );
   }
 }
