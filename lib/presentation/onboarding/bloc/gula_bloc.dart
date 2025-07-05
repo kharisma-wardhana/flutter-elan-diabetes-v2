@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../domain/gula/usecase/add_gula_darah_usecase.dart';
+import '../../../domain/gula_darah/usecase/add_gula_darah_usecase.dart';
 import 'gula_event.dart';
 import 'gula_state.dart';
 
