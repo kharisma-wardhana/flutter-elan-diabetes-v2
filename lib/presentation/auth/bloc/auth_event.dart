@@ -20,4 +20,6 @@ abstract class AuthEvent with _$AuthEvent {
   const factory AuthEvent.logout() = LogoutEvent;
 
   const factory AuthEvent.appStarted() = AppStarted;
+
+  const factory AuthEvent.completeOnboarding() = CompleteOnboardingEvent;
 }

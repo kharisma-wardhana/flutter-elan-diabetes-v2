@@ -18,7 +18,13 @@ class SplashPage extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
-          sl<AppNavigator>().pushNamedAndRemoveUntil(onboardingPage);
+          // Check if the user has completed onboarding
+          if (state.userEntity.isOnboardingComplete != null &&
+              state.userEntity.isOnboardingComplete!) {
+            sl<AppNavigator>().pushNamedAndRemoveUntil(homePage);
+          } else {
+            sl<AppNavigator>().pushNamedAndRemoveUntil(onboardingPage);
+          }
         } else if (state is AuthInitial) {
           sl<AppNavigator>().pushNamedAndRemoveUntil(loginPage);
         } else if (state is AuthError) {

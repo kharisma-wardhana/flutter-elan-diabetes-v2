@@ -13,6 +13,7 @@ abstract class UserEntity with _$UserEntity {
     required String gender,
     required String dob,
     String? token,
+    bool? isOnboardingComplete,
   }) = _UserEntity;
 
   factory UserEntity.fromJson(Map<String, dynamic> json) =>

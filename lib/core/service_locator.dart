@@ -1,3 +1,4 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:health/health.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,7 +15,6 @@ import '../presentation/auth/bloc/auth_bloc.dart';
 import '../presentation/home/bloc/health_bloc.dart';
 import 'api_service.dart';
 import 'app_navigator.dart';
-import 'bloc/button_cubit.dart';
 import 'constant.dart';
 import 'dio_client.dart';
 
@@ -56,7 +56,9 @@ class SharedLibDependencies {
     sl.registerLazySingleton<ApiService>(
       () => ApiService(dio: sl<DioClient>().dio),
     );
-    sl.registerLazySingleton<ButtonCubit>(() => ButtonCubit());
+    sl.registerLazySingleton<FlutterSecureStorage>(
+      () => const FlutterSecureStorage(),
+    );
   }
 }
 
@@ -91,7 +93,11 @@ class UserDependency {
 
   void _registerCubit() {
     sl.registerLazySingleton(
-      () => AuthBloc(sl<LoginUsecase>(), sl<RegisterUsecase>()),
+      () => AuthBloc(
+        loginUsecase: sl<LoginUsecase>(),
+        registerUsecase: sl<RegisterUsecase>(),
+        secureStorage: sl<FlutterSecureStorage>(),
+      ),
     );
   }
 }

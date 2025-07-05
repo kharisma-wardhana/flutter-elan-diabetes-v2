@@ -12,12 +12,15 @@ import 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LoginUsecase loginUsecase;
   final RegisterUsecase registerUsecase;
+  final FlutterSecureStorage secureStorage;
 
-  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
   static const String _tokenKey = 'auth_token';
 
-  AuthBloc(this.loginUsecase, this.registerUsecase)
-    : super(const AuthState.initial()) {
+  AuthBloc({
+    required this.loginUsecase,
+    required this.registerUsecase,
+    required this.secureStorage,
+  }) : super(const AuthState.initial()) {
     on<LoginEvent>((event, emit) async {
       emit(const AuthState.loading());
       try {
@@ -34,7 +37,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             ),
           ),
           (user) {
-            _secureStorage.write(
+            secureStorage.write(
               key: _tokenKey,
               value: jsonEncode(user.toJson()),
             );
@@ -63,7 +66,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         result.fold(
           (failure) => emit(AuthState.error(message: failure.message)),
           (user) {
-            _secureStorage.write(key: _tokenKey, value: jsonEncode(user));
+            secureStorage.write(key: _tokenKey, value: jsonEncode(user));
             emit(AuthState.success(userEntity: user));
           },
         );
@@ -73,13 +76,28 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
 
     on<AppStarted>((event, emit) async {
-      final token = await _secureStorage.read(key: _tokenKey);
+      final token = await secureStorage.read(key: _tokenKey);
       if (token != null) {
         final userJson = jsonDecode(token);
         final user = User.fromJson(userJson);
         emit(AuthState.success(userEntity: user.toEntity()));
       } else {
         emit(const AuthState.initial());
+      }
+    });
+
+    on<CompleteOnboardingEvent>((event, emit) async {
+      if (state is AuthSuccess) {
+        final currentUser = (state as AuthSuccess).userEntity;
+        final updatedUser = currentUser.copyWith(isOnboardingComplete: true);
+
+        // Update the user in secure storage
+        await secureStorage.write(
+          key: _tokenKey,
+          value: jsonEncode(updatedUser.toJson()),
+        );
+
+        emit(AuthState.success(userEntity: updatedUser));
       }
     });
   }
