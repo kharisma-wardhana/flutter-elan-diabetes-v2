@@ -92,11 +92,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final updatedUser = currentUser.copyWith(isOnboardingComplete: true);
 
         // Update the user in secure storage
+        await secureStorage.delete(key: _tokenKey);
+        // Write the updated user back to secure storage
         await secureStorage.write(
           key: _tokenKey,
           value: jsonEncode(updatedUser.toJson()),
         );
-
         emit(AuthState.success(userEntity: updatedUser));
       }
     });

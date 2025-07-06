@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/app_navigator.dart';
 import '../../../core/constant.dart';
 import '../../../core/service_locator.dart';
+import '../../auth/bloc/auth_bloc.dart';
+import '../../auth/bloc/auth_event.dart';
+import '../../auth/bloc/auth_state.dart';
 import '../../widget/custom_button.dart';
 import '../../widget/custom_text_field.dart';
 
@@ -55,7 +59,12 @@ class _ActivityPageState extends State<ActivityPage> {
                 textButton: "Lanjutkan",
                 onTap: () {
                   // Logic to navigate to the next page
-                  sl<AppNavigator>().pushNamed(homePage);
+                  context.read<AuthBloc>().add(CompleteOnboardingEvent());
+                  context.read<AuthBloc>().stream.listen((state) {
+                    if (state is AuthSuccess) {
+                      sl<AppNavigator>().pushNamedAndRemoveUntil(homePage);
+                    }
+                  });
                 },
               ),
             ],

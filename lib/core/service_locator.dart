@@ -57,7 +57,9 @@ class SharedLibDependencies {
       () => ApiService(dio: sl<DioClient>().dio),
     );
     sl.registerLazySingleton<FlutterSecureStorage>(
-      () => const FlutterSecureStorage(),
+      () => const FlutterSecureStorage(
+        aOptions: AndroidOptions(encryptedSharedPreferences: true),
+      ),
     );
   }
 }

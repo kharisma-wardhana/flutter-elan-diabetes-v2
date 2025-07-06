@@ -16,6 +16,7 @@ abstract class User with _$User {
     required String gender,
     required String dob,
     String? token,
+    bool? isOnboardingComplete,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -29,5 +30,6 @@ abstract class User with _$User {
     dob: dob,
     gender: gender,
     token: token,
+    isOnboardingComplete: isOnboardingComplete ?? false,
   );
 }
