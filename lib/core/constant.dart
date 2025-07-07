@@ -7,19 +7,21 @@ import '../presentation/home/page/home_page.dart';
 import '../presentation/onboarding/page/gula_darah_page.dart';
 import '../presentation/onboarding/page/onboarding_page.dart';
 import '../presentation/onboarding/page/recommendation_page.dart';
+import '../presentation/profile/page/profile_page.dart';
 import '../presentation/splash/page/splash_page.dart';
 
 const String baseURL = 'https://elan.cmutiah.com/api';
 
 // RouteName Config
 const String splashPage = '/';
-const String onboardingPage = '/onboarding';
 const String loginPage = '/login';
 const String registerPage = '/register';
-const String homePage = '/home';
+const String onboardingPage = '/onboarding';
 const String gulaDarahPage = '/check-gula-darah';
 const String recommendationPage = '/recommendation';
 const String activityPage = '/activity';
+const String homePage = '/home';
+const String profilePage = '/profile';
 
 class AppRoutes {
   static MaterialPageRoute onGenerateRoutes(argument, name) {
@@ -45,6 +47,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const ActivityPage());
       case homePage:
         return MaterialPageRoute(builder: (_) => const HomePage());
+      case profilePage:
+        return MaterialPageRoute(builder: (_) => const ProfilePage());
       default:
         return MaterialPageRoute(
           builder: (_) =>

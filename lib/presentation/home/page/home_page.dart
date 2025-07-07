@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../core/app_navigator.dart';
+import '../../../core/constant.dart';
+import '../../../core/service_locator.dart';
 import '../../../gen/assets.gen.dart';
 import '../bloc/health_bloc.dart';
 import '../bloc/health_state.dart';
@@ -52,6 +55,16 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              sl<AppNavigator>().pushNamed(profilePage);
+            },
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
