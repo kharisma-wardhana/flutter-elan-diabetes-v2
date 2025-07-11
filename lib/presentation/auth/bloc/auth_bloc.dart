@@ -50,6 +50,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
 
     on<LogoutEvent>((event, emit) {
+      secureStorage.delete(key: _tokenKey);
       emit(const AuthState.initial());
     });
 

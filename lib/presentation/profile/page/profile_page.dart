@@ -36,46 +36,43 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void _handleLogout() {
-    setState(() {
-      isLoading = true;
-    });
     context.read<AuthBloc>().add(LogoutEvent());
-    context.read<AuthBloc>().stream.listen((state) {
-      if (state is AuthInitial) {
-        sl<AppNavigator>().pushNamedAndRemoveUntil(loginPage);
-      }
-      if (state is AuthError) {
-        Fluttertoast.showToast(
-          msg: state.message,
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
-      }
-      setState(() {
-        isLoading = false;
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
+      appBar: AppBar(
+        title: Text('Profile', style: TextStyle(fontSize: 28.sp)),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(8.r),
-          child: BlocBuilder<AuthBloc, AuthState>(
+          child: BlocConsumer<AuthBloc, AuthState>(
+            listener: (context, state) {
+              if (state is AuthInitial) {
+                sl<AppNavigator>().pushNamedAndRemoveUntil(loginPage);
+              }
+              if (state is AuthError) {
+                Fluttertoast.showToast(
+                  msg: state.message,
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 16.0,
+                );
+              }
+            },
             builder: (context, state) {
               if (state is AuthSuccess) {
                 return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Welcome, ${state.userEntity.name}',
+                      'Nama, ${state.userEntity.name}',
                       style: TextStyle(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.bold,
@@ -100,7 +97,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       style: TextStyle(fontSize: 16.sp),
                       textAlign: TextAlign.start,
                     ),
-                    20.verticalSpace,
+                    Spacer(),
                     CustomButton(
                       isLoading: isLoading,
                       textButton: 'Logout',
@@ -113,8 +110,8 @@ class _ProfilePageState extends State<ProfilePage> {
               }
               return Center(
                 child: Text(
-                  'You are not logged in',
-                  style: TextStyle(fontSize: 18.sp),
+                  'No user data available',
+                  style: TextStyle(fontSize: 16.sp),
                 ),
               );
             },

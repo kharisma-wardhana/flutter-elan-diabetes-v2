@@ -91,6 +91,7 @@ class _GulaDarahPageState extends State<GulaDarahPage> {
           child: Form(
             key: _formKey,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomTextField(

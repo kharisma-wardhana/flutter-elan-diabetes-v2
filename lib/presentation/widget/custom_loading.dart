@@ -8,11 +8,19 @@ class CustomLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.maxFinite,
-      height: double.maxFinite,
-      color: Colors.black26,
+      width: double.infinity,
+      height: double.infinity,
+      color: Colors.black.withValues(alpha: 0.8),
       child: const Center(
-        child: CircularProgressIndicator(color: ColorName.primary),
+        child: Column(
+          mainAxisSize: MainAxisSize.min, // penting agar tidak memenuhi layar
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(color: ColorName.primary),
+            SizedBox(height: 16), // beri jarak antar widget
+            Text('Mohon tunggu...', style: TextStyle(color: Colors.white)),
+          ],
+        ),
       ),
     );
   }

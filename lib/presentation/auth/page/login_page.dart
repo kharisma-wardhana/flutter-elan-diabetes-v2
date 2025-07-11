@@ -1,3 +1,4 @@
+import 'package:elan/presentation/widget/custom_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController passwordController = TextEditingController(
     text: '29-06-2000',
   );
-  static final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   bool isPasswordHidden = false;
   bool isLoading = false;
 
@@ -38,13 +39,11 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
-    // Reset the form and controllers when disposing
-    _formKey.currentState?.reset();
     mobileController.clear();
     passwordController.clear();
     // Reset the password visibility state
-    isLoading = false;
     isPasswordHidden = false;
+    isLoading = false;
     mobileController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -52,29 +51,12 @@ class _LoginPageState extends State<LoginPage> {
 
   void _handleLogin() {
     if (_formKey.currentState!.validate()) {
-      setState(() => isLoading = true);
       context.read<AuthBloc>().add(
         LoginEvent(
           username: mobileController.text,
           password: passwordController.text,
         ),
       );
-      setState(() => isLoading = false);
-      context.read<AuthBloc>().stream.listen((state) {
-        if (state is AuthSuccess) {
-          sl<AppNavigator>().pushNamedAndRemoveUntil(onboardingPage);
-        } else if (state is AuthError) {
-          Fluttertoast.showToast(
-            msg: state.message,
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 18.sp,
-          );
-        }
-      });
     }
   }
 
@@ -149,7 +131,6 @@ class _LoginPageState extends State<LoginPage> {
             bool isLoadingButton = state;
             return CustomButton(
               textButton: 'Masuk',
-              isLoading: isLoadingButton,
               onTap: isLoadingButton ? null : _handleLogin,
             );
           },
@@ -218,12 +199,36 @@ class _LoginPageState extends State<LoginPage> {
                           maxWidth: 400.w,
                           minWidth: 200.w,
                         ),
-                        child: _buildFormLogin(),
+                        child: BlocListener<AuthBloc, AuthState>(
+                          listener: (context, state) {
+                            if (state is AuthLoading) {
+                              setState(() => isLoading = true);
+                            } else if (state is AuthSuccess) {
+                              setState(() => isLoading = false);
+                              sl<AppNavigator>().pushNamedAndRemoveUntil(
+                                onboardingPage,
+                              );
+                            } else if (state is AuthError) {
+                              setState(() => isLoading = false);
+                              Fluttertoast.showToast(
+                                msg: state.message,
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 18.sp,
+                              );
+                            }
+                          },
+                          child: _buildFormLogin(),
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
+              if (isLoading) Positioned.fill(child: const CustomLoading()),
             ],
           ),
         ),
