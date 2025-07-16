@@ -83,3 +83,12 @@ Map<String, List<String>> recommendations = {
     'Ikuti edukasi DM secara berkala bersama sudah perawat/dokter/tenaga kesehatan.',
   ],
 };
+
+List<DropdownMenuEntry<String>> activityOptions = [
+  DropdownMenuEntry<String>(value: 'Berjalan', label: 'Berjalan'),
+  DropdownMenuEntry<String>(value: 'Senam', label: 'Senam'),
+  DropdownMenuEntry<String>(value: 'Bersepeda', label: 'Bersepeda'),
+  DropdownMenuEntry<String>(value: 'Berenang', label: 'Berenang'),
+  DropdownMenuEntry<String>(value: 'Angkat Beban', label: 'Angkat Beban'),
+  DropdownMenuEntry<String>(value: 'Lainnya', label: 'Lainnya'),
+];

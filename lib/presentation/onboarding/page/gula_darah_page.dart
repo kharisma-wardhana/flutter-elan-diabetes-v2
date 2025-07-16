@@ -102,6 +102,7 @@ class _GulaDarahPageState extends State<GulaDarahPage> {
                   controller: gulaDarahPuasaController,
                   satuanText: 'mg/dL',
                   validatorEmpty: 'Gula Darah Puasa tidak boleh kosong',
+                  disableValidation: true,
                 ),
                 16.verticalSpace,
                 CustomTextField(
@@ -112,6 +113,7 @@ class _GulaDarahPageState extends State<GulaDarahPage> {
                   controller: gulaDarahSewaktuController,
                   satuanText: 'mg/dL',
                   validatorEmpty: 'Gula Darah Sewaktu tidak boleh kosong',
+                  disableValidation: true,
                 ),
                 16.verticalSpace,
                 CustomButton(textButton: "Lanjutkan", onTap: _handleNextButton),

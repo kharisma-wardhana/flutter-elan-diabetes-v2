@@ -21,7 +21,9 @@ class ActivityPage extends StatefulWidget {
 
 class _ActivityPageState extends State<ActivityPage> {
   TextEditingController activityController = TextEditingController();
+  TextEditingController activityLainController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool isActivityLainSelected = false;
 
   @override
   void initState() {
@@ -32,6 +34,7 @@ class _ActivityPageState extends State<ActivityPage> {
   @override
   void dispose() {
     activityController.dispose();
+    activityLainController.dispose();
     super.dispose();
   }
 
@@ -55,17 +58,39 @@ class _ActivityPageState extends State<ActivityPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomTextField(
-                  labelText: 'Aktivitas Harian',
-                  hintText: 'Masukkan Aktivitas Harian',
-                  validatorEmpty: 'Aktivitas Harian tidak boleh kosong',
-                  keyboardType: TextInputType.text,
-                  controller: activityController,
-                  onChanged: (val) {
-                    // Logic to handle activity input
-                    activityController.text = val;
-                  },
+                Text(
+                  'Aktivitas Harian',
+                  style: TextStyle(
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
+                16.verticalSpace,
+                DropdownMenu(
+                  dropdownMenuEntries: activityOptions,
+                  initialSelection: activityOptions.first,
+                  onSelected: (value) {
+                    // Handle dropdown selection
+                    setState(() {
+                      isActivityLainSelected = value == 'Lainnya';
+                      if (!isActivityLainSelected) {
+                        activityLainController.clear();
+                      }
+                    });
+                  },
+                  hintText: 'Pilih Aktivitas',
+                  controller: activityController,
+                ),
+                16.verticalSpace,
+                isActivityLainSelected
+                    ? CustomTextField(
+                        labelText: 'Aktivitas Harian',
+                        hintText: 'Masukkan Aktivitas Harian',
+                        validatorEmpty: 'Aktivitas Harian tidak boleh kosong',
+                        keyboardType: TextInputType.text,
+                        controller: activityLainController,
+                      )
+                    : SizedBox.shrink(),
                 32.verticalSpace,
                 BlocListener<AuthBloc, AuthState>(
                   listener: (context, state) {
