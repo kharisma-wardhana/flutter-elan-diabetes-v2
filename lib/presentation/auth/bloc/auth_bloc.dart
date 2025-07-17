@@ -15,6 +15,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final FlutterSecureStorage secureStorage;
 
   static const String _tokenKey = 'auth_token';
+  static const String _userIDKey = 'user_id';
 
   AuthBloc({
     required this.loginUsecase,
@@ -41,6 +42,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               key: _tokenKey,
               value: jsonEncode(user.toJson()),
             );
+            secureStorage.write(key: _userIDKey, value: user.id.toString());
             emit(AuthState.success(userEntity: user));
           },
         );
@@ -51,6 +53,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     on<LogoutEvent>((event, emit) {
       secureStorage.delete(key: _tokenKey);
+      secureStorage.delete(key: _userIDKey);
       emit(const AuthState.initial());
     });
 
@@ -68,6 +71,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           (failure) => emit(AuthState.error(message: failure.message)),
           (user) {
             secureStorage.write(key: _tokenKey, value: jsonEncode(user));
+            secureStorage.write(key: _userIDKey, value: user.id.toString());
             emit(AuthState.success(userEntity: user));
           },
         );
@@ -98,6 +102,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await secureStorage.write(
           key: _tokenKey,
           value: jsonEncode(updatedUser.toJson()),
+        );
+        await secureStorage.write(
+          key: _userIDKey,
+          value: updatedUser.id.toString(),
         );
         emit(AuthState.success(userEntity: updatedUser));
       }

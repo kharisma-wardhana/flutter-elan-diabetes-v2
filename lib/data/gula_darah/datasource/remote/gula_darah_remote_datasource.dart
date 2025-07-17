@@ -3,8 +3,8 @@ import '../../../../core/error.dart';
 import '../../model/gula_darah.dart';
 
 abstract class GulaDarahRemoteDataSource {
-  Future<GulaDarah> addGulaDarah(GulaDarah gulaDarah);
-  Future<List<GulaDarah>> getGulaDarah();
+  Future<GulaDarah> addGulaDarah(int userID, GulaDarah gulaDarah);
+  Future<List<GulaDarah>> getGulaDarah(int userID);
 }
 
 class GulaDarahRemoteDataSourceImpl implements GulaDarahRemoteDataSource {
@@ -14,10 +14,16 @@ class GulaDarahRemoteDataSourceImpl implements GulaDarahRemoteDataSource {
   GulaDarahRemoteDataSourceImpl({required this.apiService});
 
   @override
-  Future<GulaDarah> addGulaDarah(GulaDarah gulaDarah) async {
+  Future<GulaDarah> addGulaDarah(int userID, GulaDarah gulaDarah) async {
     try {
       // Sending the GulaDarah data to the API
-      final response = await apiService.postData('/gula_darah', {});
+      final response = await apiService
+          .postData('/users/$userID/blood-sugars', {
+            "tanggal": gulaDarah.tanggal,
+            "jam": gulaDarah.jam,
+            "kadar": '${gulaDarah.kadar} mg/dL',
+            "type": gulaDarah.type,
+          });
       // Assuming the response contains the created GulaDarah object
       return GulaDarah.fromJson(response.data);
     } on ServerException {
@@ -27,10 +33,12 @@ class GulaDarahRemoteDataSourceImpl implements GulaDarahRemoteDataSource {
   }
 
   @override
-  Future<List<GulaDarah>> getGulaDarah() async {
+  Future<List<GulaDarah>> getGulaDarah(int userID) async {
     try {
       // Fetching the list of GulaDarah from the API
-      final response = await apiService.fetchData('/gula_darah');
+      final response = await apiService.fetchData(
+        '/users/$userID/blood-sugars',
+      );
       return (response.data as List)
           .map((item) => GulaDarah.fromJson(item))
           .toList();

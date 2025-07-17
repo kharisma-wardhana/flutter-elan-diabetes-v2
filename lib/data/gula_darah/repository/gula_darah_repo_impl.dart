@@ -13,14 +13,35 @@ class GulaDarahRepoImpl implements GulaDarahRepository {
 
   @override
   Future<Either<Failure, GulaDarahEntity>> addGulaDarah(
-    String gulaDarahPuasa,
+    Map<String, String> params,
   ) async {
     try {
+      final userID = int.parse(params['userID'] ?? '0');
+      if (userID <= 0) {
+        return Left(InvalidInputFailure('User ID is invalid'));
+      }
+
+      String kadar = params['gulaDarahPuasa']!.isNotEmpty
+          ? params['gulaDarahPuasa']!
+          : params['gulaDarahSewaktu']!;
+      String datePart = DateTime.now().toIso8601String().split('T')[0];
+      String timePart = DateTime.now()
+          .toIso8601String()
+          .split('T')[1]
+          .split('.')[0];
+      String type = params['gulaDarahPuasa']!.isNotEmpty ? '2' : '1';
       GulaDarah gulaDarah = GulaDarah(
-        level: gulaDarahPuasa,
-        date: DateTime.now().toIso8601String(),
+        userID: userID,
+        tanggal: datePart,
+        jam: timePart,
+        kadar: kadar,
+        type: type,
       );
-      final result = await gulaDarahRemoteDataSource.addGulaDarah(gulaDarah);
+
+      final result = await gulaDarahRemoteDataSource.addGulaDarah(
+        userID,
+        gulaDarah,
+      );
       return Right(result.toEntity());
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message));

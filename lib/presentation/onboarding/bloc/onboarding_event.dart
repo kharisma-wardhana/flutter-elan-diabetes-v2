@@ -4,21 +4,11 @@ part 'onboarding_event.freezed.dart';
 
 @freezed
 abstract class OnboardingEvent with _$OnboardingEvent {
-  const factory OnboardingEvent.addGulaDarahPuasa({
+  const factory OnboardingEvent.addGulaDarah({
     required String gulaDarahPuasa,
-  }) = AddGulaDarahPuasaEvent;
-
-  const factory OnboardingEvent.addGulaDarahSewaktu({
     required String gulaDarahSewaktu,
-  }) = AddGulaDarahSewaktuEvent;
+  }) = AddGulaDarahEvent;
 
-  const factory OnboardingEvent.getGulaDarah() = GetGulaDarahEvent;
-
-  const factory OnboardingEvent.checkGulaDarahPuasa({
-    required String gulaDarahPuasa,
-  }) = CheckGulaDarahPuasaEvent;
-
-  const factory OnboardingEvent.checkGulaDarahSewaktu({
-    required String gulaDarahSewaktu,
-  }) = CheckGulaDarahSewaktuEvent;
+  const factory OnboardingEvent.addActivity({required String activityName}) =
+      AddActivityEvent;
 }

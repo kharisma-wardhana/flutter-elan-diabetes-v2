@@ -11,6 +11,7 @@ import 'presentation/auth/bloc/auth_bloc.dart';
 import 'presentation/auth/bloc/auth_event.dart';
 import 'presentation/home/bloc/health_bloc.dart';
 import 'presentation/home/bloc/health_event.dart';
+import 'presentation/onboarding/bloc/onboarding_bloc.dart';
 import 'presentation/splash/page/splash_page.dart';
 
 void main() async {
@@ -32,11 +33,12 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) => MultiBlocProvider(
         providers: [
-          BlocProvider(
-            create: (_) => sl<HealthBloc>()..add(RequestPermissions()),
-          ),
           BlocProvider<AuthBloc>(
             create: (_) => sl<AuthBloc>()..add(AppStarted()),
+          ),
+          BlocProvider<OnboardingBloc>(create: (_) => sl<OnboardingBloc>()),
+          BlocProvider<HealthBloc>(
+            create: (_) => sl<HealthBloc>()..add(RequestPermissions()),
           ),
         ],
         child: MaterialApp(

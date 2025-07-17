@@ -3,16 +3,25 @@ import 'package:get_it/get_it.dart';
 import 'package:health/health.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../data/activity/datasource/remote/activity_remote_datasource.dart';
+import '../data/activity/repository/activity_repo_impl.dart';
+import '../data/gula_darah/datasource/remote/gula_darah_remote_datasource.dart';
+import '../data/gula_darah/repository/gula_darah_repo_impl.dart';
 import '../data/user/datasource/remote/user_remote_datasource.dart';
 import '../data/user/repository/user_repo_impl.dart';
+import '../domain/activity/repository/activity_repo.dart';
+import '../domain/activity/usecase/add_activity_usecase.dart';
 import '../domain/auth/repository/user_repo.dart';
 import '../domain/auth/usecase/login_usecase.dart';
 import '../domain/auth/usecase/register_usecase.dart';
+import '../domain/gula_darah/repository/gula_darah_repo.dart';
+import '../domain/gula_darah/usecase/add_gula_darah_usecase.dart';
 import '../domain/health/usecase/authorization_usecase.dart';
 import '../domain/health/usecase/health_usecase.dart';
 import '../presentation/auth/bloc/auth_bloc.dart';
 
 import '../presentation/home/bloc/health_bloc.dart';
+import '../presentation/onboarding/bloc/onboarding_bloc.dart';
 import 'api_service.dart';
 import 'app_navigator.dart';
 import 'constant.dart';
@@ -104,7 +113,57 @@ class UserDependency {
   }
 }
 
-class OnboardingDependency {}
+class OnboardingDependency {
+  OnboardingDependency() {
+    _registerDataSource();
+    _registerRepository();
+    _registerUseCases();
+    _registerBloc();
+  }
+
+  void _registerDataSource() {
+    sl.registerLazySingleton<GulaDarahRemoteDataSource>(
+      () => GulaDarahRemoteDataSourceImpl(apiService: sl<ApiService>()),
+    );
+    sl.registerLazySingleton<ActivityRemoteDatasource>(
+      () => ActivityRemoteDatasourceImpl(apiService: sl<ApiService>()),
+    );
+  }
+
+  void _registerRepository() {
+    sl.registerLazySingleton<GulaDarahRepository>(
+      () => GulaDarahRepoImpl(
+        gulaDarahRemoteDataSource: sl<GulaDarahRemoteDataSource>(),
+      ),
+    );
+    sl.registerLazySingleton<ActivityRepo>(
+      () => ActivityRepoImpl(
+        activityRemoteDatasource: sl<ActivityRemoteDatasource>(),
+      ),
+    );
+  }
+
+  void _registerUseCases() {
+    // Register use cases related to onboarding functionality here
+    sl.registerLazySingleton<AddGulaDarahUsecase>(
+      () => AddGulaDarahUsecase(sl<GulaDarahRepository>()),
+    );
+    sl.registerLazySingleton<AddActivityUsecase>(
+      () => AddActivityUsecase(activityRepo: sl<ActivityRepo>()),
+    );
+  }
+
+  void _registerBloc() {
+    // Register BLoC related to onboarding functionality here
+    sl.registerLazySingleton<OnboardingBloc>(
+      () => OnboardingBloc(
+        secureStorage: sl<FlutterSecureStorage>(),
+        addActivityUsecase: sl<AddActivityUsecase>(),
+        addGulaDarahUsecase: sl<AddGulaDarahUsecase>(),
+      ),
+    );
+  }
+}
 
 class HomeDependency {
   HomeDependency() {

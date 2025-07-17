@@ -8,11 +8,16 @@ part 'gula_darah.g.dart';
 @freezed
 abstract class GulaDarah with _$GulaDarah {
   const GulaDarah._();
-  const factory GulaDarah({required String level, required String date}) =
-      _GulaDarah;
+  const factory GulaDarah({
+    @JsonKey(name: "user_id") required int userID,
+    required String tanggal,
+    required String jam,
+    required String kadar,
+    required String type,
+  }) = _GulaDarah;
 
   factory GulaDarah.fromJson(Map<String, dynamic> json) =>
       _$GulaDarahFromJson(json);
 
-  GulaDarahEntity toEntity() => GulaDarahEntity(value: level, date: date);
+  GulaDarahEntity toEntity() => GulaDarahEntity(value: kadar, date: tanggal);
 }

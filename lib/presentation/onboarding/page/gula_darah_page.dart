@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../core/app_navigator.dart';
 import '../../../core/constant.dart';
 import '../../../core/service_locator.dart';
 import '../../widget/custom_button.dart';
 import '../../widget/custom_text_field.dart';
+import '../bloc/onboarding_bloc.dart';
+import '../bloc/onboarding_event.dart';
+import '../bloc/onboarding_state.dart';
 
 class GulaDarahPage extends StatefulWidget {
   const GulaDarahPage({super.key});
@@ -35,48 +38,15 @@ class _GulaDarahPageState extends State<GulaDarahPage> {
     super.dispose();
   }
 
-  void checkGulaDarahPuasa(String val) {
-    // Logic to check Gula Darah and navigate to the appropriate page
-    // This is just a placeholder for the actual logic
-    if (val.isEmpty) {
-      Fluttertoast.showToast(
-        msg: 'Gula Darah Puasa tidak boleh kosong',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
-    }
-  }
-
-  void checkGulaDarahSewaktu(String val) {
-    // Logic to check Gula Darah and navigate to the appropriate page
-    // This is just a placeholder for the actual logic
-    if (val.isEmpty) {
-      Fluttertoast.showToast(
-        msg: 'Gula Darah Puasa tidak boleh kosong',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
-    }
-  }
-
   void _handleNextButton() {
     if (_formKey.currentState?.validate() != true) {
       return;
     }
-    if (isDiabetes) {
-      sl<AppNavigator>().pushNamedAndRemoveUntil(
-        recommendationPage,
-        arguments: recommendations['diabetes']!,
-      );
-      return;
-    }
-    sl<AppNavigator>().pushNamedAndRemoveUntil(
-      recommendationPage,
-      arguments: recommendations['normal']!,
+    context.read<OnboardingBloc>().add(
+      OnboardingEvent.addGulaDarah(
+        gulaDarahPuasa: gulaDarahPuasaController.text,
+        gulaDarahSewaktu: gulaDarahSewaktuController.text,
+      ),
     );
   }
 
@@ -98,7 +68,6 @@ class _GulaDarahPageState extends State<GulaDarahPage> {
                   labelText: 'Gula Darah Puasa',
                   hintText: 'Masukkan Gula Darah Puasa',
                   keyboardType: TextInputType.number,
-                  onChanged: checkGulaDarahPuasa,
                   controller: gulaDarahPuasaController,
                   satuanText: 'mg/dL',
                   validatorEmpty: 'Gula Darah Puasa tidak boleh kosong',
@@ -109,7 +78,6 @@ class _GulaDarahPageState extends State<GulaDarahPage> {
                   labelText: 'Gula Darah Sewaktu',
                   hintText: 'Masukkan Gula Darah Sewaktu',
                   keyboardType: TextInputType.number,
-                  onChanged: checkGulaDarahSewaktu,
                   controller: gulaDarahSewaktuController,
                   satuanText: 'mg/dL',
                   validatorEmpty: 'Gula Darah Sewaktu tidak boleh kosong',
@@ -117,6 +85,28 @@ class _GulaDarahPageState extends State<GulaDarahPage> {
                 ),
                 16.verticalSpace,
                 CustomButton(textButton: "Lanjutkan", onTap: _handleNextButton),
+                16.verticalSpace,
+                BlocBuilder<OnboardingBloc, OnboardingState>(
+                  builder: (context, state) {
+                    if (state is OnboardingError) {
+                      return Text(
+                        state.message,
+                        style: TextStyle(color: Colors.red, fontSize: 16.sp),
+                      );
+                    } else if (state is OnboardingSuccessNormal) {
+                      sl<AppNavigator>().pushNamedAndRemoveUntil(
+                        recommendationPage,
+                        arguments: recommendations['normal']!,
+                      );
+                    } else if (state is OnboardingSuccessDiabetes) {
+                      sl<AppNavigator>().pushNamedAndRemoveUntil(
+                        recommendationPage,
+                        arguments: recommendations['diabetes']!,
+                      );
+                    }
+                    return SizedBox.shrink();
+                  },
+                ),
               ],
             ),
           ),

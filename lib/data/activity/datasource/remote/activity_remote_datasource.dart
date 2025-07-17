@@ -16,7 +16,7 @@ class ActivityRemoteDatasourceImpl implements ActivityRemoteDatasource {
   Future<Activity> addActivity(Activity activity) async {
     try {
       // Sending the Activity data to the API
-      final response = await apiService.postData('/gula_darah', {});
+      final response = await apiService.postData('/users/activities', {});
       // Assuming the response contains the created Activity object
       return Activity.fromJson(response.data);
     } on ServerException {
@@ -29,7 +29,7 @@ class ActivityRemoteDatasourceImpl implements ActivityRemoteDatasource {
   Future<List<Activity>> getActivities() async {
     try {
       // Sending the Activity data to the API
-      final response = await apiService.fetchData('/gula_darah');
+      final response = await apiService.fetchData('/users/activities');
       // Assuming the response contains the created Activity object
       // return Activity.fromJson(response.data);
       return List.empty();

@@ -15,6 +15,6 @@ class AddGulaDarahUsecase
   Future<Either<Failure, GulaDarahEntity>> call(
     Map<String, String> params,
   ) async {
-    return await gulaRepository.addGulaDarah(params['gulaDarah']!);
+    return await gulaRepository.addGulaDarah(params);
   }
 }

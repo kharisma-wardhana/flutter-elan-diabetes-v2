@@ -92,3 +92,6 @@ List<DropdownMenuEntry<String>> activityOptions = [
   DropdownMenuEntry<String>(value: 'Angkat Beban', label: 'Angkat Beban'),
   DropdownMenuEntry<String>(value: 'Lainnya', label: 'Lainnya'),
 ];
+
+const int diabatesDM = 1;
+const int diabetesPreDM = 2;
