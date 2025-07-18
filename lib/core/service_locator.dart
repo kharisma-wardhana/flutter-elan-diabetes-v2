@@ -60,7 +60,7 @@ class SharedLibDependencies {
     // sl.registerLazySingleton<DatabaseHelper>(() => DatabaseHelper());
     sl.registerLazySingleton<AppNavigator>(() => AppNavigatorImpl());
     sl.registerLazySingleton<DioClient>(
-      () => DioClient(baseUrl: baseURL, sharedPreferences: sl()),
+      () => DioClient(baseUrl: baseURL, secureStorage: sl()),
     );
     sl.registerLazySingleton<ApiService>(
       () => ApiService(dio: sl<DioClient>().dio),

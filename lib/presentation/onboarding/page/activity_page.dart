@@ -10,6 +10,7 @@ import '../../auth/bloc/auth_bloc.dart';
 import '../../auth/bloc/auth_event.dart';
 import '../../auth/bloc/auth_state.dart';
 import '../../widget/custom_button.dart';
+import '../../widget/custom_loading.dart';
 import '../../widget/custom_text_field.dart';
 
 class ActivityPage extends StatefulWidget {
@@ -24,11 +25,14 @@ class _ActivityPageState extends State<ActivityPage> {
   TextEditingController activityLainController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool isActivityLainSelected = false;
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
     // Initialize any necessary state here
+    isActivityLainSelected = false; // Default to false
+    isLoading = false; // Default loading state
   }
 
   @override
@@ -50,72 +54,83 @@ class _ActivityPageState extends State<ActivityPage> {
     return Scaffold(
       appBar: AppBar(title: const Text('ELAN')),
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(16.r),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Aktivitas Harian',
-                  style: TextStyle(
-                    fontSize: 24.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
+        child: Stack(
+          children: [
+            Padding(
+              padding: EdgeInsets.all(16.r),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Aktivitas Harian',
+                      style: TextStyle(
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    16.verticalSpace,
+                    DropdownMenu(
+                      width: double.infinity,
+                      dropdownMenuEntries: activityOptions,
+                      initialSelection: activityOptions.first,
+                      onSelected: (value) {
+                        // Handle dropdown selection
+                        setState(() {
+                          isActivityLainSelected = value == 'Lainnya';
+                          if (!isActivityLainSelected) {
+                            activityLainController.clear();
+                          }
+                        });
+                      },
+                      hintText: 'Pilih Aktivitas',
+                      controller: activityController,
+                    ),
+                    16.verticalSpace,
+                    isActivityLainSelected
+                        ? CustomTextField(
+                            labelText: 'Aktivitas Harian',
+                            hintText: 'Masukkan Aktivitas Harian',
+                            validatorEmpty:
+                                'Aktivitas Harian tidak boleh kosong',
+                            keyboardType: TextInputType.text,
+                            controller: activityLainController,
+                          )
+                        : SizedBox.shrink(),
+                    32.verticalSpace,
+                    BlocListener<AuthBloc, AuthState>(
+                      listener: (context, state) {
+                        if (state is AuthLoading) {
+                          setState(() => isLoading = true);
+                        } else if (state is AuthSuccess) {
+                          setState(() => isLoading = false);
+                          sl<AppNavigator>().pushNamedAndRemoveUntil(homePage);
+                        } else if (state is AuthError) {
+                          setState(() => isLoading = false);
+                          Fluttertoast.showToast(
+                            msg: state.message,
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0,
+                          );
+                        }
+                      },
+                      child: CustomButton(
+                        textButton: "Lanjutkan",
+                        onTap: _handleActivityInput,
+                      ),
+                    ),
+                  ],
                 ),
-                16.verticalSpace,
-                DropdownMenu(
-                  dropdownMenuEntries: activityOptions,
-                  initialSelection: activityOptions.first,
-                  onSelected: (value) {
-                    // Handle dropdown selection
-                    setState(() {
-                      isActivityLainSelected = value == 'Lainnya';
-                      if (!isActivityLainSelected) {
-                        activityLainController.clear();
-                      }
-                    });
-                  },
-                  hintText: 'Pilih Aktivitas',
-                  controller: activityController,
-                ),
-                16.verticalSpace,
-                isActivityLainSelected
-                    ? CustomTextField(
-                        labelText: 'Aktivitas Harian',
-                        hintText: 'Masukkan Aktivitas Harian',
-                        validatorEmpty: 'Aktivitas Harian tidak boleh kosong',
-                        keyboardType: TextInputType.text,
-                        controller: activityLainController,
-                      )
-                    : SizedBox.shrink(),
-                32.verticalSpace,
-                BlocListener<AuthBloc, AuthState>(
-                  listener: (context, state) {
-                    if (state is AuthSuccess) {
-                      sl<AppNavigator>().pushNamedAndRemoveUntil(homePage);
-                    } else if (state is AuthError) {
-                      Fluttertoast.showToast(
-                        msg: state.message,
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.red,
-                        textColor: Colors.white,
-                        fontSize: 16.0,
-                      );
-                    }
-                  },
-                  child: CustomButton(
-                    textButton: "Lanjutkan",
-                    onTap: _handleActivityInput,
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
+            if (isLoading) Positioned.fill(child: const CustomLoading()),
+          ],
         ),
       ),
     );

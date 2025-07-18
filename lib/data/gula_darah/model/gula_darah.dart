@@ -9,7 +9,8 @@ part 'gula_darah.g.dart';
 abstract class GulaDarah with _$GulaDarah {
   const GulaDarah._();
   const factory GulaDarah({
-    @JsonKey(name: "user_id") required int userID,
+    int? id,
+    @JsonKey(name: "users_id") required String userID,
     required String tanggal,
     required String jam,
     required String kadar,

@@ -23,10 +23,10 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController mobileController = TextEditingController(
-    text: '08123456789', // Example phone number
+    text: '', // Example phone number
   );
   final TextEditingController passwordController = TextEditingController(
-    text: '29-06-2000',
+    text: '',
   );
   final _formKey = GlobalKey<FormState>();
   bool isPasswordHidden = false;

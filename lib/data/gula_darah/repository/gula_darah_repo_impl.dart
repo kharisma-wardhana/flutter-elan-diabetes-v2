@@ -16,8 +16,8 @@ class GulaDarahRepoImpl implements GulaDarahRepository {
     Map<String, String> params,
   ) async {
     try {
-      final userID = int.parse(params['userID'] ?? '0');
-      if (userID <= 0) {
+      final userID = params['userID'] ?? '0';
+      if (userID == '0') {
         return Left(InvalidInputFailure('User ID is invalid'));
       }
 
@@ -30,6 +30,11 @@ class GulaDarahRepoImpl implements GulaDarahRepository {
           .split('T')[1]
           .split('.')[0];
       String type = params['gulaDarahPuasa']!.isNotEmpty ? '2' : '1';
+      if (kadar.isEmpty) {
+        return Left(
+          InvalidInputFailure('Silahkan isi salah satu data gula darah'),
+        );
+      }
       GulaDarah gulaDarah = GulaDarah(
         userID: userID,
         tanggal: datePart,
@@ -42,7 +47,7 @@ class GulaDarahRepoImpl implements GulaDarahRepository {
         userID,
         gulaDarah,
       );
-      return Right(result.toEntity());
+      return Right(result.last.toEntity());
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message));
     } catch (e) {

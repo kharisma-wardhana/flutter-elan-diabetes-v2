@@ -31,12 +31,16 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
           return;
         }
         var state = const OnboardingState.successNormal();
-        if (int.parse(event.gulaDarahSewaktu) > 180 ||
-            int.parse(event.gulaDarahPuasa) > 125) {
+        if ((event.gulaDarahSewaktu.isNotEmpty &&
+                int.parse(event.gulaDarahSewaktu) > 180) ||
+            (event.gulaDarahPuasa.isNotEmpty &&
+                int.parse(event.gulaDarahPuasa) > 125)) {
           state = const OnboardingState.successDiabetes(diabatesDM);
         }
-        if (int.parse(event.gulaDarahPuasa) > 100 &&
-            int.parse(event.gulaDarahPuasa) <= 125) {
+        if ((event.gulaDarahPuasa.isNotEmpty &&
+                int.parse(event.gulaDarahPuasa) > 100) &&
+            (event.gulaDarahPuasa.isNotEmpty &&
+                int.parse(event.gulaDarahPuasa) <= 125)) {
           state = const OnboardingState.successDiabetes(diabetesPreDM);
         }
         result.fold(

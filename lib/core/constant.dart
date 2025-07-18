@@ -11,6 +11,8 @@ import '../presentation/profile/page/profile_page.dart';
 import '../presentation/splash/page/splash_page.dart';
 
 const String baseURL = 'https://elan.cmutiah.com/api';
+const String tokenKey = 'auth_token';
+const String userIDKey = 'user_id';
 
 // RouteName Config
 const String splashPage = '/';

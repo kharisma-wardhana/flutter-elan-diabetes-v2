@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../../../core/constant.dart';
 import '../../../data/user/model/user.dart';
 import '../../../domain/auth/usecase/login_usecase.dart';
 import '../../../domain/auth/usecase/register_usecase.dart';
@@ -13,9 +14,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LoginUsecase loginUsecase;
   final RegisterUsecase registerUsecase;
   final FlutterSecureStorage secureStorage;
-
-  static const String _tokenKey = 'auth_token';
-  static const String _userIDKey = 'user_id';
 
   AuthBloc({
     required this.loginUsecase,
@@ -39,10 +37,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           ),
           (user) {
             secureStorage.write(
-              key: _tokenKey,
+              key: tokenKey,
               value: jsonEncode(user.toJson()),
             );
-            secureStorage.write(key: _userIDKey, value: user.id.toString());
+            secureStorage.write(key: userIDKey, value: user.id.toString());
             emit(AuthState.success(userEntity: user));
           },
         );
@@ -52,8 +50,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
 
     on<LogoutEvent>((event, emit) {
-      secureStorage.delete(key: _tokenKey);
-      secureStorage.delete(key: _userIDKey);
+      secureStorage.delete(key: tokenKey);
+      secureStorage.delete(key: userIDKey);
       emit(const AuthState.initial());
     });
 
@@ -70,8 +68,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         result.fold(
           (failure) => emit(AuthState.error(message: failure.message)),
           (user) {
-            secureStorage.write(key: _tokenKey, value: jsonEncode(user));
-            secureStorage.write(key: _userIDKey, value: user.id.toString());
+            secureStorage.write(key: tokenKey, value: jsonEncode(user));
+            secureStorage.write(key: userIDKey, value: user.id.toString());
             emit(AuthState.success(userEntity: user));
           },
         );
@@ -81,7 +79,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
 
     on<AppStarted>((event, emit) async {
-      final token = await secureStorage.read(key: _tokenKey);
+      final token = await secureStorage.read(key: tokenKey);
       if (token != null) {
         final userJson = jsonDecode(token);
         final user = User.fromJson(userJson);
@@ -97,14 +95,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final updatedUser = currentUser.copyWith(isOnboardingComplete: true);
 
         // Update the user in secure storage
-        await secureStorage.delete(key: _tokenKey);
+        await secureStorage.delete(key: tokenKey);
         // Write the updated user back to secure storage
         await secureStorage.write(
-          key: _tokenKey,
+          key: tokenKey,
           value: jsonEncode(updatedUser.toJson()),
         );
         await secureStorage.write(
-          key: _userIDKey,
+          key: userIDKey,
           value: updatedUser.id.toString(),
         );
         emit(AuthState.success(userEntity: updatedUser));
