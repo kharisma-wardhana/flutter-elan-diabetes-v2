@@ -1,9 +1,16 @@
+import 'package:elan/presentation/home/info/edukasi/page/edukasi_detail_page.dart';
+import 'package:elan/presentation/home/info/edukasi/page/edukasi_page.dart';
+import 'package:elan/presentation/home/info/video/page/video_page.dart';
+import 'package:elan/presentation/home/profile/page/about_page.dart';
 import 'package:elan/presentation/onboarding/page/activity_page.dart';
 import 'package:flutter/material.dart';
 
 import '../presentation/auth/page/login_page.dart';
 import '../presentation/auth/page/register_page.dart';
 import '../presentation/home/home_page.dart';
+import '../presentation/home/info/article/page/detail_article_page.dart';
+import '../presentation/home/info/article/page/list_article_page.dart';
+import '../presentation/home/info/doctor/page/doctor_page.dart';
 import '../presentation/onboarding/page/gula_darah_page.dart';
 import '../presentation/onboarding/page/onboarding_page.dart';
 import '../presentation/onboarding/page/recommendation_page.dart';
@@ -25,8 +32,9 @@ const String activityPage = '/activity';
 const String homePage = '/home';
 const String profilePage = '/profile';
 
-const String profileAppPage = '/about';
+const String aboutPage = '/about';
 const String articlePage = '/articles';
+const String detailArticlePage = '/articles/detail';
 const String edukasiPage = '/edukasi';
 const String edukasiDetailPage = '/edukasi/detail';
 const String doctorPage = '/doctors';
@@ -35,6 +43,26 @@ const String addNutrisiPage = '/nutrisi/add';
 const String obatPage = '/obat';
 const String addObatPage = '/obat/add';
 const String videoPage = '/video';
+
+// Assesment Page
+const String antropometriPage = '/antropometri';
+const String waterPage = '/water';
+const String addWaterPage = '/water/add';
+const String gulaPage = '/blood-sugar';
+const String addGulaPage = '/blood-sugar/add';
+const String aktifitasPage = '/activity';
+const String addAktifitasPage = '/activity/add';
+const String hbPage = '/hb1ac';
+const String addHbPage = '/hb1ac/add';
+const String tensiPage = '/blood-pressure';
+const String addTensiPage = '/blood-pressure/add';
+const String ginjalPage = '/kidney';
+const String addGinjalPage = '/kidney/add';
+const String kolesterolPage = '/kolesterol';
+const String addKolesterolPage = '/kolesterol/add';
+const String asamUratPage = '/gout';
+const String addAsamUratPage = '/gout/add';
+// =====================================
 
 class AppRoutes {
   static MaterialPageRoute onGenerateRoutes(argument, name) {
@@ -62,6 +90,24 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const HomePage());
       case profilePage:
         return MaterialPageRoute(builder: (_) => const ProfilePage());
+      case aboutPage:
+        return MaterialPageRoute(builder: (_) => const AboutPage());
+      case articlePage:
+        return MaterialPageRoute(builder: (_) => const ListArticlePage());
+      case detailArticlePage:
+        return MaterialPageRoute(
+          builder: (_) => DetailArticlePage(articleEntity: argument),
+        );
+      case videoPage:
+        return MaterialPageRoute(builder: (_) => const VideoPage());
+      case edukasiPage:
+        return MaterialPageRoute(builder: (_) => const EdukasiPage());
+      case edukasiDetailPage:
+        return MaterialPageRoute(
+          builder: (_) => EdukasiDetailPage(edukasiEntity: argument),
+        );
+      case doctorPage:
+        return MaterialPageRoute(builder: (_) => const DoctorPage());
       default:
         return MaterialPageRoute(
           builder: (_) =>

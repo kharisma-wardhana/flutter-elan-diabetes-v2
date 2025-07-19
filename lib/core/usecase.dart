@@ -11,17 +11,15 @@ abstract class UseCase<T, Params> {
 class NoParams {}
 
 class SearchParams {
-  final int userId;
   final String date;
 
-  const SearchParams({required this.userId, required this.date});
+  const SearchParams({required this.date});
 }
 
 class AddParams<T> {
-  final int userId;
   final T data;
 
-  const AddParams({required this.userId, required this.data});
+  const AddParams({required this.data});
 }
 
 class UpdateParams<T> {

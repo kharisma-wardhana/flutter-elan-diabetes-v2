@@ -1,4 +1,6 @@
 import 'package:dartz/dartz.dart';
+import 'package:elan/core/constant.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../core/error.dart';
 import '../../core/usecase.dart';
@@ -16,16 +18,29 @@ import '../datasource/remote/assesment_remote_datasource.dart';
 
 class AssesmentRepositoryImpl implements AssesmentRepository {
   final AssesmentRemoteDatasource assesmentRemoteDatasource;
+  final FlutterSecureStorage secureStorage;
 
-  const AssesmentRepositoryImpl({required this.assesmentRemoteDatasource});
+  const AssesmentRepositoryImpl({
+    required this.assesmentRemoteDatasource,
+    required this.secureStorage,
+  });
+
+  Future<int> getUserID() async {
+    final userID = await secureStorage.read(key: userIDKey);
+    if (userID == null) {
+      throw InvalidInputFailure("userID null");
+    }
+    return int.parse(userID);
+  }
 
   @override
   Future<Either<Failure, List<WaterEntity>>> getListWater(
     SearchParams params,
   ) async {
     try {
+      final userID = await getUserID();
       final waters = await assesmentRemoteDatasource.getListWater(
-        params.userId,
+        userID,
         params.date,
       );
       return Right(waters.map((e) => e.toEntity()).toList());
@@ -39,8 +54,9 @@ class AssesmentRepositoryImpl implements AssesmentRepository {
     AddParams<WaterEntity> params,
   ) async {
     try {
+      final userID = await getUserID();
       final waters = await assesmentRemoteDatasource.addWater(
-        params.userId,
+        userID,
         params.data,
       );
       return Right(waters.map((e) => e.toEntity()).toList());
@@ -54,8 +70,9 @@ class AssesmentRepositoryImpl implements AssesmentRepository {
     AddParams<ActivityEntity> params,
   ) async {
     try {
+      final userID = await getUserID();
       final data = await assesmentRemoteDatasource.addActivity(
-        params.userId,
+        userID,
         params.data,
       );
       return Right(data.map((e) => e.toEntity()).toList());
@@ -69,8 +86,9 @@ class AssesmentRepositoryImpl implements AssesmentRepository {
     SearchParams params,
   ) async {
     try {
+      final userID = await getUserID();
       final activities = await assesmentRemoteDatasource.getListActivity(
-        params.userId,
+        userID,
         params.date,
       );
       return Right(activities.map((e) => e.toEntity()).toList());
@@ -98,8 +116,9 @@ class AssesmentRepositoryImpl implements AssesmentRepository {
     AddParams<AsamUratEntity> params,
   ) async {
     try {
+      final userID = await getUserID();
       final asamUrat = await assesmentRemoteDatasource.addAsamUrat(
-        params.userId,
+        userID,
         params.data,
       );
       return Right(asamUrat.map((e) => e.toEntity()).toList());
@@ -113,8 +132,9 @@ class AssesmentRepositoryImpl implements AssesmentRepository {
     AddParams<GinjalEntity> params,
   ) async {
     try {
+      final userID = await getUserID();
       final ginjal = await assesmentRemoteDatasource.addGinjal(
-        params.userId,
+        userID,
         params.data,
       );
       return Right(ginjal.map((e) => e.toEntity()).toList());
@@ -128,8 +148,9 @@ class AssesmentRepositoryImpl implements AssesmentRepository {
     AddParams<GulaDarahEntity> params,
   ) async {
     try {
+      final userID = await getUserID();
       final gula = await assesmentRemoteDatasource.addGulaDarah(
-        params.userId,
+        userID,
         params.data,
       );
       return Right(gula.map((e) => e.toEntity()).toList());
@@ -143,8 +164,9 @@ class AssesmentRepositoryImpl implements AssesmentRepository {
     AddParams<Hb1acEntity> params,
   ) async {
     try {
+      final userID = await getUserID();
       final hb1ac = await assesmentRemoteDatasource.addHb1ac(
-        params.userId,
+        userID,
         params.data,
       );
       return Right(hb1ac.map((e) => e.toEntity()).toList());
@@ -158,8 +180,9 @@ class AssesmentRepositoryImpl implements AssesmentRepository {
     AddParams<KolesterolEntity> params,
   ) async {
     try {
+      final userID = await getUserID();
       final kolesterol = await assesmentRemoteDatasource.addKolesterol(
-        params.userId,
+        userID,
         params.data,
       );
       return Right(kolesterol.map((e) => e.toEntity()).toList());
@@ -173,8 +196,9 @@ class AssesmentRepositoryImpl implements AssesmentRepository {
     AddParams<TensiEntity> params,
   ) async {
     try {
+      final userID = await getUserID();
       final tensi = await assesmentRemoteDatasource.addTekananDarah(
-        params.userId,
+        userID,
         params.data,
       );
       return Right(tensi.map((e) => e.toEntity()).toList());
@@ -188,8 +212,9 @@ class AssesmentRepositoryImpl implements AssesmentRepository {
     SearchParams params,
   ) async {
     try {
+      final userID = await getUserID();
       final asamUrat = await assesmentRemoteDatasource.getListAsamUrat(
-        params.userId,
+        userID,
         params.date,
       );
       return Right(asamUrat.map((e) => e.toEntity()).toList());
@@ -203,8 +228,9 @@ class AssesmentRepositoryImpl implements AssesmentRepository {
     SearchParams params,
   ) async {
     try {
+      final userID = await getUserID();
       final ginjal = await assesmentRemoteDatasource.getListGinjal(
-        params.userId,
+        userID,
         params.date,
       );
       return Right(ginjal.map((e) => e.toEntity()).toList());
@@ -218,8 +244,9 @@ class AssesmentRepositoryImpl implements AssesmentRepository {
     SearchParams params,
   ) async {
     try {
+      final userID = await getUserID();
       final gula = await assesmentRemoteDatasource.getListGulaDarah(
-        params.userId,
+        userID,
         params.date,
       );
       return Right(gula.map((e) => e.toEntity()).toList());
@@ -233,8 +260,9 @@ class AssesmentRepositoryImpl implements AssesmentRepository {
     SearchParams params,
   ) async {
     try {
+      final userID = await getUserID();
       final hb1ac = await assesmentRemoteDatasource.getListHb1ac(
-        params.userId,
+        userID,
         params.date,
       );
       return Right(hb1ac.map((e) => e.toEntity()).toList());
@@ -248,8 +276,9 @@ class AssesmentRepositoryImpl implements AssesmentRepository {
     SearchParams params,
   ) async {
     try {
+      final userID = await getUserID();
       final kolesterol = await assesmentRemoteDatasource.getListKolesterol(
-        params.userId,
+        userID,
         params.date,
       );
       return Right(kolesterol.map((e) => e.toEntity()).toList());
@@ -263,8 +292,9 @@ class AssesmentRepositoryImpl implements AssesmentRepository {
     SearchParams params,
   ) async {
     try {
+      final userID = await getUserID();
       final tensi = await assesmentRemoteDatasource.getListTekananDarah(
-        params.userId,
+        userID,
         params.date,
       );
       return Right(tensi.map((e) => e.toEntity()).toList());
@@ -279,8 +309,9 @@ class AssesmentRepositoryImpl implements AssesmentRepository {
   ) async {
     final datetime = DateTime.parse(params.date);
     try {
+      final userID = await getUserID();
       final asamUrat = await assesmentRemoteDatasource.getGraphicAsamUrat(
-        params.userId,
+        userID,
         '${datetime.month}',
         '${datetime.year}',
       );
@@ -296,8 +327,9 @@ class AssesmentRepositoryImpl implements AssesmentRepository {
   ) async {
     final datetime = DateTime.parse(params.date);
     try {
+      final userID = await getUserID();
       final data = await assesmentRemoteDatasource.getGraphicGinjal(
-        params.userId,
+        userID,
         '${datetime.month}',
         '${datetime.year}',
       );
@@ -313,8 +345,9 @@ class AssesmentRepositoryImpl implements AssesmentRepository {
   ) async {
     final datetime = DateTime.parse(params.date);
     try {
+      final userID = await getUserID();
       final data = await assesmentRemoteDatasource.getGraphicGulaDarah(
-        params.userId,
+        userID,
         '${datetime.month}',
         '${datetime.year}',
       );
@@ -330,8 +363,9 @@ class AssesmentRepositoryImpl implements AssesmentRepository {
   ) async {
     final datetime = DateTime.parse(params.date);
     try {
+      final userID = await getUserID();
       final data = await assesmentRemoteDatasource.getGraphicHb1ac(
-        params.userId,
+        userID,
         '${datetime.month}',
         '${datetime.year}',
       );
@@ -347,8 +381,9 @@ class AssesmentRepositoryImpl implements AssesmentRepository {
   ) async {
     final datetime = DateTime.parse(params.date);
     try {
+      final userID = await getUserID();
       final data = await assesmentRemoteDatasource.getGraphicKolesterol(
-        params.userId,
+        userID,
         '${datetime.month}',
         '${datetime.year}',
       );
@@ -364,8 +399,9 @@ class AssesmentRepositoryImpl implements AssesmentRepository {
   ) async {
     final datetime = DateTime.parse(params.date);
     try {
+      final userID = await getUserID();
       final data = await assesmentRemoteDatasource.getGraphicTekananDarah(
-        params.userId,
+        userID,
         '${datetime.month}',
         '${datetime.year}',
       );
@@ -381,8 +417,9 @@ class AssesmentRepositoryImpl implements AssesmentRepository {
   ) async {
     final datetime = DateTime.parse(params.date);
     try {
+      final userID = await getUserID();
       final data = await assesmentRemoteDatasource.getGraphicWater(
-        params.userId,
+        userID,
         '${datetime.month}',
         '${datetime.year}',
       );
@@ -397,6 +434,7 @@ class AssesmentRepositoryImpl implements AssesmentRepository {
     int params,
   ) async {
     try {
+      final userID = await getUserID();
       final data = await assesmentRemoteDatasource.getDetailAntropometri(
         params,
       );

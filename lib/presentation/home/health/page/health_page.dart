@@ -51,64 +51,67 @@ class _HealthPageState extends State<HealthPage>
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.w),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            20.verticalSpace,
-            Column(
-              children: [
-                Image.asset(Assets.images.logoElan.path, height: 80.h),
-                16.verticalSpace,
-                Text(
-                  'SKRINING KESEHATAN',
-                  style: GoogleFonts.poppins(
-                    fontSize: 24.sp,
-                    fontWeight: FontWeight.bold,
+    return Container(
+      color: Colors.white,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              20.verticalSpace,
+              Column(
+                children: [
+                  Image.asset(Assets.images.logoElan.path, height: 80.h),
+                  16.verticalSpace,
+                  Text(
+                    'SKRINING KESEHATAN',
+                    style: GoogleFonts.poppins(
+                      fontSize: 24.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            32.verticalSpace,
-            AnimatedBuilder(
-              animation: _animation,
-              builder: (context, child) {
-                return GlucoseCircleChart(
-                  glucoseValue: glucoseValue,
-                  progress: _animation.value,
-                );
-              },
-            ),
-            24.verticalSpace,
-            BlocSelector<HealthBloc, HealthState, int>(
-              selector: (state) =>
-                  state is HealthSuccess ? state.health.steps : 0,
-              builder: (context, steps) {
-                return HealthInfoRow(
-                  icon: Icons.directions_walk,
-                  label: "Jumlah Langkah Hari ini",
-                  value: "$steps langkah",
-                );
-              },
-            ),
-            BlocSelector<HealthBloc, HealthState, String>(
-              selector: (state) =>
-                  state is HealthSuccess ? state.health.bloodPressure : "-",
-              builder: (context, bloodPressure) {
-                return HealthInfoRow(
-                  icon: Icons.monitor_heart,
-                  label: "Tekanan Darah",
-                  value: "$bloodPressure mmHg",
-                );
-              },
-            ),
-            HealthInfoRow(
-              icon: Icons.local_fire_department,
-              label: "Jumlah Kalori yang Terbakar",
-              value: "200 kalori",
-            ),
-          ],
+                ],
+              ),
+              32.verticalSpace,
+              AnimatedBuilder(
+                animation: _animation,
+                builder: (context, child) {
+                  return GlucoseCircleChart(
+                    glucoseValue: glucoseValue,
+                    progress: _animation.value,
+                  );
+                },
+              ),
+              24.verticalSpace,
+              BlocSelector<HealthBloc, HealthState, int>(
+                selector: (state) =>
+                    state is HealthSuccess ? state.health.steps : 0,
+                builder: (context, steps) {
+                  return HealthInfoRow(
+                    icon: Icons.directions_walk,
+                    label: "Jumlah Langkah Hari ini",
+                    value: "$steps langkah",
+                  );
+                },
+              ),
+              BlocSelector<HealthBloc, HealthState, String>(
+                selector: (state) =>
+                    state is HealthSuccess ? state.health.bloodPressure : "-",
+                builder: (context, bloodPressure) {
+                  return HealthInfoRow(
+                    icon: Icons.monitor_heart,
+                    label: "Tekanan Darah",
+                    value: "$bloodPressure mmHg",
+                  );
+                },
+              ),
+              HealthInfoRow(
+                icon: Icons.local_fire_department,
+                label: "Jumlah Kalori yang Terbakar",
+                value: "200 kalori",
+              ),
+            ],
+          ),
         ),
       ),
     );

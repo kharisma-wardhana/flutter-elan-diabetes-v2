@@ -19,5 +19,5 @@ abstract class Water with _$Water {
   factory Water.fromJson(Map<String, dynamic> json) => _$WaterFromJson(json);
 
   WaterEntity toEntity() =>
-      WaterEntity(usersId: usersId, date: date, target: target, total: total);
+      WaterEntity(date: date, target: target, total: total);
 }

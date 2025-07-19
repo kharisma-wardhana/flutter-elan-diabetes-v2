@@ -9,8 +9,20 @@ import 'core/service_locator.dart';
 import 'gen/colors.gen.dart';
 import 'presentation/auth/bloc/auth_bloc.dart';
 import 'presentation/auth/bloc/auth_event.dart';
+import 'presentation/home/assesment/bloc/activity/activity_cubit.dart';
+import 'presentation/home/assesment/bloc/antropometri/antropometri_cubit.dart';
+import 'presentation/home/assesment/bloc/asam_urat/asam_urat_cubit.dart';
+import 'presentation/home/assesment/bloc/ginjal/ginjal_cubit.dart';
+import 'presentation/home/assesment/bloc/gula_darah/gula_cubit.dart';
+import 'presentation/home/assesment/bloc/hb1ac/hb1ac_cubit.dart';
+import 'presentation/home/assesment/bloc/kolesterol/kolesterol_cubit.dart';
+import 'presentation/home/assesment/bloc/tekanan_darah/tensi_cubit.dart';
+import 'presentation/home/assesment/bloc/water/water_cubit.dart';
 import 'presentation/home/health/bloc/health_bloc.dart';
 import 'presentation/home/health/bloc/health_event.dart';
+import 'presentation/home/info/article/cubit/article_cubit.dart';
+import 'presentation/home/info/doctor/cubit/doctor_cubit.dart';
+import 'presentation/home/info/video/cubit/video_cubit.dart';
 import 'presentation/onboarding/bloc/onboarding_bloc.dart';
 import 'presentation/splash/page/splash_page.dart';
 
@@ -40,6 +52,18 @@ class MyApp extends StatelessWidget {
           BlocProvider<HealthBloc>(
             create: (_) => sl<HealthBloc>()..add(RequestPermissions()),
           ),
+          BlocProvider(create: (context) => sl<ArticleCubit>()),
+          BlocProvider(create: (context) => sl<DoctorCubit>()),
+          BlocProvider(create: (context) => sl<VideoCubit>()),
+          BlocProvider(create: (context) => sl<ActivityCubit>()),
+          BlocProvider(create: (context) => sl<WaterCubit>()),
+          BlocProvider(create: (context) => sl<AntropometriCubit>()),
+          BlocProvider(create: (context) => sl<AsamUratCubit>()),
+          BlocProvider(create: (context) => sl<GulaCubit>()),
+          BlocProvider(create: (context) => sl<GinjalCubit>()),
+          BlocProvider(create: (context) => sl<KolesterolCubit>()),
+          BlocProvider(create: (context) => sl<TensiCubit>()),
+          BlocProvider(create: (context) => sl<Hb1acCubit>()),
         ],
         child: MaterialApp(
           title: 'ELAN',
@@ -124,13 +148,23 @@ class MyApp extends StatelessWidget {
                 ),
               ),
             ),
+            bottomNavigationBarTheme: BottomNavigationBarThemeData(
+              backgroundColor: ColorName.primary,
+              selectedItemColor: Colors.white,
+              unselectedItemColor: Colors.white70,
+              selectedLabelStyle: TextStyle(color: Colors.white),
+              unselectedLabelStyle: TextStyle(color: Colors.white70),
+            ),
           ),
-          home: child,
           navigatorKey: AppNavigatorImpl.navigatorKey,
           onGenerateRoute: (RouteSettings settings) {
             final argument = settings.arguments;
             return AppRoutes.onGenerateRoutes(argument, settings.name);
           },
+          builder: (context, child) => MediaQuery(
+            data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+            child: child!,
+          ),
         ),
       ),
       child: const SplashPage(),

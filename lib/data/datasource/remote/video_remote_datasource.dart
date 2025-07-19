@@ -8,7 +8,7 @@ abstract class VideoRemoteDatasource {
 
 class VideoRemoteDatasourceImpl implements VideoRemoteDatasource {
   final ApiService apiService;
-  VideoRemoteDatasourceImpl({required this.apiService});
+  const VideoRemoteDatasourceImpl({required this.apiService});
 
   @override
   Future<List<Video>> getAllVideos() async {

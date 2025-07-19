@@ -1,5 +1,7 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../../core/constant.dart';
 import '../../core/error.dart';
 import '../../core/usecase.dart';
 import '../../domain/entities/nutrition_entity.dart';
@@ -8,16 +10,29 @@ import '../datasource/remote/nutrition_remote_datasource.dart';
 
 class NutritionRepositoryImpl implements NutritionRepository {
   final NutritionRemoteDatasource nutritionRemoteDatasource;
+  final FlutterSecureStorage secureStorage;
 
-  NutritionRepositoryImpl({required this.nutritionRemoteDatasource});
+  NutritionRepositoryImpl({
+    required this.nutritionRemoteDatasource,
+    required this.secureStorage,
+  });
+
+  Future<int> getUserID() async {
+    final userID = await secureStorage.read(key: userIDKey);
+    if (userID == null) {
+      throw InvalidInputFailure("userID null");
+    }
+    return int.parse(userID);
+  }
 
   @override
   Future<Either<Failure, List<NutritionEntity>>> addNutrition(
     AddParams<NutritionEntity> params,
   ) async {
     try {
+      final userID = await getUserID();
       final nutritions = await nutritionRemoteDatasource.addNutrition(
-        params.userId,
+        userID,
         params.data,
       );
       return Right(nutritions.map((e) => e.toEntity()).toList());
@@ -31,8 +46,9 @@ class NutritionRepositoryImpl implements NutritionRepository {
     SearchParams params,
   ) async {
     try {
+      final userID = await getUserID();
       final nutritions = await nutritionRemoteDatasource.getAllNutrition(
-        params.userId,
+        userID,
         params.date,
       );
       return Right(nutritions.map((e) => e.toEntity()).toList());
