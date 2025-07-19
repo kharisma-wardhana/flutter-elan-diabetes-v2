@@ -10,7 +10,7 @@ abstract class Antropometri with _$Antropometri {
   const Antropometri._();
   factory Antropometri({
     required int id,
-    @JsonKey(name: 'users_id') required int usersId,
+    @JsonKey(name: 'users_id') required String usersId,
     @JsonKey(name: 'tinggi') required double height,
     @JsonKey(name: 'berat') required double weight,
     @JsonKey(name: 'lingkar_lengan') required double hand,
@@ -24,7 +24,6 @@ abstract class Antropometri with _$Antropometri {
       _$AntropometriFromJson(json);
 
   AntropometriEntity toEntity() => AntropometriEntity(
-    userId: usersId,
     height: height,
     weight: weight,
     stomach: stomach,

@@ -7,6 +7,21 @@ import 'package:flutter/material.dart';
 
 import '../presentation/auth/page/login_page.dart';
 import '../presentation/auth/page/register_page.dart';
+import '../presentation/home/assesment/page/antropometri/antropometri_page.dart';
+import '../presentation/home/assesment/page/asam_urat/add_asam_urat_page.dart';
+import '../presentation/home/assesment/page/asam_urat/asam_urat_page.dart';
+import '../presentation/home/assesment/page/ginjal/add_ginjal_page.dart';
+import '../presentation/home/assesment/page/ginjal/ginjal_page.dart';
+import '../presentation/home/assesment/page/gula_darah/add_gula_page.dart';
+import '../presentation/home/assesment/page/gula_darah/gula_page.dart';
+import '../presentation/home/assesment/page/hb/add_hb_page.dart';
+import '../presentation/home/assesment/page/hb/hb_page.dart';
+import '../presentation/home/assesment/page/kolesterol/add_kolesterol_page.dart';
+import '../presentation/home/assesment/page/kolesterol/kolesterol_page.dart';
+import '../presentation/home/assesment/page/konsumsi_air/add_konsumsi_air_page.dart';
+import '../presentation/home/assesment/page/konsumsi_air/konsumsi_air_page.dart';
+import '../presentation/home/assesment/page/tekanan_darah/add_tensi_page.dart';
+import '../presentation/home/assesment/page/tekanan_darah/tensi_page.dart';
 import '../presentation/home/home_page.dart';
 import '../presentation/home/info/article/page/detail_article_page.dart';
 import '../presentation/home/info/article/page/list_article_page.dart';
@@ -86,6 +101,8 @@ class AppRoutes {
         );
       case activityPage:
         return MaterialPageRoute(builder: (_) => const ActivityPage());
+      case antropometriPage:
+        return MaterialPageRoute(builder: (_) => const AntropometriPage());
       case homePage:
         return MaterialPageRoute(builder: (_) => const HomePage());
       case profilePage:
@@ -108,6 +125,36 @@ class AppRoutes {
         );
       case doctorPage:
         return MaterialPageRoute(builder: (_) => const DoctorPage());
+      // Assesment Pages
+      case waterPage:
+        return MaterialPageRoute(builder: (_) => const KonsumsiAirPage());
+      case addWaterPage:
+        return MaterialPageRoute(builder: (_) => const AddKonsumsiAirPage());
+      case ginjalPage:
+        return MaterialPageRoute(builder: (_) => const GinjalPage());
+      case addGinjalPage:
+        return MaterialPageRoute(builder: (_) => const AddGinjalPage());
+      case gulaPage:
+        return MaterialPageRoute(builder: (_) => const GulaPage());
+      case addGulaPage:
+        return MaterialPageRoute(builder: (_) => const AddGulaPage());
+      case kolesterolPage:
+        return MaterialPageRoute(builder: (_) => const KolesterolPage());
+      case addKolesterolPage:
+        return MaterialPageRoute(builder: (_) => const AddKolesterolPage());
+      case tensiPage:
+        return MaterialPageRoute(builder: (_) => const TensiPage());
+      case addTensiPage:
+        return MaterialPageRoute(builder: (_) => const AddTensiPage());
+      case asamUratPage:
+        return MaterialPageRoute(builder: (_) => const AsamUratPage());
+      case addAsamUratPage:
+        return MaterialPageRoute(builder: (_) => const AddAsamUratPage());
+      case hbPage:
+        return MaterialPageRoute(builder: (_) => const HbPage());
+      case addHbPage:
+        return MaterialPageRoute(builder: (_) => const AddHbPage());
+      //============================================================
       default:
         return MaterialPageRoute(
           builder: (_) =>

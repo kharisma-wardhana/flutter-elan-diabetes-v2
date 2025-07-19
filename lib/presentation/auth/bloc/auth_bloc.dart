@@ -108,5 +108,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthState.success(userEntity: updatedUser));
       }
     });
+
+    on<CompleteAntropometriEvent>((event, emit) async {
+      if (state is AuthSuccess) {
+        final currentUser = (state as AuthSuccess).userEntity;
+        final updatedUser = currentUser.copyWith(isAntropometriComplete: true);
+
+        // Update the user in secure storage
+        await secureStorage.delete(key: tokenKey);
+        // Write the updated user back to secure storage
+        await secureStorage.write(
+          key: tokenKey,
+          value: jsonEncode(updatedUser.toJson()),
+        );
+        await secureStorage.write(
+          key: userIDKey,
+          value: updatedUser.id.toString(),
+        );
+        emit(AuthState.success(userEntity: updatedUser));
+      }
+    });
   }
 }

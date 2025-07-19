@@ -21,7 +21,13 @@ class SplashPage extends StatelessWidget {
           // Check if the user has completed onboarding
           if (state.userEntity.isOnboardingComplete != null &&
               state.userEntity.isOnboardingComplete!) {
-            sl<AppNavigator>().pushNamedAndRemoveUntil(homePage);
+            if (state.userEntity.isAntropometriComplete != null &&
+                state.userEntity.isAntropometriComplete!) {
+              // Navigate to home page if antropometri is complete
+              sl<AppNavigator>().pushNamedAndRemoveUntil(homePage);
+            } else {
+              sl<AppNavigator>().pushNamedAndRemoveUntil(antropometriPage);
+            }
           } else {
             sl<AppNavigator>().pushNamedAndRemoveUntil(onboardingPage);
           }

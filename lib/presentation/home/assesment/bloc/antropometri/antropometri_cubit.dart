@@ -10,13 +10,13 @@ import 'antropometri_state.dart';
 class AntropometriCubit extends Cubit<AntropometriState> {
   final AddAntropometriUseCase antropometriUseCase;
   final GetDetailAntropometriUsecase getDetailAntropometriUsecase;
+
   AntropometriCubit({
     required this.antropometriUseCase,
     required this.getDetailAntropometriUsecase,
   }) : super(AntropometriState(antropometriState: ViewData.initial()));
 
   Future<void> addAntropometri(
-    int userId,
     double height,
     double weight,
     double stomach,
@@ -29,7 +29,6 @@ class AntropometriCubit extends Cubit<AntropometriState> {
     final response = await antropometriUseCase.call(
       AddParams(
         data: AntropometriEntity(
-          userId: userId,
           height: height,
           weight: weight,
           stomach: stomach,

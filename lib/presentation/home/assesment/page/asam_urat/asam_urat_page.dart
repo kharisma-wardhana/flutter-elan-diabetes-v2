@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:elan/core/state_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,6 +23,7 @@ class AsamUratPage extends StatefulWidget {
 
 class _AsamUratPageState extends State<AsamUratPage> {
   final AsamUratCubit _asamUratCubit = sl<AsamUratCubit>();
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +41,7 @@ class _AsamUratPageState extends State<AsamUratPage> {
           },
         ),
       ),
+      isLoading: isLoading,
       body: ListView(
         children: [
           CustomDateScroll(

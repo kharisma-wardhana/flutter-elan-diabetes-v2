@@ -68,33 +68,40 @@ class _CustomDateScrollState extends State<CustomDateScroll> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            DropdownButton<String>(
-              value: months.isEmpty
-                  ? null
-                  : DateFormat('MMMM', 'id').format(selectedDate),
-              items: months.map((String month) {
-                return DropdownMenuItem<String>(
-                  value: month,
-                  child: Text(
-                    '$month ${selectedDate.year}',
-                    style: TextStyle(fontSize: 14.sp),
-                  ),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  selectedDate = DateTime(
-                    selectedDate.year,
-                    months.indexOf(newValue!) + 1,
+            Expanded(
+              child: DropdownButton<String>(
+                icon: Icon(Icons.keyboard_arrow_down, size: 50.h),
+                value: months.isEmpty
+                    ? null
+                    : DateFormat('MMMM', 'id').format(selectedDate),
+                items: months.map((String month) {
+                  return DropdownMenuItem<String>(
+                    value: month,
+                    child: Text(
+                      '$month ${selectedDate.year}',
+                      style: TextStyle(fontSize: 14.sp),
+                    ),
                   );
-                  updateDays();
-                  _scrollToIndex(0);
-                });
-                widget.onChanged(selectedDate);
-              },
+                }).toList(),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    selectedDate = DateTime(
+                      selectedDate.year,
+                      months.indexOf(newValue!) + 1,
+                    );
+                    updateDays();
+                    _scrollToIndex(0);
+                  });
+                  widget.onChanged(selectedDate);
+                },
+              ),
             ),
           ],
         ),

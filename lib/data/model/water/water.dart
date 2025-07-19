@@ -10,7 +10,7 @@ abstract class Water with _$Water {
   const Water._();
   factory Water({
     required int id,
-    @JsonKey(name: 'users_id') required int usersId,
+    @JsonKey(name: 'users_id') required String usersId,
     @JsonKey(name: 'tanggal') required String date,
     @JsonKey(name: 'target') required int target,
     @JsonKey(name: 'jumlah') required int total,

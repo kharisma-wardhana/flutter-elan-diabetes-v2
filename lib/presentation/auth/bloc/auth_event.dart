@@ -22,4 +22,6 @@ abstract class AuthEvent with _$AuthEvent {
   const factory AuthEvent.appStarted() = AppStarted;
 
   const factory AuthEvent.completeOnboarding() = CompleteOnboardingEvent;
+
+  const factory AuthEvent.completeAntropometri() = CompleteAntropometriEvent;
 }

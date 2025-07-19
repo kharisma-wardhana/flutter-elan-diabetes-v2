@@ -10,7 +10,7 @@ abstract class Medicine with _$Medicine {
   const Medicine._();
   factory Medicine({
     required int id,
-    @JsonKey(name: 'users_id') required int usersId,
+    @JsonKey(name: 'users_id') required String usersId,
     @JsonKey(name: 'tanggal') required String date,
     @JsonKey(name: 'nama') required String name,
     required String dosis,

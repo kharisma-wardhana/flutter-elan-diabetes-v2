@@ -102,7 +102,9 @@ class AssesmentRepositoryImpl implements AssesmentRepository {
     AddParams<AntropometriEntity> params,
   ) async {
     try {
+      final userID = await getUserID();
       final antropometri = await assesmentRemoteDatasource.addAntropometri(
+        userID,
         params.data,
       );
       return Right(antropometri.toEntity());

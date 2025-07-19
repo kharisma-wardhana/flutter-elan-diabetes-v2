@@ -24,7 +24,10 @@ import '../../model/tekanan_darah/tekanan_darah.dart';
 import '../../model/water/water.dart';
 
 abstract class AssesmentRemoteDatasource {
-  Future<Antropometri> addAntropometri(AntropometriEntity antropometri);
+  Future<Antropometri> addAntropometri(
+    int userId,
+    AntropometriEntity antropometri,
+  );
   Future<Antropometri?> getDetailAntropometri(int userId);
   Future<List<Activity>> getListActivity(int userId, String date);
   Future<List<Activity>> addActivity(int userId, ActivityEntity activity);
@@ -150,7 +153,10 @@ class AssesmentRemoteDatasourceImpl implements AssesmentRemoteDatasource {
   }
 
   @override
-  Future<Antropometri> addAntropometri(AntropometriEntity antropometri) async {
+  Future<Antropometri> addAntropometri(
+    int userId,
+    AntropometriEntity antropometri,
+  ) async {
     try {
       int statusInt = 0;
       if (antropometri.status == 'Obesitas') {
@@ -160,8 +166,8 @@ class AssesmentRemoteDatasourceImpl implements AssesmentRemoteDatasource {
         statusInt = 1;
       }
       final response = await apiService
-          .postData('/users/${antropometri.userId}/anthropometrics', {
-            'users_id': antropometri.userId,
+          .postData('/users/$userId/anthropometrics', {
+            'users_id': userId,
             'tinggi': antropometri.height,
             'berat': antropometri.weight,
             'hasil': antropometri.result,

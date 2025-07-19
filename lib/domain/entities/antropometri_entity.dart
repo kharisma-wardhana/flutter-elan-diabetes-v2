@@ -1,5 +1,4 @@
 class AntropometriEntity {
-  final int userId;
   final double height;
   final double weight;
   final double stomach;
@@ -9,7 +8,6 @@ class AntropometriEntity {
   final String? activity;
 
   const AntropometriEntity({
-    required this.userId,
     required this.height,
     required this.weight,
     required this.stomach,

@@ -23,6 +23,7 @@ class HbPage extends StatefulWidget {
 
 class _HbPageState extends State<HbPage> {
   final Hb1acCubit _hb1acCubit = sl<Hb1acCubit>();
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -40,80 +41,90 @@ class _HbPageState extends State<HbPage> {
           },
         ),
       ),
-      body: ListView(
-        children: [
-          CustomDateScroll(
-            onChanged: (DateTime value) async {
-              await _hb1acCubit.getListHb(
-                DateFormat('yyyy-MM-dd').format(value),
-              );
-            },
-          ),
-          const SizedBox(height: 8),
-          BlocBuilder<Hb1acCubit, Hb1acState>(
-            builder: (context, state) {
-              if (state.hbState.status.isHasData &&
-                  state.hbState.data!.isEmpty) {
-                return const CustomEmptyData(
-                  text: 'HbA1c',
-                  routePage: addHbPage,
+      isLoading: isLoading,
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CustomDateScroll(
+              onChanged: (DateTime value) async {
+                await _hb1acCubit.getListHb(
+                  DateFormat('yyyy-MM-dd').format(value),
                 );
-              }
-              if (state.hbState.status.isHasData &&
-                  state.hbState.data!.isNotEmpty) {
-                return Column(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ...state.hbState.data!.asMap().entries.map((e) {
-                      var status = 'Terbaik';
-                      if (e.value.total > 4.5 && e.value.total <= 5.7) {
-                        status = 'Normal';
-                      } else if (e.value.total > 5.7 && e.value.total <= 6.4) {
-                        status = 'Prediabetes';
-                      } else if (e.value.total == 6.5) {
-                        status = 'Diabetes Terkendali Baik';
-                      } else if (e.value.total > 6.5 && e.value.total < 8) {
-                        status = 'Diabetes Terkendali Sedang';
-                      } else if (e.value.total >= 8) {
-                        status = 'Diabetes Terkendali Buruk';
-                      }
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Material(
-                          color: e.key % 2 == 0
-                              ? ColorName.lightGrey
-                              : Colors.green[100],
-                          borderRadius: BorderRadius.circular(8),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(status),
-                                Text('${e.value.total} %'),
-                              ],
+              },
+            ),
+            16.verticalSpace,
+            BlocConsumer<Hb1acCubit, Hb1acState>(
+              listener: (context, state) {
+                if (state.hbState.status.isLoading) {
+                  setState(() => isLoading = true);
+                }
+              },
+              builder: (context, state) {
+                if (state.hbState.status.isHasData &&
+                    state.hbState.data!.isEmpty) {
+                  return const CustomEmptyData(
+                    text: 'HbA1c',
+                    routePage: addHbPage,
+                  );
+                }
+                if (state.hbState.status.isHasData &&
+                    state.hbState.data!.isNotEmpty) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ...state.hbState.data!.asMap().entries.map((e) {
+                        var status = 'Terbaik';
+                        if (e.value.total > 4.5 && e.value.total <= 5.7) {
+                          status = 'Normal';
+                        } else if (e.value.total > 5.7 &&
+                            e.value.total <= 6.4) {
+                          status = 'Prediabetes';
+                        } else if (e.value.total == 6.5) {
+                          status = 'Diabetes Terkendali Baik';
+                        } else if (e.value.total > 6.5 && e.value.total < 8) {
+                          status = 'Diabetes Terkendali Sedang';
+                        } else if (e.value.total >= 8) {
+                          status = 'Diabetes Terkendali Buruk';
+                        }
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Material(
+                            color: e.key % 2 == 0
+                                ? ColorName.lightGrey
+                                : Colors.green[100],
+                            borderRadius: BorderRadius.circular(8),
+                            child: Padding(
+                              padding: EdgeInsets.all(8.r),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(child: Text(status)),
+                                  Text('${e.value.total} %'),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    }),
-                    const SizedBox(height: 18),
-                    CustomButton(
-                      textButton: 'Tambahkan',
-                      onTap: () {
-                        Navigator.pushNamed(context, addHbPage);
-                      },
-                    ),
-                  ],
-                );
-              }
-              return const Center(
-                child: CircularProgressIndicator(color: ColorName.primary),
-              );
-            },
-          ),
-        ],
+                        );
+                      }),
+                      const SizedBox(height: 18),
+                      CustomButton(
+                        textButton: 'Tambahkan',
+                        onTap: () {
+                          Navigator.pushNamed(context, addHbPage);
+                        },
+                      ),
+                    ],
+                  );
+                }
+                return const SizedBox.shrink();
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
