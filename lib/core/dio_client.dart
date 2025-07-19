@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../data/user/model/user.dart';
+import '../data/model/user/user.dart';
 import 'constant.dart';
 
 class DioClient {

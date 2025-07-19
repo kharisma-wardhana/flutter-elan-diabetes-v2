@@ -9,8 +9,8 @@ import 'core/service_locator.dart';
 import 'gen/colors.gen.dart';
 import 'presentation/auth/bloc/auth_bloc.dart';
 import 'presentation/auth/bloc/auth_event.dart';
-import 'presentation/home/bloc/health_bloc.dart';
-import 'presentation/home/bloc/health_event.dart';
+import 'presentation/home/health/bloc/health_bloc.dart';
+import 'presentation/home/health/bloc/health_event.dart';
 import 'presentation/onboarding/bloc/onboarding_bloc.dart';
 import 'presentation/splash/page/splash_page.dart';
 

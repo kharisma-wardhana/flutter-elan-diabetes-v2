@@ -1,4 +1,4 @@
-package com.chickenfish.elanb
+package com.chickenfish.elan
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 

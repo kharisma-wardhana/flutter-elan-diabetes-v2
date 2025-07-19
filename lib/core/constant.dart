@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 
 import '../presentation/auth/page/login_page.dart';
 import '../presentation/auth/page/register_page.dart';
-import '../presentation/home/page/home_page.dart';
+import '../presentation/home/home_page.dart';
 import '../presentation/onboarding/page/gula_darah_page.dart';
 import '../presentation/onboarding/page/onboarding_page.dart';
 import '../presentation/onboarding/page/recommendation_page.dart';
-import '../presentation/profile/page/profile_page.dart';
+import '../presentation/home/profile/page/profile_page.dart';
 import '../presentation/splash/page/splash_page.dart';
 
 const String baseURL = 'https://elan.cmutiah.com/api';
@@ -24,6 +24,17 @@ const String recommendationPage = '/recommendation';
 const String activityPage = '/activity';
 const String homePage = '/home';
 const String profilePage = '/profile';
+
+const String profileAppPage = '/about';
+const String articlePage = '/articles';
+const String edukasiPage = '/edukasi';
+const String edukasiDetailPage = '/edukasi/detail';
+const String doctorPage = '/doctors';
+const String nutrisiPage = '/nutrisi';
+const String addNutrisiPage = '/nutrisi/add';
+const String obatPage = '/obat';
+const String addObatPage = '/obat/add';
+const String videoPage = '/video';
 
 class AppRoutes {
   static MaterialPageRoute onGenerateRoutes(argument, name) {

@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../../core/constant.dart';
-import '../../../data/user/model/user.dart';
-import '../../../domain/auth/usecase/login_usecase.dart';
-import '../../../domain/auth/usecase/register_usecase.dart';
+import '../../../data/model/user/user.dart';
+import '../../../domain/usecase/auth/login_usecase.dart';
+import '../../../domain/usecase/auth/register_usecase.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 

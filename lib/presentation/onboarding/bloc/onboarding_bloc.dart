@@ -1,9 +1,9 @@
 import 'package:elan/core/constant.dart';
-import 'package:elan/domain/activity/usecase/add_activity_usecase.dart';
+import 'package:elan/domain/usecase/activity/add_activity_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../../../domain/gula_darah/usecase/add_gula_darah_usecase.dart';
+import '../../../domain/usecase/gula_darah/add_gula_darah_usecase.dart';
 import 'onboarding_event.dart';
 import 'onboarding_state.dart';
 
