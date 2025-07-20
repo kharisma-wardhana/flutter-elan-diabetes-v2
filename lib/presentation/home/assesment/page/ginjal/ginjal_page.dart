@@ -7,6 +7,8 @@ import 'package:intl/intl.dart';
 import '../../../../../core/constant.dart';
 import '../../../../../core/service_locator.dart';
 import '../../../../../gen/colors.gen.dart';
+import '../../../../auth/bloc/auth_bloc.dart';
+import '../../../../auth/bloc/auth_state.dart';
 import '../../../../widget/base_page.dart';
 import '../../../../widget/custom_button.dart';
 import '../../bloc/ginjal/ginjal_cubit.dart';
@@ -66,38 +68,40 @@ class _GinjalPageState extends State<GinjalPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ...state.ginjalState.data!.asMap().entries.map((e) {
-                      // var status = 'Rendah';
-                      // if (userData['gender'].toString().contains('laki')) {
-                      //   if (e.value.type == 0) {
-                      //     if (e.value.total >= 8 && e.value.total <= 24) {
-                      //       status = 'Normal';
-                      //     } else if (e.value.total > 24) {
-                      //       status = 'Tinggi';
-                      //     }
-                      //   } else {
-                      //     if (e.value.total >= 0.6 && e.value.total <= 1.2) {
-                      //       status = 'Normal';
-                      //     } else if (e.value.total > 1.2) {
-                      //       status = 'Tinggi';
-                      //     }
-                      //   }
-                      // } else if (userData['gender'].toString().contains(
-                      //   'wanita',
-                      // )) {
-                      //   if (e.value.type == 0) {
-                      //     if (e.value.total >= 6 && e.value.total <= 21) {
-                      //       status = 'Normal';
-                      //     } else if (e.value.total > 21) {
-                      //       status = 'Tinggi';
-                      //     }
-                      //   } else {
-                      //     if (e.value.total >= 0.5 && e.value.total <= 1.1) {
-                      //       status = 'Normal';
-                      //     } else if (e.value.total > 1.1) {
-                      //       status = 'Tinggi';
-                      //     }
-                      //   }
-                      // }
+                      var status = 'Rendah';
+                      final gender =
+                          (context.read<AuthBloc>().state as AuthSuccess)
+                              .userEntity
+                              .gender;
+                      if (gender.contains('laki')) {
+                        if (e.value.type == 0) {
+                          if (e.value.total >= 8 && e.value.total <= 24) {
+                            status = 'Normal';
+                          } else if (e.value.total > 24) {
+                            status = 'Tinggi';
+                          }
+                        } else {
+                          if (e.value.total >= 0.6 && e.value.total <= 1.2) {
+                            status = 'Normal';
+                          } else if (e.value.total > 1.2) {
+                            status = 'Tinggi';
+                          }
+                        }
+                      } else if (gender.contains('wanita')) {
+                        if (e.value.type == 0) {
+                          if (e.value.total >= 6 && e.value.total <= 21) {
+                            status = 'Normal';
+                          } else if (e.value.total > 21) {
+                            status = 'Tinggi';
+                          }
+                        } else {
+                          if (e.value.total >= 0.5 && e.value.total <= 1.1) {
+                            status = 'Normal';
+                          } else if (e.value.total > 1.1) {
+                            status = 'Tinggi';
+                          }
+                        }
+                      }
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Material(
@@ -113,7 +117,7 @@ class _GinjalPageState extends State<GinjalPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text('${e.value.total} mg/dL'),
-                                    // Text(status),
+                                    Text(status),
                                   ],
                                 ),
                               ],

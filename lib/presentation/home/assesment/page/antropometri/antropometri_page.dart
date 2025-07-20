@@ -1,4 +1,5 @@
 import 'package:elan/core/state_enum.dart';
+import 'package:elan/presentation/auth/bloc/auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,7 +28,6 @@ class AntropometriPage extends StatefulWidget {
 
 class _AntropometriPageState extends State<AntropometriPage> {
   static final AppNavigator navigationHelper = sl<AppNavigator>();
-  static final AntropometriCubit antropometriCubit = sl<AntropometriCubit>();
   final TextEditingController heightController = TextEditingController(
     text: '',
   );
@@ -134,24 +134,24 @@ class _AntropometriPageState extends State<AntropometriPage> {
   }
 
   void _updatePerut() {
-    // if (stomachController.text.isNotEmpty) {
-    //   setState(() {
-    //     double val = double.parse(stomachController.text);
-    //     if (userData['gender'].toString().toLowerCase().contains('laki-laki')) {
-    //       infoPerutController.text = 'Normal';
-    //       if (val > 90) {
-    //         infoPerutController.text = 'Obesitas Sentral';
-    //       }
-    //     } else if (userData['gender'].toString().toLowerCase().contains(
-    //       'wanita',
-    //     )) {
-    //       infoPerutController.text = 'Normal';
-    //       if (val > 80) {
-    //         infoPerutController.text = 'Obesitas Sentral';
-    //       }
-    //     }
-    //   });
-    // }
+    final gender =
+        (context.read<AuthBloc>().state as AuthSuccess).userEntity.gender;
+    if (stomachController.text.isNotEmpty) {
+      setState(() {
+        double val = double.parse(stomachController.text);
+        if (gender.contains('laki-laki')) {
+          infoPerutController.text = 'Normal';
+          if (val > 90) {
+            infoPerutController.text = 'Obesitas Sentral';
+          }
+        } else if (gender.contains('wanita')) {
+          infoPerutController.text = 'Normal';
+          if (val > 80) {
+            infoPerutController.text = 'Obesitas Sentral';
+          }
+        }
+      });
+    }
   }
 
   void _handleSubmit() {

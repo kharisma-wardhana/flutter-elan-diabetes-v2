@@ -7,6 +7,8 @@ import 'package:intl/intl.dart';
 import '../../../../../core/constant.dart';
 import '../../../../../core/service_locator.dart';
 import '../../../../../gen/colors.gen.dart';
+import '../../../../auth/bloc/auth_bloc.dart';
+import '../../../../auth/bloc/auth_state.dart';
 import '../../../../widget/base_page.dart';
 import '../../../../widget/custom_button.dart';
 import '../../bloc/asam_urat/asam_urat_cubit.dart';
@@ -68,22 +70,24 @@ class _AsamUratPageState extends State<AsamUratPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ...state.asamUratState.data!.asMap().entries.map((e) {
-                      // var status = '(K) Kurang';
-                      // if (userData['gender'].toString().contains('laki')) {
-                      //   if (e.value.total >= 3.5 && e.value.total <= 7) {
-                      //     status = '(N) Normal';
-                      //   } else if (e.value.total > 7) {
-                      //     status = '(T) Tinggi';
-                      //   }
-                      // } else if (userData['gender'].toString().contains(
-                      //   'wanita',
-                      // )) {
-                      //   if (e.value.total >= 2.6 && e.value.total <= 6) {
-                      //     status = '(N) Normal';
-                      //   } else if (e.value.total > 6) {
-                      //     status = '(T) Tinggi';
-                      //   }
-                      // }
+                      var status = '(K) Kurang';
+                      final gender =
+                          (context.read<AuthBloc>().state as AuthSuccess)
+                              .userEntity
+                              .gender;
+                      if (gender.contains('laki')) {
+                        if (e.value.total >= 3.5 && e.value.total <= 7) {
+                          status = '(N) Normal';
+                        } else if (e.value.total > 7) {
+                          status = '(T) Tinggi';
+                        }
+                      } else if (gender.contains('wanita')) {
+                        if (e.value.total >= 2.6 && e.value.total <= 6) {
+                          status = '(N) Normal';
+                        } else if (e.value.total > 6) {
+                          status = '(T) Tinggi';
+                        }
+                      }
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Material(
@@ -96,7 +100,7 @@ class _AsamUratPageState extends State<AsamUratPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                // Text(status),
+                                Text(status),
                                 Text('${e.value.total} mg/dL'),
                               ],
                             ),
