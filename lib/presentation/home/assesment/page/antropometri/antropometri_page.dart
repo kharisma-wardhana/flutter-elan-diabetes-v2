@@ -1,7 +1,8 @@
 import 'package:elan/core/state_enum.dart';
-import 'package:elan/presentation/auth/bloc/auth_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../../../core/app_navigator.dart';
 import '../../../../../core/constant.dart';
@@ -9,11 +10,13 @@ import '../../../../../core/service_locator.dart';
 import '../../../../../domain/entities/antropometri_entity.dart';
 import '../../../../../gen/colors.gen.dart';
 import '../../../../auth/bloc/auth_bloc.dart';
+import '../../../../auth/bloc/auth_event.dart';
 import '../../../../widget/base_page.dart';
 import '../../../../widget/custom_button.dart';
 import '../../../../widget/custom_dropdown.dart';
 import '../../../../widget/custom_text_field.dart';
 import '../../bloc/antropometri/antropometri_cubit.dart';
+import '../../bloc/antropometri/antropometri_state.dart';
 
 class AntropometriPage extends StatefulWidget {
   const AntropometriPage({super.key});
@@ -63,10 +66,17 @@ class _AntropometriPageState extends State<AntropometriPage> {
   @override
   void initState() {
     super.initState();
-    if (antropometriCubit.state.antropometriState.status.isHasData &&
-        antropometriCubit.state.antropometriState.data != null) {
-      final AntropometriEntity antropometriEntity =
-          antropometriCubit.state.antropometriState.data!;
+    final status = context
+        .read<AntropometriCubit>()
+        .state
+        .antropometriState
+        .status;
+    if (status.isHasData) {
+      final AntropometriEntity antropometriEntity = context
+          .read<AntropometriCubit>()
+          .state
+          .antropometriState
+          .data!;
       heightController.text = antropometriEntity.height.toString();
       weightController.text = antropometriEntity.weight.toString();
       handController.text = antropometriEntity.hand.toString();
@@ -149,25 +159,20 @@ class _AntropometriPageState extends State<AntropometriPage> {
       setState(() {
         isLoading = true;
       });
-      _addAntropometri();
+      context.read<AntropometriCubit>().addAntropometri(
+        double.parse(heightController.text),
+        double.parse(weightController.text),
+        double.parse(stomachController.text),
+        double.parse(handController.text),
+        double.parse(resultController.text),
+        statusController.text,
+        jenisAktivitasController.text,
+      );
       context.read<AuthBloc>().add(CompleteAntropometriEvent());
       setState(() {
         isLoading = false;
       });
-      navigationHelper.pushReplacementNamed(homePage);
     }
-  }
-
-  void _addAntropometri() async {
-    await antropometriCubit.addAntropometri(
-      double.parse(heightController.text),
-      double.parse(weightController.text),
-      double.parse(stomachController.text),
-      double.parse(handController.text),
-      double.parse(resultController.text),
-      statusController.text,
-      jenisAktivitasController.text,
-    );
   }
 
   @override
@@ -181,7 +186,7 @@ class _AntropometriPageState extends State<AntropometriPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const SizedBox(height: 8),
+              8.verticalSpace,
               CustomTextField(
                 controller: heightController,
                 labelText: 'Tinggi Badan',
@@ -192,7 +197,7 @@ class _AntropometriPageState extends State<AntropometriPage> {
                   _updateData();
                 },
               ),
-              const SizedBox(height: 8),
+              8.verticalSpace,
               CustomTextField(
                 controller: weightController,
                 labelText: 'Berat Badan',
@@ -203,14 +208,14 @@ class _AntropometriPageState extends State<AntropometriPage> {
                   _updateData();
                 },
               ),
-              const SizedBox(height: 8),
+              8.verticalSpace,
               CustomTextField(
                 controller: statusController,
                 labelText: 'Status IMT',
                 keyboardType: TextInputType.number,
                 isReadOnly: true,
               ),
-              const SizedBox(height: 8),
+              8.verticalSpace,
               CustomTextField(
                 controller: stomachController,
                 labelText: 'Lingkar Perut',
@@ -226,7 +231,7 @@ class _AntropometriPageState extends State<AntropometriPage> {
                   _updatePerut();
                 },
               ),
-              const SizedBox(height: 8),
+              8.verticalSpace,
               CustomTextField(
                 controller: handController,
                 labelText: 'Lingkar Lengan',
@@ -242,7 +247,7 @@ class _AntropometriPageState extends State<AntropometriPage> {
                   _updateLengan();
                 },
               ),
-              const SizedBox(height: 8),
+              8.verticalSpace,
               const Text('Jenis Aktivitas yang sering dilakukan?'),
               CustomDropdown(
                 controller: jenisAktivitasController,
@@ -253,8 +258,26 @@ class _AntropometriPageState extends State<AntropometriPage> {
                   });
                 },
               ),
-              const SizedBox(height: 16),
-              CustomButton(textButton: 'Submit', onTap: _handleSubmit),
+              16.verticalSpace,
+              BlocListener<AntropometriCubit, AntropometriState>(
+                listener: (context, state) {
+                  if (state.antropometriState.status.isHasData) {
+                    // navigationHelper.pushReplacementNamed(homePage);
+                    navigationHelper.pushReplacementNamed(splashPage);
+                  } else if (state.antropometriState.status.isError) {
+                    Fluttertoast.showToast(
+                      msg: state.antropometriState.message,
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 18.sp,
+                    );
+                  }
+                },
+                child: CustomButton(textButton: 'Submit', onTap: _handleSubmit),
+              ),
             ],
           ),
         ),

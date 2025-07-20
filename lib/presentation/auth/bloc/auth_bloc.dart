@@ -106,6 +106,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           value: updatedUser.id.toString(),
         );
         emit(AuthState.success(userEntity: updatedUser));
+      } else {
+        emit(const AuthState.initial());
       }
     });
 
@@ -126,6 +128,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           value: updatedUser.id.toString(),
         );
         emit(AuthState.success(userEntity: updatedUser));
+      } else {
+        emit(const AuthState.initial());
       }
     });
   }

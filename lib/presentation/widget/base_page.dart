@@ -65,7 +65,7 @@ class _BasePageState extends State<BasePage> {
           drawer: widget.drawable,
           body: Stack(
             children: [
-              Padding(padding: EdgeInsets.all(16.r), child: widget.body),
+              Padding(padding: EdgeInsets.all(8.r), child: widget.body),
               if (widget.isLoading)
                 Positioned.fill(child: const CustomLoading()),
             ],

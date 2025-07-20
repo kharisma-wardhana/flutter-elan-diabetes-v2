@@ -106,7 +106,9 @@ class _ActivityPageState extends State<ActivityPage> {
                           setState(() => isLoading = true);
                         } else if (state is AuthSuccess) {
                           setState(() => isLoading = false);
-                          sl<AppNavigator>().pushNamedAndRemoveUntil(homePage);
+                          sl<AppNavigator>().pushNamedAndRemoveUntil(
+                            antropometriPage,
+                          );
                         } else if (state is AuthError) {
                           setState(() => isLoading = false);
                           Fluttertoast.showToast(
