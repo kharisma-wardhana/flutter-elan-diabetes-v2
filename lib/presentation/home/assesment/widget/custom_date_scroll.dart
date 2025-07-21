@@ -77,6 +77,7 @@ class _CustomDateScrollState extends State<CustomDateScroll> {
           children: [
             Expanded(
               child: DropdownButton<String>(
+                isExpanded: true,
                 icon: Icon(Icons.keyboard_arrow_down, size: 50.h),
                 value: months.isEmpty
                     ? null

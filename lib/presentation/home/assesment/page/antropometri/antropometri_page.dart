@@ -168,7 +168,6 @@ class _AntropometriPageState extends State<AntropometriPage> {
         statusController.text,
         jenisAktivitasController.text,
       );
-      context.read<AuthBloc>().add(CompleteAntropometriEvent());
       setState(() {
         isLoading = false;
       });
@@ -260,10 +259,15 @@ class _AntropometriPageState extends State<AntropometriPage> {
               ),
               16.verticalSpace,
               BlocListener<AntropometriCubit, AntropometriState>(
+                listenWhen: (previous, current) {
+                  return current.antropometriState.data == null ||
+                      (current.antropometriState.data !=
+                          previous.antropometriState.data);
+                },
                 listener: (context, state) {
                   if (state.antropometriState.status.isHasData) {
-                    // navigationHelper.pushReplacementNamed(homePage);
-                    navigationHelper.pushReplacementNamed(splashPage);
+                    context.read<AuthBloc>().add(CompleteAntropometriEvent());
+                    navigationHelper.pushReplacementNamed(homePage);
                   } else if (state.antropometriState.status.isError) {
                     Fluttertoast.showToast(
                       msg: state.antropometriState.message,

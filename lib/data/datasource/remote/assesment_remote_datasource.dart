@@ -76,6 +76,7 @@ abstract class AssesmentRemoteDatasource {
 class AssesmentRemoteDatasourceImpl implements AssesmentRemoteDatasource {
   final ApiService apiService;
   final SharedPreferences sharedPreferences;
+
   AssesmentRemoteDatasourceImpl({
     required this.apiService,
     required this.sharedPreferences,
@@ -177,7 +178,6 @@ class AssesmentRemoteDatasourceImpl implements AssesmentRemoteDatasource {
             'status': statusInt,
           });
       final responseData = response.data as Map<String, dynamic>;
-      sharedPreferences.setString('antropometri', jsonEncode(responseData));
       return Antropometri.fromJson(responseData);
     } on ServerException {
       rethrow;
