@@ -21,12 +21,12 @@ class CustomMedicalButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: color,
+        backgroundColor: Colors.white,
         minimumSize: Size(150.w, 180.h), // Adjust size as needed
-        padding: const EdgeInsets.all(8),
+        padding: EdgeInsets.all(8.r),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-          side: const BorderSide(color: ColorName.secondary),
+          borderRadius: BorderRadius.circular(8.r),
+          side: const BorderSide(color: ColorName.primary),
         ),
       ),
       onPressed: onTap,
@@ -38,7 +38,7 @@ class CustomMedicalButton extends StatelessWidget {
           Text(
             label.toUpperCase(),
             style: TextStyle(
-              color: labelColor,
+              color: ColorName.primary,
               fontSize: 24.sp,
               fontWeight: FontWeight.bold,
             ),

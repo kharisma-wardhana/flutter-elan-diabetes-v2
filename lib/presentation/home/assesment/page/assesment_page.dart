@@ -19,6 +19,7 @@ import '../bloc/hb1ac/hb1ac_cubit.dart';
 import '../bloc/kolesterol/kolesterol_cubit.dart';
 import '../bloc/tekanan_darah/tensi_cubit.dart';
 import '../bloc/water/water_cubit.dart';
+import '../widget/custom_assesment_button.dart';
 import '../widget/custom_medical_button.dart';
 
 class AssesmentPage extends StatefulWidget {
@@ -62,6 +63,7 @@ class _AssesmentPageState extends State<AssesmentPage> {
                   if (state.assesmentState.status.isHasData) {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'CHECK KESEHATAN',
@@ -72,123 +74,139 @@ class _AssesmentPageState extends State<AssesmentPage> {
                         ),
                         Divider(),
                         16.verticalSpace,
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: CustomMedicalButton(
-                                label:
-                                    'Kadar Gula Darah ${state.assesmentState.data!.gula?.total}',
-                                onTap: () async {
-                                  setState(() => isLoading = true);
-                                  await gulaCubit.getListGula(dateNow);
-                                  setState(() => isLoading = false);
-                                  navigatorHelper.pushNamed(gulaPage);
-                                },
-                              ),
-                            ),
-                            8.horizontalSpace,
-                            Expanded(
-                              child: CustomMedicalButton(
-                                label: 'Tekanan Darah',
-                                onTap: () async {
-                                  setState(() => isLoading = true);
-                                  await tensiCubit.getListTensi(dateNow);
-                                  setState(() => isLoading = false);
-                                  navigatorHelper.pushNamed(tensiPage);
-                                },
-                              ),
-                            ),
+                        CustomAssesmentButton(
+                          title: 'Kadar Gula Darah',
+                          data: [
+                            'Total: ${state.assesmentState.data!.gula?.total}',
+                            state.assesmentState.data!.gula?.type == 1
+                                ? 'Jenis: Puasa'
+                                : 'Jenis: Non Puasa',
+                            'Tanggal: ${state.assesmentState.data!.gula?.date}',
                           ],
+                          onTap: () async {
+                            setState(() => isLoading = true);
+                            await gulaCubit.getListGula(dateNow);
+                            setState(() => isLoading = false);
+                            navigatorHelper.pushNamed(gulaPage);
+                          },
                         ),
                         8.verticalSpace,
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Expanded(
-                              child: CustomMedicalButton(
-                                label: 'HbA1c',
-                                onTap: () async {
-                                  setState(() => isLoading = true);
-                                  await hb1acCubit.getListHb(dateNow);
-                                  setState(() => isLoading = false);
-                                  navigatorHelper.pushNamed(hbPage);
-                                },
-                              ),
-                            ),
-                            8.horizontalSpace,
-                            Expanded(
-                              child: CustomMedicalButton(
-                                label: 'Konsumsi Air',
-                                onTap: () async {
-                                  setState(() => isLoading = true);
-                                  await waterCubit.getAllWater(dateNow);
-                                  setState(() => isLoading = false);
-                                  navigatorHelper.pushNamed(waterPage);
-                                },
-                              ),
-                            ),
-                          ],
+                        CustomAssesmentButton(
+                          title: 'Tekanan Darah',
+                          data: state.assesmentState.data!.tensi == null
+                              ? [
+                                  'Belum ada data tekanan darah',
+                                  'Silakan cek tekanan darah Anda terlebih dahulu.',
+                                ]
+                              : [
+                                  'Tensi: ${state.assesmentState.data!.tensi?.sistole} / ${state.assesmentState.data!.tensi?.diastole}',
+                                  'Tanggal: ${state.assesmentState.data!.tensi?.date}',
+                                ],
+                          onTap: () async {
+                            setState(() => isLoading = true);
+                            await tensiCubit.getListTensi(dateNow);
+                            setState(() => isLoading = false);
+                            navigatorHelper.pushNamed(tensiPage);
+                          },
                         ),
                         8.verticalSpace,
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Expanded(
-                              child: CustomMedicalButton(
-                                label: 'Aktivitas',
-                                onTap: () async {
-                                  setState(() => isLoading = true);
-                                  await activityCubit.getAllActivity(dateNow);
-                                  setState(() => isLoading = false);
-                                  navigatorHelper.pushNamed(aktifitasPage);
-                                },
-                              ),
-                            ),
-                            8.horizontalSpace,
-                            Expanded(
-                              child: CustomMedicalButton(
-                                label: 'Kolesterol',
-                                onTap: () async {
-                                  setState(() => isLoading = true);
-                                  await kolesterolCubit.getListKolesterol(
-                                    dateNow,
-                                  );
-                                  setState(() => isLoading = false);
-                                  navigatorHelper.pushNamed(kolesterolPage);
-                                },
-                              ),
-                            ),
-                          ],
+                        CustomAssesmentButton(
+                          title: 'HbA1c',
+                          data: state.assesmentState.data!.hb1ac == null
+                              ? [
+                                  'Belum ada data HbA1c',
+                                  'Silakan cek HbA1c Anda terlebih dahulu.',
+                                ]
+                              : [
+                                  'Total: ${state.assesmentState.data!.hb1ac?.total}',
+                                  'Tanggal: ${state.assesmentState.data!.hb1ac?.date}',
+                                ],
+                          onTap: () async {
+                            setState(() => isLoading = true);
+                            await hb1acCubit.getListHb(dateNow);
+                            setState(() => isLoading = false);
+                            navigatorHelper.pushNamed(hbPage);
+                          },
                         ),
                         8.verticalSpace,
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Expanded(
-                              child: CustomMedicalButton(
-                                label: 'Asam Urat',
-                                onTap: () async {
-                                  setState(() => isLoading = true);
-                                  await asamUratCubit.getListAsamUrat(dateNow);
-                                  setState(() => isLoading = false);
-                                  navigatorHelper.pushNamed(asamUratPage);
-                                },
-                              ),
-                            ),
-                            8.horizontalSpace,
-                            Expanded(
-                              child: CustomMedicalButton(
-                                label: 'Cek Ureum & Kreatinin',
-                                onTap: () async {
-                                  setState(() => isLoading = true);
-                                  await ginjalCubit.getListGinjal(dateNow);
-                                  setState(() => isLoading = false);
-                                  navigatorHelper.pushNamed(ginjalPage);
-                                },
-                              ),
-                            ),
-                          ],
+                        CustomAssesmentButton(
+                          title: 'Konsumsi Air',
+                          data: state.assesmentState.data!.water == null
+                              ? [
+                                  'Belum ada data konsumsi air',
+                                  'Silakan cek konsumsi air Anda terlebih dahulu.',
+                                ]
+                              : [
+                                  'Total: ${state.assesmentState.data!.water?.total}',
+                                  'Target: ${state.assesmentState.data!.water?.target}',
+                                  'Tanggal: ${state.assesmentState.data!.water?.date}',
+                                ],
+                          onTap: () async {
+                            setState(() => isLoading = true);
+                            await waterCubit.getAllWater(dateNow);
+                            setState(() => isLoading = false);
+                            navigatorHelper.pushNamed(waterPage);
+                          },
+                        ),
+                        CustomAssesmentButton(
+                          title: 'Asam Urat',
+                          data: state.assesmentState.data!.asamUrat == null
+                              ? [
+                                  'Belum ada data asam urat',
+                                  'Silakan cek asam urat Anda terlebih dahulu.',
+                                ]
+                              : [
+                                  'Total: ${state.assesmentState.data!.asamUrat?.total}',
+                                  'Tanggal: ${state.assesmentState.data!.asamUrat?.date}',
+                                ],
+                          onTap: () async {
+                            setState(() => isLoading = true);
+                            await asamUratCubit.getListAsamUrat(dateNow);
+                            setState(() => isLoading = false);
+                            navigatorHelper.pushNamed(asamUratPage);
+                          },
+                        ),
+                        8.verticalSpace,
+                        CustomAssesmentButton(
+                          title: 'Kadar Kolesterol',
+                          data: state.assesmentState.data!.kolesterol == null
+                              ? [
+                                  'Belum ada data kolesterol',
+                                  'Silakan cek kadar kolesterol Anda terlebih dahulu.',
+                                ]
+                              : [
+                                  'Total: ${state.assesmentState.data!.kolesterol?.total}',
+                                  'Jenis: ${state.assesmentState.data!.kolesterol?.type}',
+                                  'Tanggal: ${state.assesmentState.data!.kolesterol?.date}',
+                                ],
+                          onTap: () async {
+                            setState(() => isLoading = true);
+                            await kolesterolCubit.getListKolesterol(dateNow);
+                            setState(() => isLoading = false);
+                            navigatorHelper.pushNamed(kolesterolPage);
+                          },
+                        ),
+                        8.verticalSpace,
+                        CustomAssesmentButton(
+                          title: 'Check Ureum & Kreatinin',
+                          data: state.assesmentState.data!.ginjal == null
+                              ? [
+                                  'Belum ada data ginjal',
+                                  'Silakan cek kesehatan ginjal Anda terlebih dahulu.',
+                                ]
+                              : [
+                                  'Total: ${state.assesmentState.data!.ginjal?.total}',
+                                  state.assesmentState.data!.ginjal?.type == 1
+                                      ? 'Jenis: Ureum'
+                                      : 'Jenis: Kreatinin',
+                                  'Tanggal: ${state.assesmentState.data!.ginjal?.date}',
+                                ],
+                          onTap: () async {
+                            setState(() => isLoading = true);
+                            await ginjalCubit.getListGinjal(dateNow);
+                            setState(() => isLoading = false);
+                            navigatorHelper.pushNamed(ginjalPage);
+                          },
                         ),
                         16.verticalSpace,
                       ],
