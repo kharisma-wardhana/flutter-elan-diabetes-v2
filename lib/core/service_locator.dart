@@ -35,6 +35,7 @@ import '../domain/usecase/assesment/add_ginjal_usecase.dart';
 import '../domain/usecase/assesment/add_hb_usecase.dart';
 import '../domain/usecase/assesment/add_kolesterol_usecase.dart';
 import '../domain/usecase/assesment/add_water_usecase.dart';
+import '../domain/usecase/assesment/get_assesment_usecase.dart';
 import '../domain/usecase/assesment/get_detail_antropometri_usecase.dart';
 import '../domain/usecase/assesment/get_list_activity_usecase.dart';
 import '../domain/usecase/assesment/get_list_asam_urat_usecase.dart';
@@ -57,6 +58,7 @@ import '../presentation/auth/bloc/auth_bloc.dart';
 import '../presentation/home/assesment/bloc/activity/activity_cubit.dart';
 import '../presentation/home/assesment/bloc/antropometri/antropometri_cubit.dart';
 import '../presentation/home/assesment/bloc/asam_urat/asam_urat_cubit.dart';
+import '../presentation/home/assesment/bloc/assesment/assesment_cubit.dart';
 import '../presentation/home/assesment/bloc/ginjal/ginjal_cubit.dart';
 import '../presentation/home/assesment/bloc/gula_darah/gula_cubit.dart';
 import '../presentation/home/assesment/bloc/hb1ac/hb1ac_cubit.dart';
@@ -265,6 +267,10 @@ class AssesmentDependency {
   }
 
   void _registerUseCases() {
+    sl.registerLazySingleton<GetAssesmentUsecase>(
+      () => GetAssesmentUsecase(assesmentRepository: sl<AssesmentRepository>()),
+    );
+
     sl.registerLazySingleton<GetListWaterUseCase>(
       () => GetListWaterUseCase(assesmentRepo: sl<AssesmentRepository>()),
     );
@@ -333,6 +339,9 @@ class AssesmentDependency {
   }
 
   void _registerCubit() {
+    sl.registerLazySingleton<AssesmentCubit>(
+      () => AssesmentCubit(getAssesmentUsecase: sl<GetAssesmentUsecase>()),
+    );
     sl.registerLazySingleton<ActivityCubit>(
       () => ActivityCubit(
         getListActivityUseCase: sl<GetListActivityUseCase>(),

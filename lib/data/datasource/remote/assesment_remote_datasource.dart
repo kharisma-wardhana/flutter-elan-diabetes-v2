@@ -15,7 +15,8 @@ import '../../../domain/entities/tensi_entity.dart';
 import '../../../domain/entities/water_entity.dart';
 import '../../model/activity/activity.dart';
 import '../../model/asam_urat/asam_urat.dart';
-import '../../model/assesment/antropometri.dart';
+import '../../model/antropometri/antropometri.dart';
+import '../../model/assesment/assesment.dart';
 import '../../model/ginjal/ginjal.dart';
 import '../../model/gula_darah/gula_darah.dart';
 import '../../model/hb1ac/hb1ac.dart';
@@ -24,6 +25,7 @@ import '../../model/tekanan_darah/tekanan_darah.dart';
 import '../../model/water/water.dart';
 
 abstract class AssesmentRemoteDatasource {
+  Future<Assesment> getAssesment(int userId);
   Future<Antropometri> addAntropometri(
     int userId,
     AntropometriEntity antropometri,
@@ -81,6 +83,17 @@ class AssesmentRemoteDatasourceImpl implements AssesmentRemoteDatasource {
     required this.apiService,
     required this.sharedPreferences,
   });
+
+  @override
+  Future<Assesment> getAssesment(int userId) async {
+    try {
+      final response = await apiService.fetchData('/users/$userId/assesments');
+      final responseData = response.data as Map<String, dynamic>;
+      return Assesment.fromJson(responseData);
+    } on ServerException {
+      rethrow;
+    }
+  }
 
   @override
   Future<List<Water>> getListWater(int userId, String date) async {

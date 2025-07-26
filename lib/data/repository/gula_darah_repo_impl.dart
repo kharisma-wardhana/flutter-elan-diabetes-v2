@@ -29,7 +29,7 @@ class GulaDarahRepoImpl implements GulaDarahRepository {
           .toIso8601String()
           .split('T')[1]
           .split('.')[0];
-      String type = params['gulaDarahPuasa']!.isNotEmpty ? '2' : '1';
+      int type = params['gulaDarahPuasa']!.isNotEmpty ? 2 : 1;
       if (kadar.isEmpty) {
         return Left(
           InvalidInputFailure('Silahkan isi salah satu data gula darah'),

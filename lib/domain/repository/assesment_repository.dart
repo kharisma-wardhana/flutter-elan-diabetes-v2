@@ -5,6 +5,7 @@ import '../../core/usecase.dart';
 import '../entities/activity/activity_entity.dart';
 import '../entities/antropometri_entity.dart';
 import '../entities/asam_urat_entity.dart';
+import '../entities/assesment/assesment_entity.dart';
 import '../entities/ginjal_entity.dart';
 import '../entities/gula_darah/gula_darah.dart';
 import '../entities/hb1ac_entity.dart';
@@ -13,6 +14,7 @@ import '../entities/tensi_entity.dart';
 import '../entities/water_entity.dart';
 
 abstract class AssesmentRepository {
+  Future<Either<Failure, AssesmentEntity>> getAssesment();
   Future<Either<Failure, List<WaterEntity>>> getGraphicWater(
     SearchParams params,
   );

@@ -12,6 +12,7 @@ import 'presentation/auth/bloc/auth_event.dart';
 import 'presentation/home/assesment/bloc/activity/activity_cubit.dart';
 import 'presentation/home/assesment/bloc/antropometri/antropometri_cubit.dart';
 import 'presentation/home/assesment/bloc/asam_urat/asam_urat_cubit.dart';
+import 'presentation/home/assesment/bloc/assesment/assesment_cubit.dart';
 import 'presentation/home/assesment/bloc/ginjal/ginjal_cubit.dart';
 import 'presentation/home/assesment/bloc/gula_darah/gula_cubit.dart';
 import 'presentation/home/assesment/bloc/hb1ac/hb1ac_cubit.dart';
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
           BlocProvider<HealthBloc>(
             create: (_) => sl<HealthBloc>()..add(RequestPermissions()),
           ),
+          BlocProvider(create: (context) => sl<AssesmentCubit>()),
           BlocProvider(create: (context) => sl<ArticleCubit>()),
           BlocProvider(create: (context) => sl<DoctorCubit>()),
           BlocProvider(create: (context) => sl<VideoCubit>()),

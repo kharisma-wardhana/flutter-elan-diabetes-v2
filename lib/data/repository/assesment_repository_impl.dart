@@ -7,6 +7,7 @@ import '../../core/usecase.dart';
 import '../../domain/entities/activity/activity_entity.dart';
 import '../../domain/entities/antropometri_entity.dart';
 import '../../domain/entities/asam_urat_entity.dart';
+import '../../domain/entities/assesment/assesment_entity.dart';
 import '../../domain/entities/ginjal_entity.dart';
 import '../../domain/entities/gula_darah/gula_darah.dart';
 import '../../domain/entities/hb1ac_entity.dart';
@@ -31,6 +32,17 @@ class AssesmentRepositoryImpl implements AssesmentRepository {
       throw InvalidInputFailure("userID null");
     }
     return int.parse(userID);
+  }
+
+  @override
+  Future<Either<Failure, AssesmentEntity>> getAssesment() async {
+    try {
+      final userID = await getUserID();
+      final assesment = await assesmentRemoteDatasource.getAssesment(userID);
+      return Right(assesment.toEntity());
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    }
   }
 
   @override

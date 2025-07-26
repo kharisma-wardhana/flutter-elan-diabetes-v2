@@ -26,6 +26,18 @@ class _HbPageState extends State<HbPage> {
   bool isLoading = false;
 
   @override
+  void initState() {
+    isLoading = false;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    isLoading = false;
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BasePage(
       appBar: AppBar(
@@ -41,7 +53,6 @@ class _HbPageState extends State<HbPage> {
           },
         ),
       ),
-      isLoading: isLoading,
       body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -59,6 +70,9 @@ class _HbPageState extends State<HbPage> {
               listener: (context, state) {
                 if (state.hbState.status.isLoading) {
                   setState(() => isLoading = true);
+                } else if (state.hbState.status.isHasData ||
+                    state.hbState.status.isError) {
+                  setState(() => isLoading = false);
                 }
               },
               builder: (context, state) {
@@ -120,7 +134,9 @@ class _HbPageState extends State<HbPage> {
                     ],
                   );
                 }
-                return const SizedBox.shrink();
+                return const Center(
+                  child: CircularProgressIndicator(color: ColorName.primary),
+                );
               },
             ),
           ],

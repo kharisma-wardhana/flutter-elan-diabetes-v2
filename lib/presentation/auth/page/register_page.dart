@@ -11,6 +11,7 @@ import '../../../gen/assets.gen.dart';
 import '../../../gen/colors.gen.dart';
 import '../../widget/custom_button.dart';
 import '../../widget/custom_dropdown.dart';
+import '../../widget/custom_loading.dart';
 import '../../widget/custom_text_field.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
@@ -82,10 +83,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void _handleRegister() {
     if (_formKey.currentState?.validate() ?? false) {
-      // Simulate a registration process
-      setState(() {
-        isLoading = true;
-      });
       final email = '${mobileController.text}@email.com';
       context.read<AuthBloc>().add(
         RegisterEvent(
@@ -96,34 +93,7 @@ class _RegisterPageState extends State<RegisterPage> {
           gender: genderController.text,
         ),
       );
-      context.read<AuthBloc>().stream.listen((state) {
-        if (state is AuthSuccess) {
-          // Show success message and navigate to home
-          Fluttertoast.showToast(
-            msg: 'Pendaftaran Berhasil',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
-            fontSize: 16.sp,
-          );
-          sl<AppNavigator>().pushReplacementNamed(onboardingPage);
-        } else if (state is AuthError) {
-          // Show error message
-          Fluttertoast.showToast(
-            msg: state.message,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.sp,
-          );
-        }
-      });
     }
-    setState(() {
-      isLoading = false;
-    });
   }
 
   Widget _buildFormRegister() {
@@ -237,7 +207,46 @@ class _RegisterPageState extends State<RegisterPage> {
                           maxWidth: 400.w,
                           minWidth: 200.w,
                         ),
-                        child: _buildFormRegister(),
+                        child: BlocConsumer<AuthBloc, AuthState>(
+                          listener: (context, state) {
+                            if (state is AuthLoading) {
+                              setState(() {
+                                isLoading = true;
+                              });
+                            } else if (state is AuthSuccess) {
+                              setState(() {
+                                isLoading = false;
+                              });
+                              Fluttertoast.showToast(
+                                msg: 'Pendaftaran Berhasil',
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                backgroundColor: Colors.green,
+                                textColor: Colors.white,
+                                fontSize: 16.sp,
+                              );
+                              sl<AppNavigator>().pushReplacementNamed(
+                                onboardingPage,
+                              );
+                            } else if (state is AuthError) {
+                              setState(() {
+                                isLoading = false;
+                              });
+                              Fluttertoast.showToast(
+                                msg: state.message,
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 18.sp,
+                              );
+                            }
+                          },
+                          builder: (context, state) {
+                            return _buildFormRegister();
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -252,6 +261,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   },
                 ),
               ),
+              if (isLoading) Positioned.fill(child: const CustomLoading()),
             ],
           ),
         ),

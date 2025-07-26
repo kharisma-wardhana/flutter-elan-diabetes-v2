@@ -1,4 +1,6 @@
+import 'package:elan/core/state_enum.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -9,6 +11,8 @@ import '../../../../core/service_locator.dart';
 import '../../../widget/custom_loading.dart';
 import '../bloc/activity/activity_cubit.dart';
 import '../bloc/asam_urat/asam_urat_cubit.dart';
+import '../bloc/assesment/assesment_cubit.dart';
+import '../bloc/assesment/assesment_state.dart';
 import '../bloc/ginjal/ginjal_cubit.dart';
 import '../bloc/gula_darah/gula_cubit.dart';
 import '../bloc/hb1ac/hb1ac_cubit.dart';
@@ -45,135 +49,153 @@ class _AssesmentPageState extends State<AssesmentPage> {
           children: [
             Padding(
               padding: EdgeInsets.all(16.r),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'CHECK KESEHATAN',
-                    style: GoogleFonts.poppins(
-                      fontSize: 24.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Divider(),
-                  16.verticalSpace,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: CustomMedicalButton(
-                          label: 'Kadar Gula Darah',
-                          onTap: () async {
-                            setState(() => isLoading = true);
-                            await gulaCubit.getListGula(dateNow);
-                            setState(() => isLoading = false);
-                            navigatorHelper.pushNamed(gulaPage);
-                          },
+              child: BlocConsumer<AssesmentCubit, AssesmentState>(
+                listener: (context, state) {
+                  if (state.assesmentState.status.isLoading) {
+                    setState(() => isLoading = true);
+                  } else if (state.assesmentState.status.isError ||
+                      state.assesmentState.status.isHasData) {
+                    setState(() => isLoading = false);
+                  }
+                },
+                builder: (context, state) {
+                  if (state.assesmentState.status.isHasData) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'CHECK KESEHATAN',
+                          style: GoogleFonts.poppins(
+                            fontSize: 24.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      8.horizontalSpace,
-                      Expanded(
-                        child: CustomMedicalButton(
-                          label: 'Tekanan Darah',
-                          onTap: () async {
-                            setState(() => isLoading = true);
-                            await tensiCubit.getListTensi(dateNow);
-                            setState(() => isLoading = false);
-                            navigatorHelper.pushNamed(tensiPage);
-                          },
+                        Divider(),
+                        16.verticalSpace,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: CustomMedicalButton(
+                                label:
+                                    'Kadar Gula Darah ${state.assesmentState.data!.gula?.total}',
+                                onTap: () async {
+                                  setState(() => isLoading = true);
+                                  await gulaCubit.getListGula(dateNow);
+                                  setState(() => isLoading = false);
+                                  navigatorHelper.pushNamed(gulaPage);
+                                },
+                              ),
+                            ),
+                            8.horizontalSpace,
+                            Expanded(
+                              child: CustomMedicalButton(
+                                label: 'Tekanan Darah',
+                                onTap: () async {
+                                  setState(() => isLoading = true);
+                                  await tensiCubit.getListTensi(dateNow);
+                                  setState(() => isLoading = false);
+                                  navigatorHelper.pushNamed(tensiPage);
+                                },
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                  8.verticalSpace,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Expanded(
-                        child: CustomMedicalButton(
-                          label: 'HbA1c',
-                          onTap: () async {
-                            setState(() => isLoading = true);
-                            await hb1acCubit.getListHb(dateNow);
-                            setState(() => isLoading = false);
-                            navigatorHelper.pushNamed(hbPage);
-                          },
+                        8.verticalSpace,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Expanded(
+                              child: CustomMedicalButton(
+                                label: 'HbA1c',
+                                onTap: () async {
+                                  setState(() => isLoading = true);
+                                  await hb1acCubit.getListHb(dateNow);
+                                  setState(() => isLoading = false);
+                                  navigatorHelper.pushNamed(hbPage);
+                                },
+                              ),
+                            ),
+                            8.horizontalSpace,
+                            Expanded(
+                              child: CustomMedicalButton(
+                                label: 'Konsumsi Air',
+                                onTap: () async {
+                                  setState(() => isLoading = true);
+                                  await waterCubit.getAllWater(dateNow);
+                                  setState(() => isLoading = false);
+                                  navigatorHelper.pushNamed(waterPage);
+                                },
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      8.horizontalSpace,
-                      Expanded(
-                        child: CustomMedicalButton(
-                          label: 'Konsumsi Air',
-                          onTap: () async {
-                            setState(() => isLoading = true);
-                            await waterCubit.getAllWater(dateNow);
-                            setState(() => isLoading = false);
-                            navigatorHelper.pushNamed(waterPage);
-                          },
+                        8.verticalSpace,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Expanded(
+                              child: CustomMedicalButton(
+                                label: 'Aktivitas',
+                                onTap: () async {
+                                  setState(() => isLoading = true);
+                                  await activityCubit.getAllActivity(dateNow);
+                                  setState(() => isLoading = false);
+                                  navigatorHelper.pushNamed(aktifitasPage);
+                                },
+                              ),
+                            ),
+                            8.horizontalSpace,
+                            Expanded(
+                              child: CustomMedicalButton(
+                                label: 'Kolesterol',
+                                onTap: () async {
+                                  setState(() => isLoading = true);
+                                  await kolesterolCubit.getListKolesterol(
+                                    dateNow,
+                                  );
+                                  setState(() => isLoading = false);
+                                  navigatorHelper.pushNamed(kolesterolPage);
+                                },
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                  8.verticalSpace,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Expanded(
-                        child: CustomMedicalButton(
-                          label: 'Aktivitas',
-                          onTap: () async {
-                            setState(() => isLoading = true);
-                            await activityCubit.getAllActivity(dateNow);
-                            setState(() => isLoading = false);
-                            navigatorHelper.pushNamed(aktifitasPage);
-                          },
+                        8.verticalSpace,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Expanded(
+                              child: CustomMedicalButton(
+                                label: 'Asam Urat',
+                                onTap: () async {
+                                  setState(() => isLoading = true);
+                                  await asamUratCubit.getListAsamUrat(dateNow);
+                                  setState(() => isLoading = false);
+                                  navigatorHelper.pushNamed(asamUratPage);
+                                },
+                              ),
+                            ),
+                            8.horizontalSpace,
+                            Expanded(
+                              child: CustomMedicalButton(
+                                label: 'Cek Ureum & Kreatinin',
+                                onTap: () async {
+                                  setState(() => isLoading = true);
+                                  await ginjalCubit.getListGinjal(dateNow);
+                                  setState(() => isLoading = false);
+                                  navigatorHelper.pushNamed(ginjalPage);
+                                },
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      8.horizontalSpace,
-                      Expanded(
-                        child: CustomMedicalButton(
-                          label: 'Kolesterol',
-                          onTap: () async {
-                            setState(() => isLoading = true);
-                            await kolesterolCubit.getListKolesterol(dateNow);
-                            setState(() => isLoading = false);
-                            navigatorHelper.pushNamed(kolesterolPage);
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  8.verticalSpace,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Expanded(
-                        child: CustomMedicalButton(
-                          label: 'Asam Urat',
-                          onTap: () async {
-                            setState(() => isLoading = true);
-                            await asamUratCubit.getListAsamUrat(dateNow);
-                            setState(() => isLoading = false);
-                            navigatorHelper.pushNamed(asamUratPage);
-                          },
-                        ),
-                      ),
-                      8.horizontalSpace,
-                      Expanded(
-                        child: CustomMedicalButton(
-                          label: 'Cek Ureum & Kreatinin',
-                          onTap: () async {
-                            setState(() => isLoading = true);
-                            await ginjalCubit.getListGinjal(dateNow);
-                            setState(() => isLoading = false);
-                            navigatorHelper.pushNamed(ginjalPage);
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  16.verticalSpace,
-                ],
+                        16.verticalSpace,
+                      ],
+                    );
+                  }
+                  return SizedBox.shrink();
+                },
               ),
             ),
             if (isLoading) Positioned.fill(child: const CustomLoading()),

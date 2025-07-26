@@ -14,16 +14,12 @@ abstract class GulaDarah with _$GulaDarah {
     required String tanggal,
     required String jam,
     required String kadar,
-    required String type,
+    required int type,
   }) = _GulaDarah;
 
   factory GulaDarah.fromJson(Map<String, dynamic> json) =>
       _$GulaDarahFromJson(json);
 
-  GulaDarahEntity toEntity() => GulaDarahEntity(
-    date: tanggal,
-    time: jam,
-    type: int.parse(type),
-    total: kadar,
-  );
+  GulaDarahEntity toEntity() =>
+      GulaDarahEntity(date: tanggal, time: jam, type: type, total: kadar);
 }

@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
                 const InfoPage(),
                 const ProfilePage(),
               ],
-              onPageChanged: (value) {
+              onPageChanged: (value) async {
                 setState(() => _selectedIndex = value);
               },
             ),
