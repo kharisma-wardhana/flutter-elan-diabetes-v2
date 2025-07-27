@@ -267,8 +267,8 @@ class _AntropometriPageState extends State<AntropometriPage> {
                 },
                 listener: (context, state) async {
                   if (state.antropometriState.status.isHasData) {
+                    context.read<AssesmentCubit>().getAssesment();
                     context.read<AuthBloc>().add(CompleteAntropometriEvent());
-                    await context.read<AssesmentCubit>().getAssesment();
                     navigationHelper.pushReplacementNamed(homePage);
                   } else if (state.antropometriState.status.isError) {
                     Fluttertoast.showToast(
