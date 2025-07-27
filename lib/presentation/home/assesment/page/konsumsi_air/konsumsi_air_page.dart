@@ -1,11 +1,12 @@
 import 'dart:convert';
 
+import 'package:elan/core/constant.dart';
 import 'package:elan/core/state_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../core/app_navigator.dart';
 import '../../../../../core/service_locator.dart';
@@ -26,9 +27,6 @@ class KonsumsiAirPage extends StatefulWidget {
 class _KonsumsiAirPageState extends State<KonsumsiAirPage> {
   static final AppNavigator _navigationHelper = sl<AppNavigator>();
   static final WaterCubit _waterCubit = sl<WaterCubit>();
-  final antropometri = jsonDecode(
-    sl<SharedPreferences>().getString('antropometri')!,
-  );
   final _formKey = GlobalKey<FormState>();
 
   bool isLoading = false;
@@ -43,13 +41,15 @@ class _KonsumsiAirPageState extends State<KonsumsiAirPage> {
   final TextEditingController totalController = TextEditingController(text: '');
 
   @override
-  void initState() {
+  void initState() async {
     super.initState();
-    currentTarget = getRecommend();
+    currentTarget = await getRecommend();
   }
 
-  int getRecommend() {
-    int weight = antropometri['berat'];
+  Future<int> getRecommend() async {
+    int weight = await sl<FlutterSecureStorage>()
+        .read(key: antropometriKey)
+        .then((value) => jsonDecode(value ?? '{}')['weight'] ?? 0);
     double recommend = (1500 + (20 * (weight - 20))) / 220;
     return recommend.ceil();
   }
@@ -68,7 +68,7 @@ class _KonsumsiAirPageState extends State<KonsumsiAirPage> {
               ),
               height: 350,
               child: Column(
-                children: <Widget>[
+                children: [
                   const Text('Target Harian'),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -76,8 +76,9 @@ class _KonsumsiAirPageState extends State<KonsumsiAirPage> {
                       IconButton(
                         icon: const Icon(Icons.remove_circle_outline),
                         onPressed: () {
-                          setModalState(() {
-                            if (currentTarget > getRecommend()) {
+                          setModalState(() async {
+                            final recommendation = await getRecommend();
+                            if (currentTarget > recommendation) {
                               currentTarget = currentTarget - 1;
                             }
                           });
@@ -104,12 +105,12 @@ class _KonsumsiAirPageState extends State<KonsumsiAirPage> {
                     textButton: 'Simpan Target',
                     onTap: () async {
                       setState(() => isLoading = true);
-                      _navigationHelper.pop();
                       await _waterCubit.addWater(
                         dateController.text,
                         currentTarget,
                         0,
                       );
+                      _navigationHelper.pop();
                       setState(() => isLoading = false);
                     },
                   ),
@@ -257,6 +258,14 @@ class _KonsumsiAirPageState extends State<KonsumsiAirPage> {
                         );
                       }),
                     ],
+                  ),
+                );
+              }
+              if (state.waterState.status.isError) {
+                return const Center(
+                  child: Text(
+                    'Gagal memuat data',
+                    style: TextStyle(color: Colors.red),
                   ),
                 );
               }

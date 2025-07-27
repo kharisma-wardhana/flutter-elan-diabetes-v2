@@ -18,6 +18,7 @@ import '../../../../widget/custom_dropdown.dart';
 import '../../../../widget/custom_text_field.dart';
 import '../../bloc/antropometri/antropometri_cubit.dart';
 import '../../bloc/antropometri/antropometri_state.dart';
+import '../../bloc/assesment/assesment_cubit.dart';
 
 class AntropometriPage extends StatefulWidget {
   const AntropometriPage({super.key});
@@ -264,9 +265,10 @@ class _AntropometriPageState extends State<AntropometriPage> {
                       (current.antropometriState.data !=
                           previous.antropometriState.data);
                 },
-                listener: (context, state) {
+                listener: (context, state) async {
                   if (state.antropometriState.status.isHasData) {
                     context.read<AuthBloc>().add(CompleteAntropometriEvent());
+                    await context.read<AssesmentCubit>().getAssesment();
                     navigationHelper.pushReplacementNamed(homePage);
                   } else if (state.antropometriState.status.isError) {
                     Fluttertoast.showToast(

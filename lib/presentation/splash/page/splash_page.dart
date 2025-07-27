@@ -9,6 +9,7 @@ import '../../../core/service_locator.dart';
 import '../../../gen/assets.gen.dart';
 import '../../auth/bloc/auth_bloc.dart';
 import '../../auth/bloc/auth_state.dart';
+import '../../home/assesment/bloc/antropometri/antropometri_cubit.dart';
 import '../../home/assesment/bloc/assesment/assesment_cubit.dart';
 
 class SplashPage extends StatelessWidget {
@@ -17,7 +18,7 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) async {
+      listener: (context, state) {
         if (state is AuthSuccess) {
           // Check if the user has completed onboarding
           if (state.userEntity.isOnboardingComplete != null &&
@@ -25,7 +26,10 @@ class SplashPage extends StatelessWidget {
             if (state.userEntity.isAntropometriComplete != null &&
                 state.userEntity.isAntropometriComplete!) {
               // Navigate to home page if antropometri is complete
-              await sl<AssesmentCubit>().getAssesment();
+              context.read<AssesmentCubit>().getAssesment();
+              context.read<AntropometriCubit>().getDetailAntropometri(
+                state.userEntity.id,
+              );
               sl<AppNavigator>().pushNamedAndRemoveUntil(homePage);
             } else {
               sl<AppNavigator>().pushNamedAndRemoveUntil(antropometriPage);

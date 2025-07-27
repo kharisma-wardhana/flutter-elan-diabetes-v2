@@ -1,4 +1,6 @@
+import 'package:elan/core/constant.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../../../../core/state_enum.dart';
 import '../../../../../core/usecase.dart';
@@ -10,10 +12,12 @@ import 'antropometri_state.dart';
 class AntropometriCubit extends Cubit<AntropometriState> {
   final AddAntropometriUseCase antropometriUseCase;
   final GetDetailAntropometriUsecase getDetailAntropometriUsecase;
+  final FlutterSecureStorage secureStorage;
 
   AntropometriCubit({
     required this.antropometriUseCase,
     required this.getDetailAntropometriUsecase,
+    required this.secureStorage,
   }) : super(AntropometriState(antropometriState: ViewData.initial()));
 
   Future<void> addAntropometri(
@@ -49,7 +53,9 @@ class AntropometriCubit extends Cubit<AntropometriState> {
           ),
         ),
       ),
-      (data) {
+      (data) async {
+        // Save antropometri data in secure storage
+        await secureStorage.write(key: antropometriKey, value: data.toString());
         emit(AntropometriState(antropometriState: ViewData.loaded(data: data)));
       },
     );

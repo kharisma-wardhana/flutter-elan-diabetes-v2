@@ -9,7 +9,6 @@ import '../../../../core/app_navigator.dart';
 import '../../../../core/constant.dart';
 import '../../../../core/service_locator.dart';
 import '../../../widget/custom_loading.dart';
-import '../bloc/activity/activity_cubit.dart';
 import '../bloc/asam_urat/asam_urat_cubit.dart';
 import '../bloc/assesment/assesment_cubit.dart';
 import '../bloc/assesment/assesment_state.dart';
@@ -20,7 +19,6 @@ import '../bloc/kolesterol/kolesterol_cubit.dart';
 import '../bloc/tekanan_darah/tensi_cubit.dart';
 import '../bloc/water/water_cubit.dart';
 import '../widget/custom_assesment_button.dart';
-import '../widget/custom_medical_button.dart';
 
 class AssesmentPage extends StatefulWidget {
   const AssesmentPage({super.key});
@@ -32,14 +30,6 @@ class AssesmentPage extends StatefulWidget {
 class _AssesmentPageState extends State<AssesmentPage> {
   bool isLoading = false;
   static final navigatorHelper = sl<AppNavigator>();
-  static final activityCubit = sl<ActivityCubit>();
-  static final gulaCubit = sl<GulaCubit>();
-  static final tensiCubit = sl<TensiCubit>();
-  static final kolesterolCubit = sl<KolesterolCubit>();
-  static final hb1acCubit = sl<Hb1acCubit>();
-  static final asamUratCubit = sl<AsamUratCubit>();
-  static final waterCubit = sl<WaterCubit>();
-  static final ginjalCubit = sl<GinjalCubit>();
   static final dateNow = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
   @override
@@ -85,7 +75,9 @@ class _AssesmentPageState extends State<AssesmentPage> {
                           ],
                           onTap: () async {
                             setState(() => isLoading = true);
-                            await gulaCubit.getListGula(dateNow);
+                            await context.read<GulaCubit>().getListGula(
+                              dateNow,
+                            );
                             setState(() => isLoading = false);
                             navigatorHelper.pushNamed(gulaPage);
                           },
@@ -104,7 +96,9 @@ class _AssesmentPageState extends State<AssesmentPage> {
                                 ],
                           onTap: () async {
                             setState(() => isLoading = true);
-                            await tensiCubit.getListTensi(dateNow);
+                            await context.read<TensiCubit>().getListTensi(
+                              dateNow,
+                            );
                             setState(() => isLoading = false);
                             navigatorHelper.pushNamed(tensiPage);
                           },
@@ -123,7 +117,7 @@ class _AssesmentPageState extends State<AssesmentPage> {
                                 ],
                           onTap: () async {
                             setState(() => isLoading = true);
-                            await hb1acCubit.getListHb(dateNow);
+                            await context.read<Hb1acCubit>().getListHb(dateNow);
                             setState(() => isLoading = false);
                             navigatorHelper.pushNamed(hbPage);
                           },
@@ -143,7 +137,9 @@ class _AssesmentPageState extends State<AssesmentPage> {
                                 ],
                           onTap: () async {
                             setState(() => isLoading = true);
-                            await waterCubit.getAllWater(dateNow);
+                            await context.read<WaterCubit>().getAllWater(
+                              dateNow,
+                            );
                             setState(() => isLoading = false);
                             navigatorHelper.pushNamed(waterPage);
                           },
@@ -161,7 +157,9 @@ class _AssesmentPageState extends State<AssesmentPage> {
                                 ],
                           onTap: () async {
                             setState(() => isLoading = true);
-                            await asamUratCubit.getListAsamUrat(dateNow);
+                            await context.read<AsamUratCubit>().getListAsamUrat(
+                              dateNow,
+                            );
                             setState(() => isLoading = false);
                             navigatorHelper.pushNamed(asamUratPage);
                           },
@@ -181,7 +179,9 @@ class _AssesmentPageState extends State<AssesmentPage> {
                                 ],
                           onTap: () async {
                             setState(() => isLoading = true);
-                            await kolesterolCubit.getListKolesterol(dateNow);
+                            await context
+                                .read<KolesterolCubit>()
+                                .getListKolesterol(dateNow);
                             setState(() => isLoading = false);
                             navigatorHelper.pushNamed(kolesterolPage);
                           },
@@ -203,7 +203,9 @@ class _AssesmentPageState extends State<AssesmentPage> {
                                 ],
                           onTap: () async {
                             setState(() => isLoading = true);
-                            await ginjalCubit.getListGinjal(dateNow);
+                            await context.read<GinjalCubit>().getListGinjal(
+                              dateNow,
+                            );
                             setState(() => isLoading = false);
                             navigatorHelper.pushNamed(ginjalPage);
                           },

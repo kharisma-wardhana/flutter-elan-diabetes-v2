@@ -358,6 +358,7 @@ class AssesmentDependency {
       () => AntropometriCubit(
         antropometriUseCase: sl<AddAntropometriUseCase>(),
         getDetailAntropometriUsecase: sl<GetDetailAntropometriUsecase>(),
+        secureStorage: sl<FlutterSecureStorage>(),
       ),
     );
     sl.registerLazySingleton<GinjalCubit>(
