@@ -26,10 +26,13 @@ import '../presentation/home/home_page.dart';
 import '../presentation/home/info/article/page/detail_article_page.dart';
 import '../presentation/home/info/article/page/list_article_page.dart';
 import '../presentation/home/info/doctor/page/doctor_page.dart';
+import '../presentation/onboarding/page/diet_page.dart';
 import '../presentation/onboarding/page/gula_darah_page.dart';
+import '../presentation/onboarding/page/kalori_intake_page.dart';
 import '../presentation/onboarding/page/onboarding_page.dart';
 import '../presentation/onboarding/page/recommendation_page.dart';
 import '../presentation/home/profile/page/profile_page.dart';
+import '../presentation/onboarding/page/tujuan_diet_page.dart';
 import '../presentation/splash/page/splash_page.dart';
 
 const String baseURL = 'https://elan.cmutiah.com/api';
@@ -45,6 +48,9 @@ const String onboardingPage = '/onboarding';
 const String gulaDarahPage = '/check-gula-darah';
 const String recommendationPage = '/recommendation';
 const String activityPage = '/activity';
+const String tujuanDietPage = '/tujuan-diet';
+const String kaloriIntakePage = '/kalori-intake';
+const String dietPage = '/diet';
 const String homePage = '/home';
 const String profilePage = '/profile';
 
@@ -102,6 +108,22 @@ class AppRoutes {
         );
       case activityPage:
         return MaterialPageRoute(builder: (_) => const ActivityPage());
+      case tujuanDietPage:
+        return MaterialPageRoute(
+          builder: (context) {
+            final args = argument ?? <String>[];
+            return TujuanDietPage(data: args);
+          },
+        );
+      case kaloriIntakePage:
+        return MaterialPageRoute(
+          builder: (context) {
+            final args = argument ?? <String>[];
+            return KaloriIntakePage(data: args);
+          },
+        );
+      case dietPage:
+        return MaterialPageRoute(builder: (_) => const DietPage());
       case antropometriPage:
         return MaterialPageRoute(builder: (_) => const AntropometriPage());
       case homePage:
@@ -202,3 +224,122 @@ List<DropdownMenuEntry<String>> activityOptions = [
 
 const int diabatesDM = 1;
 const int diabetesPreDM = 2;
+
+List<String> karboOptions = [
+  'Nasi Merah 150 gr (1 mangkok kecil) (200 kkal)',
+  'Nasi Putih 150 gr (1 mangkok kecil) (250 kkal)',
+  'Nasi Gurih/Liwet 150 gr (1 mangkok kecil) (290 kkal)',
+  'Ubi kukus 1 potong 150 gr (115 kkal)',
+  'Roti gandum 1 lembar (75 kkal)',
+  'Pisang kukus 1 buah ukuran sedang (100 kkal)',
+  'Singkong rebus 100 gr (190 kkal)',
+  'Jagung rebus 100 gr (96 kkal)',
+  'Kentang rebus 100 gr (87 kkal)',
+  'Oatmeal 1 mangkuk kecil (150 kkal)',
+  'Biskuit 1 keping (35 kkal)',
+  'Optional (Connect ke Google)',
+];
+
+List<String> proteinOptions = [
+  'Telur rebus 1 butir (90 kkal)',
+  'Ikan 1 potong 60 gr (120 kkal)',
+  'Tempe 1 potong ukuran kecil (90 kkal)',
+  'Tahu 1 potong ukuran kecil (35 kkal)',
+  'Daging Ayam 1 potong 100 gr (170 kkal)',
+  'Daging Kambing 1 potong 100 gr (109 kkal)',
+  'Daging Sapi 1 potong 100 gr (250 kkal)',
+  'Udang 1 buah (9 kkal)',
+  'Kacang rebus 100 gr (155 kkal)',
+  'Optional (Connect ke Google)',
+];
+
+List<String> seratOptions = [
+  'Sayur bayam 1 mangkuk (40 kkal)',
+  'Daun singkong 100 gr (50 kkal)',
+  'Daun pepaya 100 gr (50 kkal)',
+  'Nangka muda 100 gr (50 kkal)',
+  'Daun talas 100 gr (50 kkal)',
+  'Sawi 100 gr (25 kkal)',
+  'Kangkung 100 gr (25 kkal)',
+  'Tauge 100 gr (25 kkal)',
+  'Kacang panjang 100 gr (25 kkal)',
+  'Buncis 100 gr (25 kkal)',
+  'Daun katuk 100 gr (25 kkal)',
+  'Timun 100 gr (20 kkal)',
+  'Selada 100 gr (20 kkal)',
+  'Tomat 100 gr (20 kkal)',
+  'Apel 100 gr (52 kkal)',
+  'Pir 100 gr (57 kkal)',
+  'Semangka 100 gr (30 kkal)',
+  'Melon 100 gr (34 kkal)',
+  'Jambu biji 100 gr (68 kkal)',
+  'Buah naga 100 gr (50 kkal)',
+  'Pepaya 100 gr (43 kkal)',
+  'Stroberi 100 gr (32 kkal)',
+  'Anggur 100 gr (67 kkal)',
+  'Salak 100 gr (82 kkal)',
+  'Duku 100 gr (67 kkal)',
+  'Belimbing 100 gr (31 kkal)',
+  'Kedondong 100 gr (40 kkal)',
+  'Bengkoang 100 gr (38 kkal)',
+  'Sawo 100 gr (83 kkal)',
+  'Jambu air 100 gr (46 kkal)',
+  'Kelengkeng 100 gr (60 kkal)',
+  'Optional (Connect ke Google)',
+];
+
+const normal = 'Normal';
+const underWeight = 'Underweight';
+const overWeight = 'Overweight';
+
+Map<String, Map<String, List<String>>> tujuanDiet = {
+  'DM': {
+    underWeight: [
+      'Meningkatkan berat badan secara sehat dan bertahap',
+      'Menjaga kestabilan gula darah',
+      'Memenuhi kebutuhan energi dan nutrisi',
+      'Menghindari risiko komplikasi DM akibat defisiensi gizi',
+    ],
+    overWeight: [
+      'Mengurangi berat badan secara bertahap (0.5 - 1 kg/minggu)',
+      'Menjaga kestabilan gula darah',
+      'Menjaga massa otot dan metabolisme',
+      'Menghindari risiko komplikasi DM akibat defisiensi gizi',
+    ],
+  },
+  'Normal': {
+    underWeight: [
+      'Meningkatkan berat badan secara sehat dan bertahap',
+      'Menjaga kestabilan gula darah',
+      'Memenuhi kebutuhan energi dan nutrisi',
+      'Menghindari terjadinya DM',
+    ],
+    normal: [
+      'Mempertahankan berat badan ideal',
+      'Menjaga kestabilan gula darah',
+      'Memenuhi kebutuhan energi dan nutrisi',
+      'Menghindari terjadinya DM',
+    ],
+    overWeight: [
+      'Mengurangi berat badan secara bertahap (0.5-1 kg/minggu)',
+      'Menjaga kestabilan gula darah',
+      'Memenuhi kebutuhan energi dan nutrisi',
+      'Menghindari terjadinya DM',
+    ],
+  },
+};
+
+Map<String, List<String>> komposisiDiet = {
+  'DM': [
+    'Karbohidrat 50-60%',
+    'Lemak sehat 20-25%',
+    'Protein 15-20%',
+    'Serat 25-30 g/hari',
+  ],
+  'Normal': [
+    'Karbohidrat 45-65%',
+    'Lemak sehat 20-30%',
+    'Protein 20-25%',
+    'Serat 25-30 g/hari',
+  ],
+};
