@@ -14,7 +14,7 @@ class KaloriIntakePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: const Text('ELAN')),
+        appBar: AppBar(title: const Text('KALORI INTAKE')),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),

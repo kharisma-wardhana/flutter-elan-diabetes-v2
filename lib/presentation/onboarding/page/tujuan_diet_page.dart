@@ -14,33 +14,30 @@ class TujuanDietPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: const Text('ELAN')),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Tujuan Diet',
-                  style: TextStyle(
-                    fontSize: 28.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
+        appBar: AppBar(title: const Text('TUJUAN DIET')),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.only(bottom: 8.r),
+                  children: [
+                    ...data.map(
+                      (item) =>
+                          Text('- $item', style: TextStyle(fontSize: 24.sp)),
+                    ),
+                  ],
                 ),
-                32.verticalSpace,
-                ...data.map(
-                  (item) => Text('- $item', style: TextStyle(fontSize: 18.sp)),
-                ),
-                16.verticalSpace,
-                CustomButton(
-                  textButton: "Lanjutkan",
-                  onTap: () {
-                    sl<AppNavigator>().pushNamed(kaloriIntakePage);
-                  },
-                ),
-              ],
-            ),
+              ),
+              CustomButton(
+                textButton: "Lanjutkan",
+                onTap: () {
+                  sl<AppNavigator>().pushNamed(kaloriIntakePage);
+                },
+              ),
+            ],
           ),
         ),
       ),

@@ -222,8 +222,9 @@ List<DropdownMenuEntry<String>> activityOptions = [
   DropdownMenuEntry<String>(value: 'Lainnya', label: 'Lainnya'),
 ];
 
-const int diabatesDM = 1;
-const int diabetesPreDM = 2;
+const int typeNormal = 0;
+const int typeDM = 1;
+const int typePreDM = 2;
 
 List<String> karboOptions = [
   'Nasi Merah 150 gr (1 mangkok kecil) (200 kkal)',

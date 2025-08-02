@@ -35,13 +35,13 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
                 int.parse(event.gulaDarahSewaktu) > 180) ||
             (event.gulaDarahPuasa.isNotEmpty &&
                 int.parse(event.gulaDarahPuasa) > 125)) {
-          state = const OnboardingState.successDiabetes(diabatesDM);
+          state = const OnboardingState.successDiabetes(typeDM);
         }
         if ((event.gulaDarahPuasa.isNotEmpty &&
                 int.parse(event.gulaDarahPuasa) > 100) &&
             (event.gulaDarahPuasa.isNotEmpty &&
                 int.parse(event.gulaDarahPuasa) <= 125)) {
-          state = const OnboardingState.successDiabetes(diabetesPreDM);
+          state = const OnboardingState.successDiabetes(typePreDM);
         }
         result.fold(
           (failure) => emit(OnboardingState.error(failure.message)),

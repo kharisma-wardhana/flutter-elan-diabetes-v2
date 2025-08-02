@@ -14,7 +14,6 @@ import '../../../../auth/bloc/auth_bloc.dart';
 import '../../../../auth/bloc/auth_event.dart';
 import '../../../../widget/base_page.dart';
 import '../../../../widget/custom_button.dart';
-import '../../../../widget/custom_dropdown.dart';
 import '../../../../widget/custom_text_field.dart';
 import '../../bloc/antropometri/antropometri_cubit.dart';
 import '../../bloc/antropometri/antropometri_state.dart';
@@ -55,13 +54,6 @@ class _AntropometriPageState extends State<AntropometriPage> {
     text: 'Sangat jarang berolahraga (1-3 kali per bulan)',
   );
   static final _formKey = GlobalKey<FormState>();
-  static final List<String> jenisAktivitas = [
-    'Sangat jarang berolahraga (1-3 kali per bulan)',
-    'Jarang olahraga (1-3 kali per minggu)',
-    'Cukup olahraga (3-5 kali per minggu)',
-    'Sering olahraga (6-7 kali per minggu)',
-    'Sangat sering olahraga (sekitar 2 kali dalam sehari)',
-  ];
   bool isLoading = false;
 
   @override
@@ -172,6 +164,10 @@ class _AntropometriPageState extends State<AntropometriPage> {
       setState(() {
         isLoading = false;
       });
+      navigationHelper.pushNamed(
+        tujuanDietPage,
+        arguments: tujuanDiet["Normal"]![underWeight],
+      );
     }
   }
 
@@ -247,17 +243,17 @@ class _AntropometriPageState extends State<AntropometriPage> {
                   _updateLengan();
                 },
               ),
-              8.verticalSpace,
-              const Text('Jenis Aktivitas yang sering dilakukan?'),
-              CustomDropdown(
-                controller: jenisAktivitasController,
-                items: jenisAktivitas,
-                onChanged: (val) {
-                  setState(() {
-                    jenisAktivitasController.text = val;
-                  });
-                },
-              ),
+              // 8.verticalSpace,
+              // const Text('Jenis Aktivitas yang sering dilakukan?'),
+              // CustomDropdown(
+              //   controller: jenisAktivitasController,
+              //   items: jenisAktivitas,
+              //   onChanged: (val) {
+              //     setState(() {
+              //       jenisAktivitasController.text = val;
+              //     });
+              //   },
+              // ),
               16.verticalSpace,
               BlocListener<AntropometriCubit, AntropometriState>(
                 listenWhen: (previous, current) {
@@ -271,7 +267,10 @@ class _AntropometriPageState extends State<AntropometriPage> {
                     context.read<AuthBloc>().stream.listen((authState) {
                       if (authState is AuthSuccess) {
                         sl<AssesmentCubit>().getAssesment();
-                        navigationHelper.pushReplacementNamed(homePage);
+                        navigationHelper.pushNamed(
+                          tujuanDietPage,
+                          arguments: tujuanDiet["Normal"]![underWeight],
+                        );
                       }
                     });
                   } else if (state.antropometriState.status.isError) {
