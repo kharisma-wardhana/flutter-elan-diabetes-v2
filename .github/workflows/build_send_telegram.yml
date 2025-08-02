@@ -1,0 +1,74 @@
+name: Build ELAN APK & AAB + Send to Telegram
+
+on:
+  push:
+    branches: [release]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.32.4"
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Generate build files (build_runner)
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Read version from pubspec.yaml
+        id: version
+        run: |
+          VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}')
+          NAME=$(echo $VERSION | cut -d'+' -f1)
+          CODE=$(echo $VERSION | cut -d'+' -f2)
+          echo "name=$NAME" >> $GITHUB_OUTPUT
+          echo "code=$CODE" >> $GITHUB_OUTPUT
+
+      - name: Build APK (split-per-abi)
+        run: |
+          flutter build apk --split-per-abi \
+            --build-name=${{ steps.version.outputs.name }} \
+            --build-number=${{ steps.version.outputs.code }}
+
+      - name: Build AAB
+        run: |
+          flutter build appbundle \
+            --build-name=${{ steps.version.outputs.name }} \
+            --build-number=${{ steps.version.outputs.code }}
+
+      - name: Rename APKs and Send to Telegram
+        run: |
+          VERSION_NAME="${{ steps.version.outputs.name }}"
+          VERSION_CODE="${{ steps.version.outputs.code }}"
+          for file in build/app/outputs/flutter-apk/app-*-release.apk; do
+            ABI=$(basename "$file" | cut -d'-' -f2)
+            NEW_NAME="elan-v${VERSION_NAME}+${VERSION_CODE}-${ABI}.apk"
+            cp "$file" "./$NEW_NAME"
+            curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendDocument" \
+              -F chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+              -F document=@"$NEW_NAME" \
+              -F caption="📱 APK ($ABI)\nVersion: $VERSION_NAME+$VERSION_CODE"
+          done
+
+      - name: Rename AAB and Send to Telegram
+        run: |
+          VERSION_NAME="${{ steps.version.outputs.name }}"
+          VERSION_CODE="${{ steps.version.outputs.code }}"
+          AAB_SOURCE="build/app/outputs/bundle/release/app-release.aab"
+          AAB_TARGET="elan-v${VERSION_NAME}+${VERSION_CODE}.aab"
+          if [ -f "$AAB_SOURCE" ]; then
+            cp "$AAB_SOURCE" "$AAB_TARGET"
+            curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendDocument" \
+              -F chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+              -F document=@"$AAB_TARGET" \
+              -F caption="📦 AAB\nVersion: $VERSION_NAME+$VERSION_CODE"
+          fi
