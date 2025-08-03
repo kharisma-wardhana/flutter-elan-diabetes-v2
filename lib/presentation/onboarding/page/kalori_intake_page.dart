@@ -15,32 +15,22 @@ class KaloriIntakePage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(title: const Text('KALORI INTAKE')),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Kalori Intake',
-                  style: TextStyle(
-                    fontSize: 28.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                32.verticalSpace,
-                ...data.map(
-                  (item) => Text('- $item', style: TextStyle(fontSize: 18.sp)),
-                ),
-                16.verticalSpace,
-                CustomButton(
-                  textButton: "Lanjutkan",
-                  onTap: () {
-                    sl<AppNavigator>().pushNamed(dietPage);
-                  },
-                ),
-              ],
-            ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ...data.map(
+                (item) => Text('- $item', style: TextStyle(fontSize: 20.sp)),
+              ),
+              Spacer(),
+              CustomButton(
+                textButton: "Lanjutkan",
+                onTap: () {
+                  sl<AppNavigator>().pushNamed(dietPage);
+                },
+              ),
+            ],
           ),
         ),
       ),

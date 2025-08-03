@@ -15,17 +15,12 @@ class RecommendationPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(title: const Text('ELAN')),
+        appBar: AppBar(title: const Text('REKOMENDASI')),
         body: Padding(
           padding: EdgeInsets.all(16.r),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Rekomendasi:',
-                style: TextStyle(fontSize: 28.sp, fontWeight: FontWeight.bold),
-              ),
-              32.verticalSpace,
               Expanded(
                 child: ListView.builder(
                   itemCount: data.length,
@@ -34,7 +29,7 @@ class RecommendationPage extends StatelessWidget {
                       padding: EdgeInsets.symmetric(vertical: 16.r),
                       child: Text(
                         '- ${data[index]}',
-                        style: TextStyle(fontSize: 18.sp),
+                        style: TextStyle(fontSize: 22.sp),
                       ),
                     );
                   },

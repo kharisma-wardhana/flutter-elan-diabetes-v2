@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/app_navigator.dart';
 import '../../../core/constant.dart';
 import '../../../core/service_locator.dart';
 import '../../widget/custom_button.dart';
+import '../bloc/onboarding_bloc.dart';
+import '../bloc/onboarding_state.dart';
 
 class TujuanDietPage extends StatelessWidget {
   final List<String> data;
@@ -34,7 +37,14 @@ class TujuanDietPage extends StatelessWidget {
               CustomButton(
                 textButton: "Lanjutkan",
                 onTap: () {
-                  sl<AppNavigator>().pushNamed(kaloriIntakePage);
+                  sl<AppNavigator>().pushNamed(
+                    kaloriIntakePage,
+                    arguments:
+                        (context.read<OnboardingBloc>().state
+                            is OnboardingSuccessDiabetes)
+                        ? dataKaloriIntake['DM']
+                        : dataKaloriIntake['Normal'],
+                  );
                 },
               ),
             ],

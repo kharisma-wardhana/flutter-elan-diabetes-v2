@@ -1,9 +1,5 @@
-import 'dart:async';
-
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../gen/colors.gen.dart';
 import 'custom_loading.dart';
@@ -29,27 +25,13 @@ class BasePage extends StatefulWidget {
 }
 
 class _BasePageState extends State<BasePage> {
-  late StreamSubscription<List<ConnectivityResult>> subscription;
-
   @override
   void initState() {
     super.initState();
-    subscription = Connectivity().onConnectivityChanged.listen((
-      List<ConnectivityResult> result,
-    ) async {
-      final message = (result.first == ConnectivityResult.none)
-          ? 'Offline'
-          : 'Online';
-      Fluttertoast.showToast(
-        msg: 'Anda masuk ke mode $message!',
-        toastLength: Toast.LENGTH_SHORT,
-      );
-    });
   }
 
   @override
   void dispose() {
-    subscription.cancel();
     super.dispose();
   }
 

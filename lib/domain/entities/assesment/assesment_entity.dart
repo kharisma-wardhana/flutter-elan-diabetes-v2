@@ -1,5 +1,3 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-
 import '../asam_urat_entity.dart';
 import '../ginjal_entity.dart';
 import '../gula_darah/gula_darah.dart';

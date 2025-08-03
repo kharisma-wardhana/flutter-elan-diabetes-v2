@@ -289,7 +289,7 @@ List<String> seratOptions = [
   'Optional (Connect ke Google)',
 ];
 
-const normal = 'Normal';
+const normalWeight = 'Normal';
 const underWeight = 'Underweight';
 const overWeight = 'Overweight';
 
@@ -315,7 +315,7 @@ Map<String, Map<String, List<String>>> tujuanDiet = {
       'Memenuhi kebutuhan energi dan nutrisi',
       'Menghindari terjadinya DM',
     ],
-    normal: [
+    normalWeight: [
       'Mempertahankan berat badan ideal',
       'Menjaga kestabilan gula darah',
       'Memenuhi kebutuhan energi dan nutrisi',
@@ -330,17 +330,17 @@ Map<String, Map<String, List<String>>> tujuanDiet = {
   },
 };
 
-Map<String, List<String>> komposisiDiet = {
+Map<String, List<String>> dataKaloriIntake = {
   'DM': [
-    'Karbohidrat 50-60%',
-    'Lemak sehat 20-25%',
-    'Protein 15-20%',
-    'Serat 25-30 g/hari',
+    'Karbohidrat 50 - 60%',
+    'Lemak sehat 20 - 25%',
+    'Protein 15 - 20%',
+    'Serat 25 - 30 g/hari',
   ],
   'Normal': [
-    'Karbohidrat 45-65%',
-    'Lemak sehat 20-30%',
-    'Protein 20-25%',
-    'Serat 25-30 g/hari',
+    'Karbohidrat 45 - 65%',
+    'Lemak sehat 20 - 30%',
+    'Protein 20 - 25%',
+    'Serat 25 - 30 g/hari',
   ],
 };

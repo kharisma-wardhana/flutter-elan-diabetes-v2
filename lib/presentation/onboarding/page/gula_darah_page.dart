@@ -59,7 +59,7 @@ class _GulaDarahPageState extends State<GulaDarahPage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(title: const Text('Gula Darah')),
+        appBar: AppBar(title: const Text('GULA DARAH')),
         body: Stack(
           children: [
             Padding(
@@ -104,20 +104,20 @@ class _GulaDarahPageState extends State<GulaDarahPage> {
                         return SizedBox.shrink();
                       },
                     ),
-                    16.verticalSpace,
+                    Spacer(),
                     BlocListener<OnboardingBloc, OnboardingState>(
                       listener: (context, state) {
                         if (state is OnboardingLoading) {
                           setState(() => isLoading = true);
                         } else if (state is OnboardingSuccessNormal) {
                           setState(() => isLoading = false);
-                          sl<AppNavigator>().pushNamedAndRemoveUntil(
+                          sl<AppNavigator>().pushNamed(
                             recommendationPage,
                             arguments: recommendations['normal']!,
                           );
                         } else if (state is OnboardingSuccessDiabetes) {
                           setState(() => isLoading = false);
-                          sl<AppNavigator>().pushNamedAndRemoveUntil(
+                          sl<AppNavigator>().pushNamed(
                             recommendationPage,
                             arguments: recommendations['diabetes']!,
                           );
@@ -130,7 +130,6 @@ class _GulaDarahPageState extends State<GulaDarahPage> {
                         onTap: _handleNextButton,
                       ),
                     ),
-                    32.verticalSpace,
                   ],
                 ),
               ),

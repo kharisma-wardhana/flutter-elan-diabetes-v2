@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../core/app_navigator.dart';
 import '../../../core/constant.dart';
 import '../../../core/service_locator.dart';
-import '../../auth/bloc/auth_bloc.dart';
-import '../../auth/bloc/auth_event.dart';
-import '../../auth/bloc/auth_state.dart';
 import '../../widget/custom_button.dart';
 import '../../widget/custom_loading.dart';
 import '../../widget/custom_text_field.dart';
@@ -40,13 +35,6 @@ class _ActivityPageState extends State<ActivityPage> {
     activityController.dispose();
     activityLainController.dispose();
     super.dispose();
-  }
-
-  void _handleActivityInput() {
-    if (_formKey.currentState!.validate()) {
-      // Logic to handle activity input
-      context.read<AuthBloc>().add(CompleteOnboardingEvent());
-    }
   }
 
   @override
@@ -99,33 +87,14 @@ class _ActivityPageState extends State<ActivityPage> {
                             controller: activityLainController,
                           )
                         : SizedBox.shrink(),
-                    32.verticalSpace,
-                    BlocListener<AuthBloc, AuthState>(
-                      listener: (context, state) {
-                        if (state is AuthLoading) {
-                          setState(() => isLoading = true);
-                        } else if (state is AuthSuccess) {
-                          setState(() => isLoading = false);
-                          sl<AppNavigator>().pushNamedAndRemoveUntil(
-                            antropometriPage,
-                          );
-                        } else if (state is AuthError) {
-                          setState(() => isLoading = false);
-                          Fluttertoast.showToast(
-                            msg: state.message,
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Colors.red,
-                            textColor: Colors.white,
-                            fontSize: 16.0,
-                          );
+                    Spacer(),
+                    CustomButton(
+                      textButton: "Lanjutkan",
+                      onTap: () {
+                        if (_formKey.currentState!.validate()) {
+                          sl<AppNavigator>().pushNamed(antropometriPage);
                         }
                       },
-                      child: CustomButton(
-                        textButton: "Lanjutkan",
-                        onTap: _handleActivityInput,
-                      ),
                     ),
                   ],
                 ),

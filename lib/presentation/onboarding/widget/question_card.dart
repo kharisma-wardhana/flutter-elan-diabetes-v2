@@ -87,9 +87,6 @@ class _QuestionCardState extends State<QuestionCard> {
             isLoading: isLoading,
             textButton: "Lanjutkan",
             onTap: () {
-              setState(() {
-                isLoading = true;
-              });
               // Aksi ketika next ditekan
               if (hasAtLeastTwoYes) {
                 sl<AppNavigator>().pushNamed(gulaDarahPage);
@@ -99,9 +96,6 @@ class _QuestionCardState extends State<QuestionCard> {
                   arguments: recommendations['normal'],
                 );
               }
-              setState(() {
-                isLoading = false;
-              });
             },
           ),
       ],

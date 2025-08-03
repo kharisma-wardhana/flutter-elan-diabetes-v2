@@ -9,9 +9,10 @@ import '../../../../../core/app_navigator.dart';
 import '../../../../../core/constant.dart';
 import '../../../../../core/service_locator.dart';
 import '../../../../../domain/entities/antropometri_entity.dart';
-import '../../../../../gen/colors.gen.dart';
 import '../../../../auth/bloc/auth_bloc.dart';
 import '../../../../auth/bloc/auth_event.dart';
+import '../../../../onboarding/bloc/onboarding_bloc.dart';
+import '../../../../onboarding/bloc/onboarding_state.dart';
 import '../../../../widget/base_page.dart';
 import '../../../../widget/custom_button.dart';
 import '../../../../widget/custom_text_field.dart';
@@ -35,9 +36,9 @@ class _AntropometriPageState extends State<AntropometriPage> {
     text: '',
   );
   final TextEditingController stomachController = TextEditingController(
-    text: '',
+    text: '0',
   );
-  final TextEditingController handController = TextEditingController(text: '');
+  final TextEditingController handController = TextEditingController(text: '0');
   final TextEditingController statusController = TextEditingController(
     text: '',
   );
@@ -52,6 +53,9 @@ class _AntropometriPageState extends State<AntropometriPage> {
   );
   final TextEditingController jenisAktivitasController = TextEditingController(
     text: 'Sangat jarang berolahraga (1-3 kali per bulan)',
+  );
+  final TextEditingController kaloriController = TextEditingController(
+    text: '',
   );
   static final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
@@ -111,41 +115,78 @@ class _AntropometriPageState extends State<AntropometriPage> {
         }
       }
     });
+    context.read<OnboardingBloc>().state is OnboardingSuccessDiabetes
+        ? _updateKaloriDM()
+        : _updateKaloriNormal();
   }
 
-  void _updateLengan() {
-    if (handController.text.isNotEmpty) {
+  void _updateKaloriDM() {
+    if (statusController.text.isNotEmpty && heightController.text.isNotEmpty) {
       setState(() {
-        double val = double.parse(handController.text);
-        if (val >= 21) {
-          infoLenganController.text = 'Normal';
+        if (statusController.text.contains('Kurus')) {
+          // Kurus
+          var kaloriKurus =
+              ((double.parse(heightController.text) - 100) - (10 / 100)) * 35;
+          kaloriController.text = '${kaloriKurus.toStringAsFixed(2)} Kkal';
+        } else if (statusController.text.contains('Normal')) {
+          // Normal
+          var kaloriNormal =
+              ((double.parse(heightController.text) - 100) - (10 / 100)) * 25;
+          kaloriController.text = '${kaloriNormal.toStringAsFixed(2)} Kkal';
         } else {
-          infoLenganController.text = 'Malnutrisi';
+          // Obesitas
+          var kaloriObesitas =
+              ((double.parse(heightController.text) - 100) - (10 / 100)) * 20;
+          kaloriController.text = '${kaloriObesitas.toStringAsFixed(2)} Kkal';
         }
       });
     }
   }
 
-  void _updatePerut() {
-    final gender =
-        (context.read<AuthBloc>().state as AuthSuccess).userEntity.gender;
-    if (stomachController.text.isNotEmpty) {
+  void _updateKaloriNormal() {
+    if (statusController.text.isNotEmpty && heightController.text.isNotEmpty) {
       setState(() {
-        double val = double.parse(stomachController.text);
-        if (gender.contains('laki-laki')) {
-          infoPerutController.text = 'Normal';
-          if (val > 90) {
-            infoPerutController.text = 'Obesitas Sentral';
-          }
-        } else if (gender.contains('wanita')) {
-          infoPerutController.text = 'Normal';
-          if (val > 80) {
-            infoPerutController.text = 'Obesitas Sentral';
-          }
-        }
+        // Normal
+        var kaloriNormal =
+            ((double.parse(heightController.text) - 100) - (10 / 100)) * 30;
+        kaloriController.text = '${kaloriNormal.toStringAsFixed(2)} Kkal';
       });
     }
   }
+
+  // void _updateLengan() {
+  //   if (handController.text.isNotEmpty) {
+  //     setState(() {
+  //       double val = double.parse(handController.text);
+  //       if (val >= 21) {
+  //         infoLenganController.text = 'Normal';
+  //       } else {
+  //         infoLenganController.text = 'Malnutrisi';
+  //       }
+  //     });
+  //   }
+  // }
+
+  // void _updatePerut() {
+  //   final gender =
+  //       (context.read<AuthBloc>().state as AuthSuccess).userEntity.gender;
+  //   if (stomachController.text.isNotEmpty) {
+  //     setState(() {
+  //       double val = double.parse(stomachController.text);
+  //       if (gender.contains('laki-laki')) {
+  //         infoPerutController.text = 'Normal';
+  //         if (val > 90) {
+  //           infoPerutController.text = 'Obesitas Sentral';
+  //         }
+  //       } else if (gender.contains('wanita')) {
+  //         infoPerutController.text = 'Normal';
+  //         if (val > 80) {
+  //           infoPerutController.text = 'Obesitas Sentral';
+  //         }
+  //       }
+  //     });
+  //   }
+  // }
 
   void _handleSubmit() {
     if (_formKey.currentState!.validate()) {
@@ -164,10 +205,37 @@ class _AntropometriPageState extends State<AntropometriPage> {
       setState(() {
         isLoading = false;
       });
-      navigationHelper.pushNamed(
-        tujuanDietPage,
-        arguments: tujuanDiet["Normal"]![underWeight],
-      );
+      if (context.read<OnboardingBloc>().state is OnboardingSuccessDiabetes) {
+        if (statusController.text.contains('Kurus')) {
+          navigationHelper.pushNamed(
+            tujuanDietPage,
+            arguments: tujuanDiet["DM"]![underWeight],
+          );
+        } else {
+          navigationHelper.pushNamed(
+            tujuanDietPage,
+            arguments: tujuanDiet["DM"]![overWeight],
+          );
+        }
+      } else if (context.read<OnboardingBloc>().state
+          is OnboardingSuccessNormal) {
+        if (statusController.text.contains('Kurus')) {
+          navigationHelper.pushNamed(
+            tujuanDietPage,
+            arguments: tujuanDiet['Normal']![underWeight],
+          );
+        } else if (statusController.text.contains('Normal')) {
+          navigationHelper.pushNamed(
+            tujuanDietPage,
+            arguments: tujuanDiet['Normal']![normalWeight],
+          );
+        } else {
+          navigationHelper.pushNamed(
+            tujuanDietPage,
+            arguments: tujuanDiet['Normal']![overWeight],
+          );
+        }
+      }
     }
   }
 
@@ -208,41 +276,45 @@ class _AntropometriPageState extends State<AntropometriPage> {
               CustomTextField(
                 controller: statusController,
                 labelText: 'Status IMT',
-                keyboardType: TextInputType.number,
                 isReadOnly: true,
               ),
               8.verticalSpace,
               CustomTextField(
-                controller: stomachController,
-                labelText: 'Lingkar Perut',
-                suffixIcon: const Text('cm'),
-                infoText: infoPerutController.text,
-                infoTextColor:
-                    infoPerutController.text.toLowerCase().contains('normal')
-                    ? ColorName.darkGrey
-                    : Colors.red,
-                validatorEmpty: 'Silahkan masukkan lingkar perut',
-                keyboardType: TextInputType.number,
-                onChanged: (_) {
-                  _updatePerut();
-                },
+                controller: kaloriController,
+                labelText: 'Kebutuhan Kalori',
+                isReadOnly: true,
               ),
-              8.verticalSpace,
-              CustomTextField(
-                controller: handController,
-                labelText: 'Lingkar Lengan',
-                infoText: infoLenganController.text,
-                infoTextColor:
-                    infoLenganController.text.toLowerCase().contains('normal')
-                    ? ColorName.darkGrey
-                    : Colors.red,
-                suffixIcon: const Text('cm'),
-                validatorEmpty: 'Silahkan masukkan lingkar lengan',
-                keyboardType: TextInputType.number,
-                onChanged: (_) {
-                  _updateLengan();
-                },
-              ),
+              // CustomTextField(
+              //   controller: stomachController,
+              //   labelText: 'Lingkar Perut',
+              //   suffixIcon: const Text('cm'),
+              //   infoText: infoPerutController.text,
+              //   infoTextColor:
+              //       infoPerutController.text.toLowerCase().contains('normal')
+              //       ? ColorName.darkGrey
+              //       : Colors.red,
+              //   validatorEmpty: 'Silahkan masukkan lingkar perut',
+              //   keyboardType: TextInputType.number,
+              //   onChanged: (_) {
+              //     _updatePerut();
+              //   },
+              // ),
+              // 8.verticalSpace,
+              // CustomTextField(
+              //   controller: handController,
+              //   labelText: 'Lingkar Lengan',
+              //   infoText: infoLenganController.text,
+              //   infoTextColor:
+              //       infoLenganController.text.toLowerCase().contains('normal')
+              //       ? ColorName.darkGrey
+              //       : Colors.red,
+              //   suffixIcon: const Text('cm'),
+              //   validatorEmpty: 'Silahkan masukkan lingkar lengan',
+              //   keyboardType: TextInputType.number,
+              //   onChanged: (_) {
+              //     _updateLengan();
+              //   },
+              // ),
               // 8.verticalSpace,
               // const Text('Jenis Aktivitas yang sering dilakukan?'),
               // CustomDropdown(
@@ -264,15 +336,6 @@ class _AntropometriPageState extends State<AntropometriPage> {
                 listener: (context, state) async {
                   if (state.antropometriState.status.isHasData) {
                     context.read<AuthBloc>().add(CompleteAntropometriEvent());
-                    context.read<AuthBloc>().stream.listen((authState) {
-                      if (authState is AuthSuccess) {
-                        sl<AssesmentCubit>().getAssesment();
-                        navigationHelper.pushNamed(
-                          tujuanDietPage,
-                          arguments: tujuanDiet["Normal"]![underWeight],
-                        );
-                      }
-                    });
                   } else if (state.antropometriState.status.isError) {
                     Fluttertoast.showToast(
                       msg: state.antropometriState.message,
