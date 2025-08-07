@@ -19,9 +19,15 @@ class DietPage extends StatefulWidget {
 }
 
 class _DietPageState extends State<DietPage> {
-  TextEditingController karbohidratController = TextEditingController();
-  TextEditingController proteinController = TextEditingController();
-  TextEditingController seratController = TextEditingController();
+  TextEditingController karbohidratController = TextEditingController(
+    text: 'Nasi Merah 150 gr (1 mangkok kecil) (200 kkal)',
+  );
+  TextEditingController proteinController = TextEditingController(
+    text: 'Telur rebus 1 butir (90 kkal)',
+  );
+  TextEditingController seratController = TextEditingController(
+    text: 'Sayur bayam 1 mangkuk (40 kkal)',
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -89,17 +95,12 @@ class _DietPageState extends State<DietPage> {
                 ),
               ),
               BlocBuilder<AuthBloc, AuthState>(
-                builder:(context, state) {
-                  if (state is AuthSuccess) {
-                    if (state.userEntity.isOnboardingComplete != null
-                        && state.userEntity.isOnboardingComplete!) {
-                      sl<AppNavigator>().pushNamedAndRemoveUntil(homePage);
-                    }
-                  }
+                builder: (context, state) {
                   return CustomButton(
                     textButton: "Lanjutkan",
                     onTap: () {
                       context.read<AuthBloc>().add(CompleteOnboardingEvent());
+                      sl<AppNavigator>().pushNamedAndRemoveUntil(homePage);
                     },
                   );
                 },

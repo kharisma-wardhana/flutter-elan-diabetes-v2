@@ -238,7 +238,6 @@ List<String> karboOptions = [
   'Kentang rebus 100 gr (87 kkal)',
   'Oatmeal 1 mangkuk kecil (150 kkal)',
   'Biskuit 1 keping (35 kkal)',
-  'Optional (Connect ke Google)',
 ];
 
 List<String> proteinOptions = [
@@ -251,7 +250,6 @@ List<String> proteinOptions = [
   'Daging Sapi 1 potong 100 gr (250 kkal)',
   'Udang 1 buah (9 kkal)',
   'Kacang rebus 100 gr (155 kkal)',
-  'Optional (Connect ke Google)',
 ];
 
 List<String> seratOptions = [
@@ -286,7 +284,6 @@ List<String> seratOptions = [
   'Sawo 100 gr (83 kkal)',
   'Jambu air 100 gr (46 kkal)',
   'Kelengkeng 100 gr (60 kkal)',
-  'Optional (Connect ke Google)',
 ];
 
 const normalWeight = 'Normal';
