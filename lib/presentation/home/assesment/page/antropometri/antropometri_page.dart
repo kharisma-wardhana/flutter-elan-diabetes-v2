@@ -1,5 +1,4 @@
 import 'package:elan/core/state_enum.dart';
-import 'package:elan/presentation/auth/bloc/auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,7 +17,6 @@ import '../../../../widget/custom_button.dart';
 import '../../../../widget/custom_text_field.dart';
 import '../../bloc/antropometri/antropometri_cubit.dart';
 import '../../bloc/antropometri/antropometri_state.dart';
-import '../../bloc/assesment/assesment_cubit.dart';
 
 class AntropometriPage extends StatefulWidget {
   const AntropometriPage({super.key});

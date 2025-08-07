@@ -449,11 +449,10 @@ class AssesmentRepositoryImpl implements AssesmentRepository {
     int params,
   ) async {
     try {
-      final userID = await getUserID();
       final data = await assesmentRemoteDatasource.getDetailAntropometri(
         params,
       );
-      return Right(data != null ? data.toEntity() : null);
+      return Right(data?.toEntity());
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message));
     }

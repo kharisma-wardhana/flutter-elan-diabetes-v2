@@ -9,8 +9,6 @@ import '../../../core/service_locator.dart';
 import '../../../gen/assets.gen.dart';
 import '../../auth/bloc/auth_bloc.dart';
 import '../../auth/bloc/auth_state.dart';
-import '../../home/assesment/bloc/antropometri/antropometri_cubit.dart';
-import '../../home/assesment/bloc/assesment/assesment_cubit.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
@@ -23,17 +21,7 @@ class SplashPage extends StatelessWidget {
           // Check if the user has completed onboarding
           if (state.userEntity.isOnboardingComplete != null &&
               state.userEntity.isOnboardingComplete!) {
-            if (state.userEntity.isAntropometriComplete != null &&
-                state.userEntity.isAntropometriComplete!) {
-              // Navigate to home page if antropometri is complete
-              context.read<AssesmentCubit>().getAssesment();
-              context.read<AntropometriCubit>().getDetailAntropometri(
-                state.userEntity.id,
-              );
-              sl<AppNavigator>().pushNamedAndRemoveUntil(homePage);
-            } else {
-              sl<AppNavigator>().pushNamedAndRemoveUntil(antropometriPage);
-            }
+            sl<AppNavigator>().pushNamedAndRemoveUntil(homePage);
           } else {
             sl<AppNavigator>().pushNamedAndRemoveUntil(onboardingPage);
           }

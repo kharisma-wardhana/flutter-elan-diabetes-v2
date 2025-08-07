@@ -1,7 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../domain/entities/assesment/assesment_entity.dart';
-import '../activity/activity.dart';
 import '../asam_urat/asam_urat.dart';
 import '../ginjal/ginjal.dart';
 import '../gula_darah/gula_darah.dart';
