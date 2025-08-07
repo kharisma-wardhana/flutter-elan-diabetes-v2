@@ -21,6 +21,10 @@ flutter run
 ```bash
 dart run build_runner build --delete-conflicting-outputs
 ```
+- Untuk build apk split-per-abi (Debug):
+```bash
+flutter build apk --split-per-abi
+```
 - Untuk build release (Android):
 ```bash
 flutter build apk --release
